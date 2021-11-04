@@ -5,30 +5,44 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    Animator animator;
+    private CharacterController controller;
+
+    [SerializeField] Vector3 playerMoveInput;
+    [SerializeField] private float speed = 5f;
 
     public PlayerInputActions playerInput;
 
     private Rigidbody rb;
 
-    [SerializeField]
-    private float speed = 5f;
- 
+   
+
+   
+
+
+
 
     private void FixedUpdate()
     {
-        Vector3 moveInput = playerInput.Player.Move.ReadValue<Vector2>();
-        transform.position += moveInput * speed * Time.deltaTime;
+
+        playerInput.Player.Move.performed += playerMovement =>
+        {
+            playerMoveInput = new Vector3(playerMovement.ReadValue<Vector2>().x, playerMoveInput.y, playerMovement.ReadValue<Vector2>().y);
+        };
+
+        Movement();
+
+       
 
     }
     void Awake()
     {
         rb = this.GetComponent<Rigidbody>();
         playerInput = new PlayerInputActions();
-        
+
+        controller = GetComponent<CharacterController>();
 
         playerInput.Player.Attack.performed += attackPerformed => lightAtk();
-        playerInput.Player.Move.performed += movementPerformed => Movement(movementPerformed.ReadValue<Vector2>());
+        playerInput.Player.Move.performed += movementPerformed => Movement();
         playerInput.Player.Dash.performed += jumpPerformed => Dash();
 
     }
@@ -39,13 +53,14 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Light Attack");
     }
 
-    void Movement(Vector2 direction)
+    void Movement()
     {
 
-      //  Vector3 moveInput = playerInput.Player.Move.ReadValue<Vector2>();
-        //transform.position += moveInput * speed * Time.deltaTime;
-        Debug.Log("DisabledPerson" + direction);
-        
+        Vector3 MoveVec = transform.TransformDirection(playerMoveInput);
+
+        controller.Move(MoveVec * speed * Time.deltaTime);
+
+        controller.SimpleMove(Vector3.forward * 0);
     }
 
     void Dash()
