@@ -14,7 +14,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Dash",
+                    "name": "Rewind",
                     "type": "Button",
                     "id": "5c9c737a-5120-4d22-9704-b74d9941213e",
                     "expectedControlType": "Button",
@@ -38,7 +38,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Dash",
+                    "action": "Rewind",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
