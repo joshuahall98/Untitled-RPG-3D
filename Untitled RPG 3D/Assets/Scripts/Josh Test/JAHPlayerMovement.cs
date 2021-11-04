@@ -29,11 +29,11 @@ public class JAHPlayerMovement : MonoBehaviour
         {
             playerMoveInput = new Vector3(playerMovement.ReadValue<Vector2>().x, playerMoveInput.y, playerMovement.ReadValue<Vector2>().y);
         };
-
-        controls.PlayerKeyboard.Movement.canceled += playerMovement =>
+controls.PlayerKeyboard.Movement.canceled += playerMovement =>
         {
             playerMoveInput = new Vector3(playerMovement.ReadValue<Vector2>().x, playerMoveInput.y, playerMovement.ReadValue<Vector2>().y);
         };
+        
 
         Move();
     }
