@@ -12,9 +12,8 @@ public class PlayerController : MonoBehaviour
 
     public PlayerInputActions playerInput;
 
-    private Rigidbody rb;
-
-    private float attackCD;
+    //melee attack
+    [SerializeField]private float attackCD;
     public float startAttackCD;
     public Transform attackPos;
     public float attackRange;
@@ -23,13 +22,20 @@ public class PlayerController : MonoBehaviour
     public int dmg;
     
 
-
-
     private void FixedUpdate()
     {
+        
+        //reset basic attack cooldown
+        if(attackCD > 0)
+        {
+            attackCD -= Time.deltaTime;
+        }
+        else
+        {
+            attackCD = 0;
+        }
 
-        lightAtk();
-
+        //running the player movement
         playerInput.Player.Move.performed += movementPerformed =>
         {
             playerMoveInput = new Vector3(movementPerformed.ReadValue<Vector2>().x, playerMoveInput.y, movementPerformed.ReadValue<Vector2>().y);
@@ -41,26 +47,23 @@ public class PlayerController : MonoBehaviour
 
         Movement();
 
-       
 
     }
     void Awake()
     {
-        rb = this.GetComponent<Rigidbody>();
         playerInput = new PlayerInputActions();
 
         controller = GetComponent<CharacterController>();
 
-       playerInput.Player.Attack.performed += attackPerformed => lightAtk();
-       //playerInput.Player.Move.performed += movementPerformed => Movement();
-       playerInput.Player.Dash.performed += jumpPerformed => Dash();
+        playerInput.Player.Attack.started += attackPerformed => lightAtk();
+        //playerInput.Player.Move.performed += movementPerformed => Movement();
+        playerInput.Player.Dash.performed += jumpPerformed => Dash();
 
     }
 
 
     void lightAtk()
     {
-
        
         if (attackCD <= 0)
         {
@@ -69,17 +72,11 @@ public class PlayerController : MonoBehaviour
             {
                 enemiesToDamage[i].GetComponent<EnemyTest>().takeDamage(dmg);
 
-
             }
-
-
 
             attackCD = startAttackCD;
         }
-        else
-        {
-            attackCD -= Time.deltaTime;
-        }
+        
     }
 
     void Movement()
@@ -99,18 +96,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        
+  
         playerInput.Enable();
     }
 
     private void OnDisable()
     {
+
         playerInput.Disable();
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.green;
+        Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
 }
