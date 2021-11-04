@@ -19,7 +19,7 @@ public class JAHPlayerMovement : MonoBehaviour
         controls.Enable();
 
         controller = GetComponent<CharacterController>();
-        
+
     }
 
     // Update is called once per frame
