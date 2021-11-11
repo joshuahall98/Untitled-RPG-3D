@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMoveInput: {x: 0, y: 0, z: 0}
-  speed: 5
+  speed: 7
   attackCD: 0
   startAttackCD: 5
   attackPos: {fileID: 1413147950}
