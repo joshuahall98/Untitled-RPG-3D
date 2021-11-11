@@ -281,6 +281,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   dmg: 1
+  timeToRewind: 5
 --- !u!143 &1106698026
 CharacterController:
   m_ObjectHideFlags: 0
@@ -686,7 +687,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 15
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -805,7 +806,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1106698030}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 10
+    OrthographicSize: 15
     NearClipPlane: 0.001
     FarClipPlane: 1000
     Dutch: 0
