@@ -2,15 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+
+
     private CharacterController controller;
 
+
     [SerializeField] Vector3 playerMoveInput;
+    private float startSpeed = 7f;
     [SerializeField] private float speed;
 
     public PlayerInputActions playerInput;
+  
+
+
 
     //melee attack
     [SerializeField] private float attackCD;
@@ -26,8 +34,23 @@ public class PlayerController : MonoBehaviour
     List<PointInTime> pointsInTime;
     public float timeToRewind = 5f;
 
+    //Dash
+    private Boolean isDashing;
+
+
+    //HealthBar
+    public Image HealthBar;
+    public float startHealth = 100f;
+    private float health;
+
+
+
+
     void Awake()
     {
+
+
+        health = startHealth;
         pointsInTime = new List<PointInTime>();
 
         playerInput = new PlayerInputActions();
@@ -35,8 +58,35 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         playerInput.Player.Attack.started += attackPerformed => lightAtk();
-        //playerInput.Player.Move.performed += movementPerformed => Movement();
         playerInput.Player.Rewind.performed += jumpPerformed => plsRewind();
+        playerInput.Player.Dash.performed += dashPerformed => Dash();
+
+
+
+
+
+    }
+
+    void Update()
+    {
+     
+        //Condensed movement
+        Vector2 inputMovement = playerInput.Player.Move.ReadValue<Vector2>();
+        Vector3 actualMovement = new Vector3
+        {
+            x = inputMovement.x,
+            z = inputMovement.y
+        };
+
+        controller.Move(actualMovement * speed * Time.deltaTime);
+
+
+        //Character Rotation
+        Vector3 currentPos = transform.position;
+
+        Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
+        Vector3 posLookAt = currentPos + newPos;
+        transform.LookAt(posLookAt);
 
 
     }
@@ -55,26 +105,40 @@ public class PlayerController : MonoBehaviour
             attackCD = 0;
         }
 
-        //running the player movement
-        playerInput.Player.Move.performed += movementPerformed =>
-        {
-            playerMoveInput = new Vector3(movementPerformed.ReadValue<Vector2>().x, playerMoveInput.y, movementPerformed.ReadValue<Vector2>().y);
-        };
-        playerInput.Player.Move.canceled += movementPerformed =>
-        {
-            playerMoveInput = new Vector3(movementPerformed.ReadValue<Vector2>().x, playerMoveInput.y, movementPerformed.ReadValue<Vector2>().y);
-        };
+        // OLD MOVEMENT CODE 
+        /*    playerInput.Player.Move.performed += movementPerformed =>
+            {
+                playerMoveInput = new Vector3(movementPerformed.ReadValue<Vector2>().x, playerMoveInput.y, movementPerformed.ReadValue<Vector2>().y);
 
-        Movement();
+                float targetAngle = Mathf.Atan2(movementPerformed.ReadValue<Vector2>().x, movementPerformed.ReadValue<Vector2>().y) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+            };
+            playerInput.Player.Move.canceled += movementPerformed =>
+            {
+                playerMoveInput = new Vector3(movementPerformed.ReadValue<Vector2>().x, playerMoveInput.y, movementPerformed.ReadValue<Vector2>().y);
+
+                float targetAngle = Mathf.Atan2(movementPerformed.ReadValue<Vector2>().x, movementPerformed.ReadValue<Vector2>().y) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+            };
+        */
+
+        if (isDashing)
+        {
+            Dash();
+        }
+        
 
         //Rewind
         if (Rewinding)
         {
+
             Rewind();
+
         }
         else
         {
             Record();
+
         }
 
         void Record()
@@ -94,10 +158,12 @@ public class PlayerController : MonoBehaviour
                 transform.position = pointInTime.position;
                 transform.rotation = pointInTime.rotation;
                 pointsInTime.RemoveAt(0);
+                
+
             }
             else
             {
-
+               
                 Rewinding = false;
             }
         }
@@ -109,26 +175,26 @@ public class PlayerController : MonoBehaviour
 
         if (attackCD <= 0)
         {
-            Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, Enemey);
+           
+            Collider[] enemiesToDamage = Physics.OverlapSphere(attackPos.position, attackRange, Enemey);
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {
-                enemiesToDamage[i].GetComponent<EnemyTest>().takeDamage(dmg);
-
+              enemiesToDamage[i].GetComponent<EnemyTest>().TakeDamage(dmg);
+               
             }
 
-            attackCD = startAttackCD;
+           attackCD = startAttackCD;
         }
 
     }
 
-    void Movement()
+    void Dash()
     {
-
-        Vector3 MoveVec = transform.TransformDirection(playerMoveInput);
-
-        controller.Move(MoveVec * speed * Time.deltaTime);
-
-        controller.SimpleMove(Vector3.forward * 0);
+        
+            speed = 12;
+            Debug.Log("speedyboi");
+       
+        
     }
 
     void plsRewind()
