@@ -12,11 +12,10 @@ public class PlayerController : MonoBehaviour
 
 
     [SerializeField] Vector3 playerMoveInput;
-    private float startSpeed = 7f;
     [SerializeField] private float speed;
 
     public PlayerInputActions playerInput;
-  
+
 
 
 
@@ -35,7 +34,10 @@ public class PlayerController : MonoBehaviour
     public float timeToRewind = 5f;
 
     //Dash
-    private Boolean isDashing;
+    public float dashSpeed;
+    public float startDashCD;
+    [SerializeField] private float dashCD;
+
 
 
     //HealthBar
@@ -44,11 +46,14 @@ public class PlayerController : MonoBehaviour
     private float health;
 
 
+    public ParticleSystem DashP;
+
+
+
 
 
     void Awake()
     {
-
 
         health = startHealth;
         pointsInTime = new List<PointInTime>();
@@ -61,15 +66,11 @@ public class PlayerController : MonoBehaviour
         playerInput.Player.Rewind.performed += jumpPerformed => plsRewind();
         playerInput.Player.Dash.performed += dashPerformed => Dash();
 
-
-
-
-
     }
 
     void Update()
     {
-     
+
         //Condensed movement
         Vector2 inputMovement = playerInput.Player.Move.ReadValue<Vector2>();
         Vector3 actualMovement = new Vector3
@@ -105,6 +106,16 @@ public class PlayerController : MonoBehaviour
             attackCD = 0;
         }
 
+        //Dash CD
+        if (dashCD > 0)
+        {
+            dashCD -= Time.deltaTime;
+        }
+        else
+        {
+            dashCD = 0;
+        }
+
         // OLD MOVEMENT CODE 
         /*    playerInput.Player.Move.performed += movementPerformed =>
             {
@@ -122,22 +133,17 @@ public class PlayerController : MonoBehaviour
             };
         */
 
-        if (isDashing)
-        {
-            Dash();
-        }
-        
-
         //Rewind
         if (Rewinding)
         {
-
+            OnDisable();
             Rewind();
 
         }
         else
         {
             Record();
+            OnEnable();
 
         }
 
@@ -158,12 +164,12 @@ public class PlayerController : MonoBehaviour
                 transform.position = pointInTime.position;
                 transform.rotation = pointInTime.rotation;
                 pointsInTime.RemoveAt(0);
-                
+
 
             }
             else
             {
-               
+
                 Rewinding = false;
             }
         }
@@ -175,26 +181,38 @@ public class PlayerController : MonoBehaviour
 
         if (attackCD <= 0)
         {
-           
+
             Collider[] enemiesToDamage = Physics.OverlapSphere(attackPos.position, attackRange, Enemey);
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {
-              enemiesToDamage[i].GetComponent<EnemyTest>().TakeDamage(dmg);
-               
+                enemiesToDamage[i].GetComponent<EnemyTest>().TakeDamage(dmg);
+
             }
 
-           attackCD = startAttackCD;
+            attackCD = startAttackCD;
         }
 
     }
 
-    void Dash()
+
+
+   void Dash()
     {
-        
-            speed = 12;
-            Debug.Log("speedyboi");
-       
-        
+        CreateDash();
+        if (dashCD <= 0)
+        {
+            Vector2 inputMovement = playerInput.Player.Move.ReadValue<Vector2>();
+            Vector3 actualMovement = new Vector3
+            {
+                x = inputMovement.x,
+                z = inputMovement.y
+            };
+            controller.Move(actualMovement * dashSpeed * Time.deltaTime);
+
+            dashCD = startDashCD;
+
+        }
+
     }
 
     void plsRewind()
@@ -221,5 +239,10 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
+    }
+
+    void CreateDash()
+    {
+        DashP.Play();
     }
 }
