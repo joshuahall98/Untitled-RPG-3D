@@ -80,6 +80,7 @@ public class PlayerController : MonoBehaviour
         };
 
         controller.Move(actualMovement * speed * Time.deltaTime);
+        controller.SimpleMove(Vector3.forward * 0);
 
 
         //Character Rotation
@@ -116,22 +117,6 @@ public class PlayerController : MonoBehaviour
             dashCD = 0;
         }
 
-        // OLD MOVEMENT CODE 
-        /*    playerInput.Player.Move.performed += movementPerformed =>
-            {
-                playerMoveInput = new Vector3(movementPerformed.ReadValue<Vector2>().x, playerMoveInput.y, movementPerformed.ReadValue<Vector2>().y);
-
-                float targetAngle = Mathf.Atan2(movementPerformed.ReadValue<Vector2>().x, movementPerformed.ReadValue<Vector2>().y) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
-            };
-            playerInput.Player.Move.canceled += movementPerformed =>
-            {
-                playerMoveInput = new Vector3(movementPerformed.ReadValue<Vector2>().x, playerMoveInput.y, movementPerformed.ReadValue<Vector2>().y);
-
-                float targetAngle = Mathf.Atan2(movementPerformed.ReadValue<Vector2>().x, movementPerformed.ReadValue<Vector2>().y) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
-            };
-        */
 
         //Rewind
         if (Rewinding)
@@ -196,9 +181,11 @@ public class PlayerController : MonoBehaviour
 
 
 
-   void Dash()
+    void Dash()
     {
-        CreateDash();
+
+        
+       
         if (dashCD <= 0)
         {
             Vector2 inputMovement = playerInput.Player.Move.ReadValue<Vector2>();
@@ -241,8 +228,4 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
 
-    void CreateDash()
-    {
-        DashP.Play();
-    }
 }
