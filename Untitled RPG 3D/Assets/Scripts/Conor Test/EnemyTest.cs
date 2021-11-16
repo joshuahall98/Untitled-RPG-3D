@@ -11,18 +11,17 @@ public class EnemyTest : MonoBehaviour
     int waypointIndex;
     Vector3 target;
 
-  
- 
-
-
     //HealthBar
     public Image EnemyHealthBar;
     public float EnemystartHealth = 100f;
     private float Enemyhealth;
+   
 
     private void Start()
     {
         Enemyhealth = EnemystartHealth;
+   
+        
         agent = GetComponent<NavMeshAgent>();
         UpdateDest();
 
