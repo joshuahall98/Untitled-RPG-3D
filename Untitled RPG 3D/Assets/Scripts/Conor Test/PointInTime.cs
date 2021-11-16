@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PointInTime
+public class PointInTime 
 {
     public Vector3 position;
     public Quaternion rotation;
@@ -10,4 +10,6 @@ public class PointInTime
         position = _position;
         rotation = _rotation;
     }
+
+  
 }
