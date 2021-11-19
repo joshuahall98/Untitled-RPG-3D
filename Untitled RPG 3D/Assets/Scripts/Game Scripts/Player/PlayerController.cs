@@ -33,6 +33,9 @@ public class PlayerController : MonoBehaviour
     bool Rewinding = false;
     List<PointInTime> pointsInTime;
     public float timeToRewind = 5f;
+    public int rewindsLeft = 4;
+    public Transform aoe;
+    public float aoeAttkRange;
 
     //Dash
     public float dashSpeed;
@@ -44,7 +47,7 @@ public class PlayerController : MonoBehaviour
     //HealthBar
     public Image HealthBar;
     public float startHealth = 100f;
-    private float health;
+    public float health;
 
 
     public ParticleSystem DashP;
@@ -119,10 +122,12 @@ public class PlayerController : MonoBehaviour
             dashCD = 0;
         }
 
+       
 
         //Rewind
-        if (Rewinding)
+        if (Rewinding && rewindsLeft >= 0)
         {
+            
             OnDisable();
             Rewind();
 
@@ -134,24 +139,17 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        void Record()
-        {
-            //Keep log of the last 5 seconds delete everything else
-            if (pointsInTime.Count > Mathf.Round(timeToRewind / Time.fixedDeltaTime))
-            {
-                pointsInTime.RemoveAt(pointsInTime.Count - 1);
-            }
-            pointsInTime.Insert(0, new PointInTime(transform.position, transform.rotation));
-        }
+   
         void Rewind()
         {
+
             if (pointsInTime.Count > 0)
             {
                 PointInTime pointInTime = pointsInTime[0];
                 transform.position = pointInTime.position;
                 transform.rotation = pointInTime.rotation;
+                health = pointInTime.hp;
                 pointsInTime.RemoveAt(0);
-
 
             }
             else
@@ -159,6 +157,15 @@ public class PlayerController : MonoBehaviour
 
                 Rewinding = false;
             }
+        }
+        void Record()
+        {
+            //Keep log of the last x seconds delete everything else
+            if (pointsInTime.Count > Mathf.Round(timeToRewind / Time.fixedDeltaTime))
+            {
+                pointsInTime.RemoveAt(pointsInTime.Count - 1);
+            }
+            pointsInTime.Insert(0, new PointInTime(transform.position, transform.rotation,health));
         }
 
     }
@@ -179,6 +186,17 @@ public class PlayerController : MonoBehaviour
             attackCD = startAttackCD;
         }
 
+    }
+
+    void aoeAttk()
+    {
+
+        Collider[] enemiesToDamage = Physics.OverlapSphere(aoe.position, aoeAttkRange, Enemey);
+        for (int i = 0; i < enemiesToDamage.Length; i++)
+        {
+            enemiesToDamage[i].GetComponent<EnemyTest>().TakeDamage(dmg);
+
+        }
     }
 
 
@@ -208,6 +226,7 @@ public class PlayerController : MonoBehaviour
     {
 
         Rewinding = true;
+        rewindsLeft -= 1;
     }
 
 
@@ -224,10 +243,24 @@ public class PlayerController : MonoBehaviour
         playerInput.Disable();
     }
 
+    public void TakeDamage(float dmg)
+    {
+        health -= dmg;
+
+        Debug.Log("PlayerTookDmg");
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(aoe.position, aoeAttkRange);
+
     }
+
+
+
 
 }
