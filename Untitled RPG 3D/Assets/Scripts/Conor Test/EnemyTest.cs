@@ -10,11 +10,13 @@ public class EnemyTest : MonoBehaviour
     public Transform[] waypoints;
     int waypointIndex;
     Vector3 target;
+    public Transform Player;
 
     //HealthBar
     public Image EnemyHealthBar;
     public float EnemystartHealth = 100f;
     private float Enemyhealth;
+    public float distFromPlayer;
    
 
     private void Start()
@@ -34,14 +36,19 @@ public class EnemyTest : MonoBehaviour
             Destroy(gameObject);
         }
 
+        //Distance between points go back to patrol
         if(Vector3.Distance(transform.position,target) < 3)
         {
             IterateWaypointIndex();
             UpdateDest();
         }
+
+        //Track distance from Enemy to Player
+        distFromPlayer = Vector3.Distance(Player.position, transform.position);
                 
     }
 
+    //Change waypoint to go to
     void UpdateDest()
     {
         target = waypoints[waypointIndex].position;
@@ -61,5 +68,14 @@ public class EnemyTest : MonoBehaviour
 
         EnemyHealthBar.fillAmount = Enemyhealth / EnemystartHealth;
         Debug.Log("Bumfucked");
+    }
+    
+    void EnemyAttk()
+    {
+
+    }
+    void PlayerFound()
+    {
+        agent.SetDestination(Player.position);
     }
 }

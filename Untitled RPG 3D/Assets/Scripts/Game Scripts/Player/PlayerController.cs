@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     public Transform attackPos;
     public float attackRange;
 
-    public LayerMask Enemey;
+    public LayerMask Enemy;
     public int dmg;
 
     //Rewind
@@ -49,8 +49,6 @@ public class PlayerController : MonoBehaviour
     public float startHealth = 100f;
     public float health;
 
-
-    public ParticleSystem DashP;
 
 
 
@@ -76,7 +74,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        //Condensed movement
+        //Condensed movement -- Converted y to z axis
         Vector2 inputMovement = playerInput.Player.Move.ReadValue<Vector2>();
         Vector3 actualMovement = new Vector3
         {
@@ -85,7 +83,7 @@ public class PlayerController : MonoBehaviour
         };
 
         controller.Move(actualMovement * speed * Time.deltaTime);
-        controller.SimpleMove(Vector3.forward * 0);
+        controller.SimpleMove(Vector3.forward * 0); //Adds Gravity for some reason
 
 
         //Character Rotation
@@ -130,26 +128,30 @@ public class PlayerController : MonoBehaviour
             
             OnDisable();
             Rewind();
+            
+
 
         }
         else
         {
             Record();
             OnEnable();
-
+            
         }
 
-   
+        //Rewind to point x seconds based of class "PointsInTime"
         void Rewind()
         {
-
+            //What to Rewind to
             if (pointsInTime.Count > 0)
             {
                 PointInTime pointInTime = pointsInTime[0];
                 transform.position = pointInTime.position;
                 transform.rotation = pointInTime.rotation;
                 health = pointInTime.hp;
+              //  HealthBar.fillAmount = pointInTime.hb.fillAmount;
                 pointsInTime.RemoveAt(0);
+              
 
             }
             else
@@ -176,7 +178,7 @@ public class PlayerController : MonoBehaviour
         if (attackCD <= 0)
         {
 
-            Collider[] enemiesToDamage = Physics.OverlapSphere(attackPos.position, attackRange, Enemey);
+            Collider[] enemiesToDamage = Physics.OverlapSphere(attackPos.position, attackRange, Enemy);
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {
                 enemiesToDamage[i].GetComponent<EnemyTest>().TakeDamage(dmg);
@@ -188,19 +190,20 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    //Rewind AOE Attack
     void aoeAttk()
     {
 
-        Collider[] enemiesToDamage = Physics.OverlapSphere(aoe.position, aoeAttkRange, Enemey);
+        Collider[] enemiesToDamage = Physics.OverlapSphere(aoe.position, aoeAttkRange, Enemy);
         for (int i = 0; i < enemiesToDamage.Length; i++)
         {
             enemiesToDamage[i].GetComponent<EnemyTest>().TakeDamage(dmg);
 
         }
     }
+ 
 
-
-
+    //Dash button function
     void Dash()
     {
 
@@ -222,11 +225,13 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    //Rewind button function
     void plsRewind()
     {
 
         Rewinding = true;
         rewindsLeft -= 1;
+        
     }
 
 
@@ -243,13 +248,16 @@ public class PlayerController : MonoBehaviour
         playerInput.Disable();
     }
 
-    public void TakeDamage(float dmg)
+    public void PlayerTakeDamage(float dmg)
     {
         health -= dmg;
-
-        Debug.Log("PlayerTookDmg");
+        HealthBar.fillAmount = health / startHealth;
+        Debug.Log("PlayerTookDamage");
     }
 
+
+
+    //Visuals for testing range
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.magenta;
