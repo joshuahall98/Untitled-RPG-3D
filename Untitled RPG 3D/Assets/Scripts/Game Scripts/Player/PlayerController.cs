@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     public PlayerInputActions playerInput;
 
 
-
+     Animator anim;
 
     //melee attack
     [SerializeField] private float attackCD;
@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-
+        anim = GetComponent<Animator>();
         
         health = startHealth;
         pointsInTime = new List<PointInTime>();
@@ -177,7 +177,7 @@ public class PlayerController : MonoBehaviour
 
         if (attackCD <= 0)
         {
-
+            anim.SetInteger("Condition", 2);
             Collider[] enemiesToDamage = Physics.OverlapSphere(attackPos.position, attackRange, Enemy);
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {
