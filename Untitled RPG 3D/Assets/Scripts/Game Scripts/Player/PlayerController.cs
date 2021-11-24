@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,8 +18,9 @@ public class PlayerController : MonoBehaviour
 
     public PlayerInputActions playerInput;
 
-
-     Animator anim;
+    //Animation
+    Animator anim;
+    private bool isMoving;
 
     //melee attack
     [SerializeField] private float attackCD;
@@ -32,8 +34,10 @@ public class PlayerController : MonoBehaviour
     //Rewind
     bool Rewinding = false;
     List<PointInTime> pointsInTime;
-    public float timeToRewind = 5f;
+    public int timeToRewind;
     public int rewindsLeft = 4;
+    public float startRewindCD;
+    public float rewindCD;
     public Transform aoe;
     public float aoeAttkRange;
 
@@ -49,15 +53,22 @@ public class PlayerController : MonoBehaviour
     public float startHealth = 100f;
     public float health;
 
+    Vector2 currentMovInput;
+    Vector3 actualMovement;
 
-
+    //Optimizing
+    int isWalkingHash;
+    int isAttackingHash;
 
 
 
     void Awake()
     {
         anim = GetComponent<Animator>();
-        
+
+        isWalkingHash = Animator.StringToHash("IsWalking");
+        isAttackingHash = Animator.StringToHash("IsAttacking");
+
         health = startHealth;
         pointsInTime = new List<PointInTime>();
 
@@ -65,6 +76,7 @@ public class PlayerController : MonoBehaviour
 
         controller = GetComponent<CharacterController>();
 
+        playerInput.Player.Move.performed += movementPerformed;
         playerInput.Player.Attack.started += attackPerformed => lightAtk();
         playerInput.Player.Rewind.performed += jumpPerformed => plsRewind();
         playerInput.Player.Dash.performed += dashPerformed => Dash();
@@ -73,18 +85,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-
+        AnimationControls();
         //Condensed movement -- Converted y to z axis
-        Vector2 inputMovement = playerInput.Player.Move.ReadValue<Vector2>();
-        Vector3 actualMovement = new Vector3
-        {
-            x = inputMovement.x,
-            z = inputMovement.y
-        };
-
         controller.Move(actualMovement * speed * Time.deltaTime);
         controller.SimpleMove(Vector3.forward * 0); //Adds Gravity for some reason
 
+    }
+
+    void movementPerformed(InputAction.CallbackContext context)
+    {
+
+        currentMovInput = context.ReadValue<Vector2>();
+        actualMovement.x = currentMovInput.x;
+        actualMovement.z = currentMovInput.y;
+        isMoving = currentMovInput.x != 0 || currentMovInput.y != 0;
 
         //Character Rotation
         Vector3 currentPos = transform.position;
@@ -93,12 +107,24 @@ public class PlayerController : MonoBehaviour
         Vector3 posLookAt = currentPos + newPos;
         transform.LookAt(posLookAt);
 
-
     }
 
+    void AnimationControls()
+    {
+        bool isWalking = anim.GetBool(isWalkingHash);
+        if (isMoving && !isWalking)
+        {
+            anim.SetBool(isWalkingHash, true);
+        }
+        else if (!isMoving && isWalking)
+        {
+            anim.SetBool(isWalkingHash, false);
+        }
+    }
     private void FixedUpdate()
     {
 
+      
 
         //reset basic attack cooldown
         if (attackCD > 0)
@@ -120,15 +146,28 @@ public class PlayerController : MonoBehaviour
             dashCD = 0;
         }
 
-       
+        //Rewind CD
+        if (rewindCD > 0)
+        {
+            rewindCD -= Time.deltaTime;
+        }
+        else
+        {
+            rewindCD = 0;
+        }
+
+
+
+
+
 
         //Rewind
         if (Rewinding && rewindsLeft >= 0)
         {
-            
+
             OnDisable();
             Rewind();
-            
+
 
 
         }
@@ -136,30 +175,34 @@ public class PlayerController : MonoBehaviour
         {
             Record();
             OnEnable();
-            
+
         }
 
         //Rewind to point x seconds based of class "PointsInTime"
-        void Rewind()
-        {
-            //What to Rewind to
-            if (pointsInTime.Count > 0)
-            {
-                PointInTime pointInTime = pointsInTime[0];
-                transform.position = pointInTime.position;
-                transform.rotation = pointInTime.rotation;
-                health = pointInTime.hp;
-              //  HealthBar.fillAmount = pointInTime.hb.fillAmount;
-                pointsInTime.RemoveAt(0);
-              
+        /*        void Rewind()
+                {
+                    //What to Rewind to
+                    if (pointsInTime.Count > 0)
+                    {
 
-            }
-            else
-            {
+                     
 
-                Rewinding = false;
-            }
-        }
+                        PointInTime pointInTime = pointsInTime[0];
+                        transform.position = pointInTime.position;
+                        transform.rotation = pointInTime.rotation;
+                        health = pointInTime.hp;
+                        Debug.Log(pointInTime.position);
+                        //  HealthBar.fillAmount = pointInTime.hb.fillAmount;
+                        pointsInTime.RemoveAt(0);
+
+
+                    }
+                    else
+                    {
+
+                        Rewinding = false;
+                    }
+                }*/
         void Record()
         {
             //Keep log of the last x seconds delete everything else
@@ -167,26 +210,50 @@ public class PlayerController : MonoBehaviour
             {
                 pointsInTime.RemoveAt(pointsInTime.Count - 1);
             }
-            pointsInTime.Insert(0, new PointInTime(transform.position, transform.rotation,health));
+
+            pointsInTime.Insert(0, new PointInTime(transform.position, transform.rotation, health));
+         
         }
 
     }
-
-    void lightAtk()
+    void Rewind()
     {
 
+            PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
+            transform.position = pointInTime.position;
+            transform.rotation = pointInTime.rotation;
+            health = pointInTime.hp;
+            pointsInTime.RemoveAt(pointsInTime.Count -1);
+            Rewinding = false;
+            rewindCD = startRewindCD;
+
+
+    }
+    void lightAtk()
+    {
+        bool isAttacking = anim.GetBool(isAttackingHash);
         if (attackCD <= 0)
         {
-            anim.SetInteger("Condition", 2);
+            anim.SetTrigger(isAttackingHash);
+
+
             Collider[] enemiesToDamage = Physics.OverlapSphere(attackPos.position, attackRange, Enemy);
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {
+
                 enemiesToDamage[i].GetComponent<EnemyTest>().TakeDamage(dmg);
 
             }
 
             attackCD = startAttackCD;
         }
+
+        else
+        {
+            anim.SetBool(isAttackingHash, false);
+
+        }
+
 
     }
 
@@ -201,14 +268,14 @@ public class PlayerController : MonoBehaviour
 
         }
     }
- 
+
 
     //Dash button function
     void Dash()
     {
 
-        
-       
+
+
         if (dashCD <= 0)
         {
             Vector2 inputMovement = playerInput.Player.Move.ReadValue<Vector2>();
@@ -231,7 +298,7 @@ public class PlayerController : MonoBehaviour
 
         Rewinding = true;
         rewindsLeft -= 1;
-        
+
     }
 
 
