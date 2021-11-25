@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
 
     //HealthBar
     public Image HealthBar;
-    public float startHealth = 100f;
+    public float maxHealth = 100f;
     public float health;
 
     Vector2 currentMovInput;
@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
         isWalkingHash = Animator.StringToHash("IsWalking");
         isAttackingHash = Animator.StringToHash("IsAttacking");
 
-        health = startHealth;
+        health = maxHealth;
         pointsInTime = new List<PointInTime>();
 
         playerInput = new PlayerInputActions();
@@ -124,8 +124,6 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
 
-      
-
         //reset basic attack cooldown
         if (attackCD > 0)
         {
@@ -156,12 +154,7 @@ public class PlayerController : MonoBehaviour
             rewindCD = 0;
         }
 
-
-
-
-
-
-        //Rewind
+        //Run rewind function if variables are met 
         if (Rewinding && rewindsLeft >= 0)
         {
 
@@ -203,6 +196,7 @@ public class PlayerController : MonoBehaviour
                         Rewinding = false;
                     }
                 }*/
+        //keep track of player state for rewind
         void Record()
         {
             //Keep log of the last x seconds delete everything else
@@ -216,6 +210,7 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+    //rewind player to point x seconds ago
     void Rewind()
     {
 
@@ -228,6 +223,27 @@ public class PlayerController : MonoBehaviour
             rewindCD = startRewindCD;
 
 
+    }
+
+    //Rewind button function
+    void plsRewind()
+    {
+
+        Rewinding = true;
+        rewindsLeft -= 1;
+
+    }
+
+    //Rewind AOE Attack
+    void aoeAttk()
+    {
+
+        Collider[] enemiesToDamage = Physics.OverlapSphere(aoe.position, aoeAttkRange, Enemy);
+        for (int i = 0; i < enemiesToDamage.Length; i++)
+        {
+            enemiesToDamage[i].GetComponent<EnemyTest>().TakeDamage(dmg);
+
+        }
     }
     void lightAtk()
     {
@@ -254,27 +270,12 @@ public class PlayerController : MonoBehaviour
 
         }
 
-
     }
 
-    //Rewind AOE Attack
-    void aoeAttk()
-    {
-
-        Collider[] enemiesToDamage = Physics.OverlapSphere(aoe.position, aoeAttkRange, Enemy);
-        for (int i = 0; i < enemiesToDamage.Length; i++)
-        {
-            enemiesToDamage[i].GetComponent<EnemyTest>().TakeDamage(dmg);
-
-        }
-    }
-
-
+    
     //Dash button function
     void Dash()
     {
-
-
 
         if (dashCD <= 0)
         {
@@ -292,17 +293,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    //Rewind button function
-    void plsRewind()
-    {
-
-        Rewinding = true;
-        rewindsLeft -= 1;
-
-    }
-
-
-
     private void OnEnable()
     {
 
@@ -318,7 +308,7 @@ public class PlayerController : MonoBehaviour
     public void PlayerTakeDamage(float dmg)
     {
         health -= dmg;
-        HealthBar.fillAmount = health / startHealth;
+        HealthBar.fillAmount = health / maxHealth;
         Debug.Log("PlayerTookDamage");
     }
 
