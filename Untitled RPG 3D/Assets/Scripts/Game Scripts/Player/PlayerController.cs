@@ -155,19 +155,16 @@ public class PlayerController : MonoBehaviour
         }
 
         //Run rewind function if variables are met 
-        if (Rewinding && rewindsLeft >= 0)
+        if (Rewinding == true && rewindsLeft >= 0)
         {
-
-            OnDisable();
+       
             Rewind();
-
 
 
         }
         else
         {
             Record();
-            OnEnable();
 
         }
 
@@ -213,15 +210,15 @@ public class PlayerController : MonoBehaviour
     //rewind player to point x seconds ago
     void Rewind()
     {
-
+        
             PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
             transform.position = pointInTime.position;
             transform.rotation = pointInTime.rotation;
             health = pointInTime.hp;
-            pointsInTime.RemoveAt(pointsInTime.Count -1);
+            pointsInTime.RemoveAt(pointsInTime.Count - 1);
             Rewinding = false;
             rewindCD = startRewindCD;
-
+       
 
     }
 
@@ -229,8 +226,17 @@ public class PlayerController : MonoBehaviour
     void plsRewind()
     {
 
+    if (rewindCD <= 0)
+    {
+       Debug.Log("Fuckyoursystem");
         Rewinding = true;
         rewindsLeft -= 1;
+
+            rewindCD = startRewindCD;
+
+        }
+
+        
 
     }
 
@@ -308,7 +314,6 @@ public class PlayerController : MonoBehaviour
     public void PlayerTakeDamage(float dmg)
     {
         health -= dmg;
-        HealthBar.fillAmount = health / maxHealth;
         Debug.Log("PlayerTookDamage");
     }
 
