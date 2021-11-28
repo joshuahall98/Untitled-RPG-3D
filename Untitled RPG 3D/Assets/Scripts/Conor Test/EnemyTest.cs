@@ -11,13 +11,16 @@ public class EnemyTest : MonoBehaviour
     int waypointIndex;
     Vector3 target;
     public Transform Player;
+    public float speed = 5f;
 
     //HealthBar
     public Image EnemyHealthBar;
     public float EnemystartHealth = 100f;
     private float Enemyhealth;
     public float distFromPlayer;
-   
+
+    public float LineOfSightDist = 10f;
+    public float Spinnyboi = 3f;
 
     private void Start()
     {
@@ -36,7 +39,16 @@ public class EnemyTest : MonoBehaviour
             Destroy(gameObject);
         }
 
-        //Distance between points go back to patrol
+
+     
+
+       /* if (distFromPlayer <= 5)
+        { 
+            //Follow
+            transform.position = Vector3.MoveTowards(transform.position, Player.position, speed * Time.deltaTime);
+        }
+        else*/
+       //Distance between points go back to patrol
         if(Vector3.Distance(transform.position,target) < 3)
         {
             IterateWaypointIndex();
