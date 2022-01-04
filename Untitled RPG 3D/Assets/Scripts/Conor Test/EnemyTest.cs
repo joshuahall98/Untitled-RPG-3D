@@ -42,12 +42,12 @@ public class EnemyTest : MonoBehaviour
 
      
 
-       /* if (distFromPlayer <= 5)
+        if (distFromPlayer <= 5)
         { 
             //Follow
             transform.position = Vector3.MoveTowards(transform.position, Player.position, speed * Time.deltaTime);
         }
-        else*/
+    
        //Distance between points go back to patrol
         if(Vector3.Distance(transform.position,target) < 3)
         {
