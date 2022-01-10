@@ -47,33 +47,6 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         }
 
-        //Rewind to point x seconds based of class "PointsInTime"
-        /*        void Rewind()
-                {
-                    //What to Rewind to
-                    if (pointsInTime.Count > 0)
-                    {
-
-                     
-
-                        PointInTime pointInTime = pointsInTime[0];
-                        transform.position = pointInTime.position;
-                        transform.rotation = pointInTime.rotation;
-                        health = pointInTime.hp;
-                        Debug.Log(pointInTime.position);
-                        //  HealthBar.fillAmount = pointInTime.hb.fillAmount;
-                        pointsInTime.RemoveAt(0);
-
-
-                    }
-                    else
-                    {
-
-                        Rewinding = false;
-                    }
-                }*/
-        //keep track of player state for rewind
-
         void Record()
         {
             
