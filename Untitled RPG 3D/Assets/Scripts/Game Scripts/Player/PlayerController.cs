@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     //Animation
     Animator anim;
+  
     private bool isMoving;
 
     //melee attack
@@ -33,8 +34,7 @@ public class PlayerController : MonoBehaviour
 
     //Dash
     public float dashSpeed;
-    public float startDashCD;
-    [SerializeField] private float dashCD;
+    public float dashTime;
 
 
 
@@ -50,11 +50,13 @@ public class PlayerController : MonoBehaviour
     int isWalkingHash;
     int isAttackingHash;
 
-
+   
+   
 
     void Awake()
     {
-
+        anim = GetComponent<Animator>();
+       
         health = maxHealth;
 
         playerInput = new PlayerInputActions();
@@ -64,7 +66,7 @@ public class PlayerController : MonoBehaviour
         playerInput.Player.Move.performed += movementPerformed;
         playerInput.Player.Attack.started += attackPerformed => lightAtk();
         playerInput.Player.Rewind.performed += jumpPerformed => callRewind();
-        playerInput.Player.Dash.performed += dashPerformed => Dash();
+        playerInput.Player.Dash.performed += dashPerformed => StartCoroutine(Dash());
 
     }
 
@@ -91,6 +93,8 @@ public class PlayerController : MonoBehaviour
         Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
         Vector3 posLookAt = currentPos + newPos;
         transform.LookAt(posLookAt);
+        //anim.SetBool("isMoving", true);
+       
 
     }
     private void FixedUpdate()
@@ -104,16 +108,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             attackCD = 0;
-        }
-
-        //Dash CD
-        if (dashCD > 0)
-        {
-            dashCD -= Time.deltaTime;
-        }
-        else
-        {
-            dashCD = 0;
         }
 
     }
@@ -152,24 +146,25 @@ public class PlayerController : MonoBehaviour
     }
     
     //Dash button function
-    void Dash()
+
+  IEnumerator Dash()
     {
+        anim.Play("RollAnim");
+        float startTime = Time.time;
 
-        if (dashCD <= 0)
+        while(Time.time < startTime + dashTime)
         {
-            Vector2 inputMovement = playerInput.Player.Move.ReadValue<Vector2>();
-            Vector3 actualMovement = new Vector3
-            {
-                x = inputMovement.x,
-                z = inputMovement.y
-            };
             controller.Move(actualMovement * dashSpeed * Time.deltaTime);
-            Debug.Log("I wanna Dash");
-            dashCD = startDashCD;
-
+            yield return null;
         }
+       
+                            
 
     }
+
+
+    
+    
 
     private void OnEnable()
     {
@@ -179,7 +174,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
-
+       
         playerInput.Disable();
     }
 

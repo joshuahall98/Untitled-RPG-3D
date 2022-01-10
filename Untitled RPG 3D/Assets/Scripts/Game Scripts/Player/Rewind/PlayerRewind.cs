@@ -27,6 +27,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
     void Start()
     {
+        
         pointsInTime = new List<PointInTime>();
     }
 
