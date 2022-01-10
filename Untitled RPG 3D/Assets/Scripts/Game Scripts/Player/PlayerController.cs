@@ -31,16 +31,6 @@ public class PlayerController : MonoBehaviour
     public LayerMask Enemy;
     public int dmg;
 
-    //Rewind
-    bool Rewinding = false;
-    List<PointInTime> pointsInTime;
-    public int timeToRewind;
-    public int rewindsLeft = 4;
-    public float startRewindCD;
-    public float rewindCD;
-    public Transform aoe;
-    public float aoeAttkRange;
-
     //Dash
     public float dashSpeed;
     public float startDashCD;
@@ -64,13 +54,8 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        anim = GetComponent<Animator>();
-
-        isWalkingHash = Animator.StringToHash("IsWalking");
-        isAttackingHash = Animator.StringToHash("IsAttacking");
 
         health = maxHealth;
-        pointsInTime = new List<PointInTime>();
 
         playerInput = new PlayerInputActions();
 
@@ -78,14 +63,14 @@ public class PlayerController : MonoBehaviour
 
         playerInput.Player.Move.performed += movementPerformed;
         playerInput.Player.Attack.started += attackPerformed => lightAtk();
-        playerInput.Player.Rewind.performed += jumpPerformed => plsRewind();
+        playerInput.Player.Rewind.performed += jumpPerformed => callRewind();
         playerInput.Player.Dash.performed += dashPerformed => Dash();
 
     }
 
     void Update()
     {
-        AnimationControls();
+      
         //Condensed movement -- Converted y to z axis
         controller.Move(actualMovement * speed * Time.deltaTime);
         controller.SimpleMove(Vector3.forward * 0); //Adds Gravity for some reason
@@ -107,19 +92,6 @@ public class PlayerController : MonoBehaviour
         Vector3 posLookAt = currentPos + newPos;
         transform.LookAt(posLookAt);
 
-    }
-
-    void AnimationControls()
-    {
-        bool isWalking = anim.GetBool(isWalkingHash);
-        if (isMoving && !isWalking)
-        {
-            anim.SetBool(isWalkingHash, true);
-        }
-        else if (!isMoving && isWalking)
-        {
-            anim.SetBool(isWalkingHash, false);
-        }
     }
     private void FixedUpdate()
     {
@@ -144,126 +116,21 @@ public class PlayerController : MonoBehaviour
             dashCD = 0;
         }
 
-        //Rewind CD
-        if (rewindCD > 0)
-        {
-            rewindCD -= Time.deltaTime;
-        }
-        else
-        {
-            rewindCD = 0;
-        }
-
-        //Run rewind function if variables are met 
-        if (Rewinding == true && rewindsLeft >= 0)
-        {
-       
-            Rewind();
-
-
-        }
-        else
-        {
-            Record();
-
-        }
-
-        //Rewind to point x seconds based of class "PointsInTime"
-        /*        void Rewind()
-                {
-                    //What to Rewind to
-                    if (pointsInTime.Count > 0)
-                    {
-
-                     
-
-                        PointInTime pointInTime = pointsInTime[0];
-                        transform.position = pointInTime.position;
-                        transform.rotation = pointInTime.rotation;
-                        health = pointInTime.hp;
-                        Debug.Log(pointInTime.position);
-                        //  HealthBar.fillAmount = pointInTime.hb.fillAmount;
-                        pointsInTime.RemoveAt(0);
-
-
-                    }
-                    else
-                    {
-
-                        Rewinding = false;
-                    }
-                }*/
-        //keep track of player state for rewind
-        void Record()
-        {
-            //Keep log of the last x seconds delete everything else
-            if (pointsInTime.Count > Mathf.Round(timeToRewind / Time.fixedDeltaTime))
-            {
-                pointsInTime.RemoveAt(pointsInTime.Count - 1);
-            }
-
-            pointsInTime.Insert(0, new PointInTime(transform.position, transform.rotation, health));
-         
-        }
-
-    }
-    //rewind player to point x seconds ago
-    void Rewind()
-    {
-        
-            PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
-            transform.position = pointInTime.position;
-            transform.rotation = pointInTime.rotation;
-            health = pointInTime.hp;
-            pointsInTime.RemoveAt(pointsInTime.Count - 1);
-            Rewinding = false;
-            rewindCD = startRewindCD;
-       
-
     }
 
-    //Rewind button function
-    void plsRewind()
-    {
-
-    if (rewindCD <= 0)
-    {
-       Debug.Log("Fuckyoursystem");
-        Rewinding = true;
-        rewindsLeft -= 1;
-
-            rewindCD = startRewindCD;
-
-        }
-
-        
-
-    }
-
-    //Rewind AOE Attack
-    void aoeAttk()
-    {
-
-        Collider[] enemiesToDamage = Physics.OverlapSphere(aoe.position, aoeAttkRange, Enemy);
-        for (int i = 0; i < enemiesToDamage.Length; i++)
-        {
-            enemiesToDamage[i].GetComponent<EnemyTest>().TakeDamage(dmg);
-
-        }
-    }
     void lightAtk()
     {
-        bool isAttacking = anim.GetBool(isAttackingHash);
+       
         if (attackCD <= 0)
         {
-            anim.SetTrigger(isAttackingHash);
+          
 
 
             Collider[] enemiesToDamage = Physics.OverlapSphere(attackPos.position, attackRange, Enemy);
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {
 
-                enemiesToDamage[i].GetComponent<EnemyTest>().TakeDamage(dmg);
+                enemiesToDamage[i].GetComponent<HealthSystem>().Damage(dmg);
 
             }
 
@@ -272,12 +139,17 @@ public class PlayerController : MonoBehaviour
 
         else
         {
-            anim.SetBool(isAttackingHash, false);
+           
 
         }
 
     }
 
+    //Call PlayerRewind script
+    void callRewind() {
+
+        GetComponent<PlayerRewind>().PlsRewind();
+    }
     
     //Dash button function
     void Dash()
@@ -292,7 +164,7 @@ public class PlayerController : MonoBehaviour
                 z = inputMovement.y
             };
             controller.Move(actualMovement * dashSpeed * Time.deltaTime);
-
+            Debug.Log("I wanna Dash");
             dashCD = startDashCD;
 
         }
@@ -317,11 +189,11 @@ public class PlayerController : MonoBehaviour
         Debug.Log("PlayerTookDamage");
     }
 
+     
 
-
-    //Visuals for testing range
+   /* //Visuals for testing range
     private void OnDrawGizmosSelected()
-    {
+    {   
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
 
@@ -329,7 +201,7 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(aoe.position, aoeAttkRange);
 
     }
-
+   */
 
 
 

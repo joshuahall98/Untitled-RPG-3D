@@ -16,7 +16,7 @@ public class InteractableObjects : MonoBehaviour
         if (collide.tag == "Player")
         {
             Destroy(gameObject);
-            PlayerObject.rewindsLeft++;
+           // PlayerObject.rewindsLeft++;
                     
         }
     }
