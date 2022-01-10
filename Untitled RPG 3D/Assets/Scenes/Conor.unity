@@ -4871,7 +4871,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   dmg: 0
-  dashSpeed: 0
+  dashSpeed: 50
   startDashCD: 0
   dashCD: 0
   HealthBar: {fileID: 0}
