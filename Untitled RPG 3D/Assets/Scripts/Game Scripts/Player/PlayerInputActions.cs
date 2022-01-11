@@ -49,6 +49,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""HeavyAttk"",
+                    ""type"": ""Button"",
+                    ""id"": ""a72ad15a-9211-4229-909c-c6c1f6a2c3f0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -66,7 +74,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""55c1e31b-6435-4965-9ed9-69ae9cb1c36c"",
-                    ""path"": ""<Mouse>/press"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -139,6 +147,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cc646fe4-7963-4d8b-b24d-b795c579687a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""HeavyAttk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -157,6 +176,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_Rewind = m_Player.FindAction("Rewind", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+        m_Player_HeavyAttk = m_Player.FindAction("HeavyAttk", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -210,6 +230,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Rewind;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Dash;
+    private readonly InputAction m_Player_HeavyAttk;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -218,6 +239,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Rewind => m_Wrapper.m_Player_Rewind;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        public InputAction @HeavyAttk => m_Wrapper.m_Player_HeavyAttk;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -239,6 +261,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                @HeavyAttk.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAttk;
+                @HeavyAttk.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAttk;
+                @HeavyAttk.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAttk;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -255,6 +280,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @HeavyAttk.started += instance.OnHeavyAttk;
+                @HeavyAttk.performed += instance.OnHeavyAttk;
+                @HeavyAttk.canceled += instance.OnHeavyAttk;
             }
         }
     }
@@ -274,5 +302,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnRewind(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnHeavyAttk(InputAction.CallbackContext context);
     }
 }

@@ -36,6 +36,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "HeavyAttk",
+                    "type": "Button",
+                    "id": "a72ad15a-9211-4229-909c-c6c1f6a2c3f0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -53,7 +61,7 @@
                 {
                     "name": "",
                     "id": "55c1e31b-6435-4965-9ed9-69ae9cb1c36c",
-                    "path": "<Mouse>/press",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -124,6 +132,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cc646fe4-7963-4d8b-b24d-b795c579687a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "HeavyAttk",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -20,22 +20,17 @@ public class PlayerController : MonoBehaviour
 
     //Animation
     Animator anim;
-  
-    private bool isMoving;
 
-    //melee attack
-    [SerializeField] private float attackCD;
-    public float startAttackCD;
-    public Transform attackPos;
-    public float attackRange;
+    private bool isMoving;
 
     public LayerMask Enemy;
     public int dmg;
 
     //Dash
+    [SerializeField ]float rollCDTimer = 0;
+    [SerializeField] int dashUsed = 0;
     public float dashSpeed;
     public float dashTime;
-
 
 
     //HealthBar
@@ -46,17 +41,14 @@ public class PlayerController : MonoBehaviour
     Vector2 currentMovInput;
     Vector3 actualMovement;
 
-    //Optimizing
-    int isWalkingHash;
-    int isAttackingHash;
 
-   
-   
+
+
 
     void Awake()
-    {
+    { 
         anim = GetComponent<Animator>();
-       
+
         health = maxHealth;
 
         playerInput = new PlayerInputActions();
@@ -64,7 +56,8 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         playerInput.Player.Move.performed += movementPerformed;
-        playerInput.Player.Attack.started += attackPerformed => lightAtk();
+        playerInput.Player.Attack.started += lightAtk;
+        playerInput.Player.HeavyAttk.started += HeavyAtk;
         playerInput.Player.Rewind.performed += jumpPerformed => callRewind();
         playerInput.Player.Dash.performed += dashPerformed => StartCoroutine(Dash());
 
@@ -72,10 +65,27 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-      
+        
         //Condensed movement -- Converted y to z axis
         controller.Move(actualMovement * speed * Time.deltaTime);
         controller.SimpleMove(Vector3.forward * 0); //Adds Gravity for some reason
+
+        if(rollCDTimer > 0)
+        {
+            rollCDTimer -= Time.deltaTime;
+        }
+        if((rollCDTimer > 0) && (dashUsed == 3))
+        {
+            //Dizzy
+            playerInput.Disable();
+        }
+        else if(rollCDTimer <= 0)
+        {
+            
+            dashUsed = 0;
+            playerInput.Enable();
+        }
+
 
     }
 
@@ -93,86 +103,71 @@ public class PlayerController : MonoBehaviour
         Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
         Vector3 posLookAt = currentPos + newPos;
         transform.LookAt(posLookAt);
-        //anim.SetBool("isMoving", true);
-       
+        WalkAnim(posLookAt);
 
     }
-    private void FixedUpdate()
+    
+
+    void WalkAnim(Vector3 newPos)
+    {
+        //Condensed changing bool Value based on if there is any movement on the 2 axis 
+        isMoving = (actualMovement.x > 0.1f || actualMovement.x < -0.1f || actualMovement.z > 0.1f || actualMovement.z < -0.1f) ? true : false;
+        anim.SetBool("isMoving", isMoving);
+    }
+
+    IEnumerator Dash()
+    {
+        playerInput.Disable();
+        anim.SetTrigger("isRolling");
+        float startTime = Time.time;
+
+        dashUsed++;
+        rollCDTimer = 2;
+
+
+        controller.center = new Vector3(0, 0.5f, 0);
+        controller.height = 1;
+        while (Time.time < startTime + dashTime)
+        {
+            controller.Move(actualMovement * dashSpeed * Time.deltaTime);
+            yield return null;
+        }
+        controller.center = new Vector3(0, 1, 0);
+        controller.height = 2;   
+        playerInput.Enable();
+        controller.Move(new Vector3(0, 0, 0));
+
+
+    }
+    void lightAtk(InputAction.CallbackContext attk)
     {
 
-        //reset basic attack cooldown
-        if (attackCD > 0)
-        {
-            attackCD -= Time.deltaTime;
-        }
-        else
-        {
-            attackCD = 0;
-        }
+        anim.SetTrigger("isAttacking");
 
     }
 
-    void lightAtk()
+    void HeavyAtk(InputAction.CallbackContext HeavyAttk)
     {
-       
-        if (attackCD <= 0)
-        {
-          
 
-
-            Collider[] enemiesToDamage = Physics.OverlapSphere(attackPos.position, attackRange, Enemy);
-            for (int i = 0; i < enemiesToDamage.Length; i++)
-            {
-
-                enemiesToDamage[i].GetComponent<HealthSystem>().Damage(dmg);
-
-            }
-
-            attackCD = startAttackCD;
-        }
-
-        else
-        {
-           
-
-        }
+        anim.SetTrigger("HeavyAttk");
 
     }
 
     //Call PlayerRewind script
     void callRewind() {
 
+        //Call Rewind Script on keypress
         GetComponent<PlayerRewind>().PlsRewind();
     }
-    
-    //Dash button function
-
-  IEnumerator Dash()
-    {
-        anim.Play("RollAnim");
-        float startTime = Time.time;
-
-        while(Time.time < startTime + dashTime)
-        {
-            controller.Move(actualMovement * dashSpeed * Time.deltaTime);
-            yield return null;
-        }
-       
-                            
-
-    }
 
 
-    
-    
-
-    private void OnEnable()
+  private void OnEnable()
     {
 
         playerInput.Enable();
     }
 
-    private void OnDisable()
+   private void OnDisable()
     {
        
         playerInput.Disable();
