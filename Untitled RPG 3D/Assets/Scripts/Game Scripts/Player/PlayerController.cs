@@ -169,7 +169,7 @@ public class PlayerController : MonoBehaviour
     //this affect occurs when you roll too much
     IEnumerator Dizzy()
     {
-
+        anim.SetTrigger("Dizzy");
         isDizzy = true;
         roll.Disable();
         yield return new WaitForSeconds(3);
