@@ -146,11 +146,11 @@ public class PlayerController : MonoBehaviour
             else
             {
                 anim.SetBool("isGrounded", false);
-                Debug.DrawRay(transform.position + new Vector3(0.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * 0.5f, Color.green);
+                Debug.DrawRay(transform.position + new Vector3(-0.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * 0.5f, Color.green);
                 isGrounded = false;
             }
         }
-        else if (currentMoveInput.x < 0)
+        if (currentMoveInput.x < 0)
         {
             if (Physics.Raycast(transform.position + new Vector3(0.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround, 1f))
             {
@@ -165,7 +165,7 @@ public class PlayerController : MonoBehaviour
                 isGrounded = false;
             }
         }
-        else if (currentMoveInput.y > 0)
+        if (currentMoveInput.y > 0)
         {
             if (Physics.Raycast(transform.position + new Vector3(0f, 0f, -0.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround, 1f))
             {
@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour
                 isGrounded = false;
             }
         }
-        else if (currentMoveInput.y < 0)
+        if (currentMoveInput.y < 0)
         {
             if (Physics.Raycast(transform.position + new Vector3(0f, 0f, 0.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround, 1f))
             {
@@ -195,12 +195,7 @@ public class PlayerController : MonoBehaviour
                 isGrounded = false;
             }
         }
-
-
     }
-
- 
-
 
     //rolling method
     IEnumerator Roll()
