@@ -188,7 +188,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator LightAttackAction()
     {
         isAttacking = true;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         isAttacking = false;
     }
 

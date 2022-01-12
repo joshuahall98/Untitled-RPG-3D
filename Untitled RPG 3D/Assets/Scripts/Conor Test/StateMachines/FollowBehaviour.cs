@@ -4,29 +4,29 @@ using UnityEngine;
 
 public class FollowBehaviour : StateMachineBehaviour
 {
-    Vector3 playerTarget;
+
     private Transform playerPos;
     public float speed;
-    public float distFromPlayer;
+    float distFromPlayer;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
+        
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (distFromPlayer >= 5)
-        {
-            animator.SetBool("isFollowing", true);
-        }
+        distFromPlayer = Vector3.Distance(playerPos.position, animator.transform.position);
         animator.transform.position = Vector3.MoveTowards(animator.transform.position, playerPos.position, speed * Time.deltaTime);
-
-        if (Vector3.Distance(animator.transform.position, playerTarget) > 5)
+        if(distFromPlayer > 5)
         {
-            animator.SetBool("isPatrolling", true); ;
+            animator.SetBool("isFollowing", false);
+            animator.SetBool("isPatrolling", true);
         }
+       
     }
     
 

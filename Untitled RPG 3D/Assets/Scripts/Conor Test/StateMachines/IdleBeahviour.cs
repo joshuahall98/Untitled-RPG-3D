@@ -4,17 +4,24 @@ using UnityEngine;
 
 public class IdleBeahviour : StateMachineBehaviour
 {
+    private Transform playerPos;
     public float distFromPlayer;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (distFromPlayer > 5)
+        distFromPlayer = Vector3.Distance(playerPos.position, animator.transform.position);
+        if (distFromPlayer <= 5)
+        {
+            animator.SetBool("isFollowing", true);
+        }
+        else
         {
             animator.SetBool("isFollowing", false);
         }

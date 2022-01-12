@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PatrolBehaviour : StateMachineBehaviour
 {
-    public Transform Player;
+    private Transform playerPos;
     private PatrolArea wayPoints;
     public float speed;
     private int randomWayPoint;
@@ -13,6 +13,7 @@ public class PatrolBehaviour : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         wayPoints = GameObject.FindGameObjectWithTag("WayPoint").GetComponent<PatrolArea>();
         randomWayPoint = Random.Range(0, wayPoints.waypoints.Length);
 
@@ -21,6 +22,7 @@ public class PatrolBehaviour : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        distFromPlayer = Vector3.Distance(playerPos.position, animator.transform.position);
         if (Vector3.Distance(animator.transform.position, wayPoints.waypoints[randomWayPoint].position) < 0.2f){
 
             animator.transform.position = Vector3.MoveTowards(animator.transform.position, wayPoints.waypoints[randomWayPoint].position, speed * Time.deltaTime);
@@ -29,7 +31,7 @@ public class PatrolBehaviour : StateMachineBehaviour
         {
             randomWayPoint = Random.Range(0, wayPoints.waypoints.Length);
         }
-        if (distFromPlayer <= 5)
+        if (distFromPlayer > 5)
         {
             animator.SetBool("isPatrolling", false);
         }
