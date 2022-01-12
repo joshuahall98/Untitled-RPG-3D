@@ -9,40 +9,43 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
 
-
     private CharacterController controller;
 
-
     [SerializeField] Vector3 playerMoveInput;
-    [SerializeField] private float speed;
+    [SerializeField] private float speed = 8;
 
     public PlayerInputActions playerInput;
 
     //Animation
     Animator anim;
 
-    private bool isMoving;
+    //action checker
+    [SerializeField]private bool isMoving;
+    [SerializeField]bool isRolling;
+    [SerializeField] bool isAttacking;
+    [SerializeField] bool isDizzy;
 
     public LayerMask Enemy;
     public int dmg;
 
-    //Dash
+    //Roll
     [SerializeField ]float rollCDTimer = 0;
-    [SerializeField] int dashUsed = 0;
-    public float dashSpeed;
-    public float dashTime;
-
-
+    [SerializeField] int rollUsed = 0;
+    public float rollSpeed = 20;
+    public float rollTime = 0.5f;
+    
     //HealthBar
     public Image HealthBar;
     public float maxHealth = 100f;
     public float health;
 
-    Vector2 currentMovInput;
+    //movement vectors
+    Vector2 currentMoveInput;
     Vector3 actualMovement;
 
-
-
+    //input actions
+    InputAction move;
+    InputAction roll;
 
 
     void Awake()
@@ -55,95 +58,138 @@ public class PlayerController : MonoBehaviour
 
         controller = GetComponent<CharacterController>();
 
-        playerInput.Player.Move.performed += movementPerformed;
         playerInput.Player.Attack.started += lightAtk;
         playerInput.Player.HeavyAttk.started += HeavyAtk;
         playerInput.Player.Rewind.performed += jumpPerformed => callRewind();
-        playerInput.Player.Dash.performed += dashPerformed => StartCoroutine(Dash());
+        playerInput.Player.Dash.performed += dashPerformed => StartCoroutine(Roll());
 
+        move = playerInput.Player.Move;
+        roll = playerInput.Player.Dash;
+ 
     }
 
     void Update()
     {
-        
-        //Condensed movement -- Converted y to z axis
-        controller.Move(actualMovement * speed * Time.deltaTime);
+        //action checks
+        if (!isAttacking) 
+        {
+            if (!isRolling)
+            {
+                if (!isDizzy)
+                {
+                    currentMoveInput = move.ReadValue<Vector2>();
+                    actualMovement = new Vector3();
+                    //Condensed movement -- Converted y to z axis
+                    actualMovement.x = currentMoveInput.x;
+                    actualMovement.z = currentMoveInput.y;
+                    controller.Move(actualMovement * speed * Time.deltaTime);
+                    isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+
+                    //Character Rotation
+                    Vector3 currentPos = transform.position;
+
+                    Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
+                    Vector3 posLookAt = currentPos + newPos;
+                    transform.LookAt(posLookAt);
+                }
+                else
+                {
+                    currentMoveInput = move.ReadValue<Vector2>();
+                    actualMovement = new Vector3();
+                    //Condensed movement -- Converted y to z axis
+                    actualMovement.z = currentMoveInput.x;
+                    actualMovement.x = currentMoveInput.y;
+                    controller.Move(actualMovement * speed * Time.deltaTime);
+                    isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+
+                    //Character Rotation
+                    Vector3 currentPos = transform.position;
+
+                    Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
+                    Vector3 posLookAt = currentPos + newPos;
+                    transform.LookAt(posLookAt);
+                }
+                
+            }
+            
+        }
+
         controller.SimpleMove(Vector3.forward * 0); //Adds Gravity for some reason
 
-        if(rollCDTimer > 0)
+        //walking animation
+        anim.SetBool("isMoving", isMoving);
+
+        //this prevents you from rolling too much
+        if (rollCDTimer > 0)
         {
             rollCDTimer -= Time.deltaTime;
         }
-        if((rollCDTimer > 0) && (dashUsed == 3))
+        else if (rollCDTimer <= 0)
         {
-            //Dizzy
-            playerInput.Disable();
-        }
-        else if(rollCDTimer <= 0)
-        {
-            
-            dashUsed = 0;
-            playerInput.Enable();
+            rollUsed = 0;
+            rollCDTimer = 0;
         }
 
-
     }
 
-    void movementPerformed(InputAction.CallbackContext context)
+    //rolling method
+    IEnumerator Roll()
     {
-
-        currentMovInput = context.ReadValue<Vector2>();
-        actualMovement.x = currentMovInput.x;
-        actualMovement.z = currentMovInput.y;
-        isMoving = currentMovInput.x != 0 || currentMovInput.y != 0;
-
-        //Character Rotation
-        Vector3 currentPos = transform.position;
-
-        Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
-        Vector3 posLookAt = currentPos + newPos;
-        transform.LookAt(posLookAt);
-        WalkAnim(posLookAt);
-
-    }
-    
-
-    void WalkAnim(Vector3 newPos)
-    {
-        //Condensed changing bool Value based on if there is any movement on the 2 axis 
-        isMoving = (actualMovement.x > 0.1f || actualMovement.x < -0.1f || actualMovement.z > 0.1f || actualMovement.z < -0.1f) ? true : false;
-        anim.SetBool("isMoving", isMoving);
-    }
-
-    IEnumerator Dash()
-    {
-        playerInput.Disable();
-        anim.SetTrigger("isRolling");
-        float startTime = Time.time;
-
-        dashUsed++;
-        rollCDTimer = 2;
-
-
-        controller.center = new Vector3(0, 0.5f, 0);
-        controller.height = 1;
-        while (Time.time < startTime + dashTime)
+        if(isMoving == true && !isRolling)
         {
-            controller.Move(actualMovement * dashSpeed * Time.deltaTime);
-            yield return null;
-        }
-        controller.center = new Vector3(0, 1, 0);
-        controller.height = 2;   
-        playerInput.Enable();
-        controller.Move(new Vector3(0, 0, 0));
 
+                isRolling = true;
+                anim.SetTrigger("isRolling");
+                float startTime = Time.time;
+                
+                //these variables are used for the roll timer if you roll too much
+                rollUsed++;
+                rollCDTimer = 2;
+                
+                controller.center = new Vector3(0, 0.5f, 0);
+                controller.height = 1;
+                while (Time.time < startTime + rollTime)
+                {
+                    controller.Move(actualMovement * rollSpeed * Time.deltaTime);
+                    yield return null;
+
+                }
+                controller.center = new Vector3(0, 1, 0);
+                controller.height = 2;
+                if ((rollCDTimer > 0) && (rollUsed == 3))
+                {
+                    StartCoroutine(Dizzy());
+                }
+                isRolling = false;
+                
+        }
 
     }
+
+    //this affect occurs when you roll too much
+    IEnumerator Dizzy()
+    {
+
+        isDizzy = true;
+        roll.Disable();
+        yield return new WaitForSeconds(3);
+        isDizzy = false;
+        roll.Enable();
+    }
+
     void lightAtk(InputAction.CallbackContext attk)
     {
 
         anim.SetTrigger("isAttacking");
+        StartCoroutine(LightAttackAction());
+        
+    }
 
+    IEnumerator LightAttackAction()
+    {
+        isAttacking = true;
+        yield return new WaitForSeconds(3);
+        isAttacking = false;
     }
 
     void HeavyAtk(InputAction.CallbackContext HeavyAttk)

@@ -4,6 +4,7 @@ ShaderImporter:
   externalObjects: {}
   defaultTextures: []
   nonModifiableTextures: []
-  userData: 
+  preprocessorOverride: 0
+  userData: '{"shaderPath":"Custom/StandardLayered","attributes":[]}'
   assetBundleName: 
   assetBundleVariant: 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.35161385, g: 0.36980644, b: 0.4152639, a: 1}
+  m_IndirectSpecularColor: {r: 0.3516124, g: 0.36980513, b: 0.41526303, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -755,11 +755,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!4 &373788204 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4280582119216308, guid: 3e08eaa99fbf41647adc835cdda0472a, type: 3}
-  m_PrefabInstance: {fileID: 1579649014}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &431431536
 Mesh:
   m_ObjectHideFlags: 0
@@ -2322,16 +2317,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMoveInput: {x: 0, y: 0, z: 0}
   speed: 8
-  attackCD: 0
-  startAttackCD: 0
-  attackPos: {fileID: 373788204}
-  attackRange: 0
+  isMoving: 0
+  isRolling: 0
+  isAttacking: 0
+  isDizzy: 0
   Enemy:
     serializedVersion: 2
     m_Bits: 256
   dmg: 0
-  dashSpeed: 8
-  dashTime: 0.5
+  rollCDTimer: 0
+  rollUsed: 0
+  rollSpeed: 20
+  rollTime: 0.5
   HealthBar: {fileID: 0}
   maxHealth: 100
   health: 0
