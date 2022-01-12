@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]bool isRolling;
     [SerializeField] bool isAttacking;
     [SerializeField] bool isDizzy;
+    [SerializeField] bool isGrounded;
 
     public LayerMask Enemy;
     public int dmg;
@@ -47,7 +48,6 @@ public class PlayerController : MonoBehaviour
     InputAction move;
     InputAction roll;
 
-
     void Awake()
     { 
         anim = GetComponent<Animator>();
@@ -65,13 +65,17 @@ public class PlayerController : MonoBehaviour
 
         move = playerInput.Player.Move;
         roll = playerInput.Player.Dash;
- 
+
+
+       
+
     }
 
     void Update()
     {
-        //action checks
-        if (!isAttacking) 
+            
+            //action checks
+            if (!isAttacking) 
         {
             if (!isRolling)
             {
@@ -130,12 +134,78 @@ public class PlayerController : MonoBehaviour
             rollCDTimer = 0;
         }
 
+        //falling animation
+        if(currentMoveInput.x > 0)
+        {
+            if (Physics.Raycast(transform.position + new Vector3(-0.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround, 1f))
+            {
+                anim.SetBool("isGrounded", true);
+                Debug.DrawRay(transform.position + new Vector3(-0.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround.distance, Color.red);
+                isGrounded = true;
+            }
+            else
+            {
+                anim.SetBool("isGrounded", false);
+                Debug.DrawRay(transform.position + new Vector3(0.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * 0.5f, Color.green);
+                isGrounded = false;
+            }
+        }
+        else if (currentMoveInput.x < 0)
+        {
+            if (Physics.Raycast(transform.position + new Vector3(0.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround, 1f))
+            {
+                anim.SetBool("isGrounded", true);
+                Debug.DrawRay(transform.position + new Vector3(0.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround.distance, Color.red);
+                isGrounded = true;
+            }
+            else
+            {
+                anim.SetBool("isGrounded", false);
+                Debug.DrawRay(transform.position + new Vector3(0.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * 0.5f, Color.green);
+                isGrounded = false;
+            }
+        }
+        else if (currentMoveInput.y > 0)
+        {
+            if (Physics.Raycast(transform.position + new Vector3(0f, 0f, -0.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround, 1f))
+            {
+                anim.SetBool("isGrounded", true);
+                Debug.DrawRay(transform.position + new Vector3(0f, 0f, -0.5f), transform.TransformDirection(Vector3.down) * touchGround.distance, Color.red);
+                isGrounded = true;
+            }
+            else
+            {
+                anim.SetBool("isGrounded", false);
+                Debug.DrawRay(transform.position + new Vector3(0f, 0f, -0.5f), transform.TransformDirection(Vector3.down) * 0.5f, Color.green);
+                isGrounded = false;
+            }
+        }
+        else if (currentMoveInput.y < 0)
+        {
+            if (Physics.Raycast(transform.position + new Vector3(0f, 0f, 0.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround, 1f))
+            {
+                anim.SetBool("isGrounded", true);
+                Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0.5f), transform.TransformDirection(Vector3.down) * touchGround.distance, Color.red);
+                isGrounded = true;
+            }
+            else
+            {
+                anim.SetBool("isGrounded", false);
+                Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0.5f), transform.TransformDirection(Vector3.down) * 0.5f, Color.green);
+                isGrounded = false;
+            }
+        }
+
+
     }
+
+ 
+
 
     //rolling method
     IEnumerator Roll()
     {
-        if(isMoving == true && !isRolling)
+        if(isMoving == true && !isRolling  && isGrounded)
         {
 
                 isRolling = true;
