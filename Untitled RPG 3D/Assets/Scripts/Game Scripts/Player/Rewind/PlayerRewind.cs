@@ -24,6 +24,10 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     bool Rewinding = false;
     List<PointInTime> pointsInTime;
     public int rewindsLeft = 4;
+    public int maxRewinds = 4;
+
+    //UI
+    public Image[] rewindsContainer;
 
     void Start()
     {
@@ -59,6 +63,24 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
             pointsInTime.Insert(0, new PointInTime(transform.position, transform.rotation, health));
 
+        }
+
+        //Rewind UI
+        if(rewindsLeft > maxRewinds)
+        {
+            rewindsLeft = maxRewinds;
+        }
+
+        for (int i = 0; i < rewindsContainer.Length; i++)
+        {
+            if(i < rewindsLeft)
+            {
+                rewindsContainer[i].enabled = true;
+            }
+            else
+            {
+                rewindsContainer[i].enabled = false;
+            }
         }
 
     }

@@ -134,67 +134,19 @@ public class PlayerController : MonoBehaviour
             rollCDTimer = 0;
         }
 
-        //falling animation
-        if(currentMoveInput.x > 0)
+        if (Physics.Raycast(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround, 1f))
         {
-            if (Physics.Raycast(transform.position + new Vector3(-0.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround, 1f))
-            {
-                anim.SetBool("isGrounded", true);
-                Debug.DrawRay(transform.position + new Vector3(-0.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround.distance, Color.red);
-                isGrounded = true;
-            }
-            else
-            {
-                anim.SetBool("isGrounded", false);
-                Debug.DrawRay(transform.position + new Vector3(-0.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * 0.5f, Color.green);
-                isGrounded = false;
-            }
+            anim.SetBool("isGrounded", true);
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround.distance, Color.red);
+            isGrounded = true;
         }
-        if (currentMoveInput.x < 0)
+        else
         {
-            if (Physics.Raycast(transform.position + new Vector3(0.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround, 1f))
-            {
-                anim.SetBool("isGrounded", true);
-                Debug.DrawRay(transform.position + new Vector3(0.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround.distance, Color.red);
-                isGrounded = true;
-            }
-            else
-            {
-                anim.SetBool("isGrounded", false);
-                Debug.DrawRay(transform.position + new Vector3(0.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * 0.5f, Color.green);
-                isGrounded = false;
-            }
+            anim.SetBool("isGrounded", false);
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * 0.5f, Color.green);
+            isGrounded = false;
         }
-        if (currentMoveInput.y > 0)
-        {
-            if (Physics.Raycast(transform.position + new Vector3(0f, 0f, -0.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround, 1f))
-            {
-                anim.SetBool("isGrounded", true);
-                Debug.DrawRay(transform.position + new Vector3(0f, 0f, -0.5f), transform.TransformDirection(Vector3.down) * touchGround.distance, Color.red);
-                isGrounded = true;
-            }
-            else
-            {
-                anim.SetBool("isGrounded", false);
-                Debug.DrawRay(transform.position + new Vector3(0f, 0f, -0.5f), transform.TransformDirection(Vector3.down) * 0.5f, Color.green);
-                isGrounded = false;
-            }
-        }
-        if (currentMoveInput.y < 0)
-        {
-            if (Physics.Raycast(transform.position + new Vector3(0f, 0f, 0.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround, 1f))
-            {
-                anim.SetBool("isGrounded", true);
-                Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0.5f), transform.TransformDirection(Vector3.down) * touchGround.distance, Color.red);
-                isGrounded = true;
-            }
-            else
-            {
-                anim.SetBool("isGrounded", false);
-                Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0.5f), transform.TransformDirection(Vector3.down) * 0.5f, Color.green);
-                isGrounded = false;
-            }
-        }
+
     }
 
     //rolling method
@@ -203,29 +155,31 @@ public class PlayerController : MonoBehaviour
         if(isMoving == true && !isRolling  && isGrounded)
         {
 
-                isRolling = true;
-                anim.SetTrigger("isRolling");
-                float startTime = Time.time;
-                
-                //these variables are used for the roll timer if you roll too much
-                rollUsed++;
-                rollCDTimer = 2;
-                
-                controller.center = new Vector3(0, 0.5f, 0);
-                controller.height = 1;
-                while (Time.time < startTime + rollTime)
-                {
-                    controller.Move(actualMovement * rollSpeed * Time.deltaTime);
-                    yield return null;
+            isRolling = true;
 
-                }
-                controller.center = new Vector3(0, 1, 0);
-                controller.height = 2;
-                if ((rollCDTimer > 0) && (rollUsed == 3))
-                {
-                    StartCoroutine(Dizzy());
-                }
-                isRolling = false;
+            anim.SetTrigger("isRolling");
+            float startTime = Time.time;
+                
+            //these variables are used for the roll timer if you roll too much
+            rollUsed++;
+            rollCDTimer = 2;
+                
+            controller.center = new Vector3(0, 0.5f, 0);
+            controller.height = 1;
+            while (Time.time < startTime + rollTime)
+            {
+                    
+                controller.Move(actualMovement * rollSpeed * Time.deltaTime);
+                yield return null;
+
+            }
+            controller.center = new Vector3(0, 1, 0);
+            controller.height = 2;
+            if ((rollCDTimer > 0) && (rollUsed == 3))
+            {
+                StartCoroutine(Dizzy());
+            }
+            isRolling = false;
                 
         }
 
