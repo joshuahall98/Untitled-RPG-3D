@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3516124, g: 0.36980513, b: 0.41526303, a: 1}
+  m_IndirectSpecularColor: {r: 0.35161385, g: 0.36980644, b: 0.4152639, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2212,6 +2212,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70d55743522941c449b046e3cfcf15f0, type: 3}
+--- !u!4 &794469431 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4280582119216308, guid: 3e08eaa99fbf41647adc835cdda0472a, type: 3}
+  m_PrefabInstance: {fileID: 1579649014}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &847850057
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2321,6 +2326,7 @@ MonoBehaviour:
   isRolling: 0
   isAttacking: 0
   isDizzy: 0
+  isGrounded: 0
   Enemy:
     serializedVersion: 2
     m_Bits: 256
@@ -2350,6 +2356,26 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &892451289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892451284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66e6e838aee3a294ebd155515aa79903, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CooldownSytem: {fileID: 892451286}
+  CooldownDuration: 1
+  attkPos: {fileID: 1372914360}
+  Enemy:
+    serializedVersion: 2
+    m_Bits: 256
+  attkRange: 1
+  damage: 10
 --- !u!4 &892451290 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4240512476921092, guid: 3e08eaa99fbf41647adc835cdda0472a, type: 3}
@@ -5170,6 +5196,50 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1372914359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1372914360}
+  - component: {fileID: 1372914361}
+  m_Layer: 0
+  m_Name: Attack
+  m_TagString: Untagged
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1372914360
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1372914359}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.365, y: -1.1, z: 0.19}
+  m_LocalScale: {x: 0.8007217, y: 1, z: 0.23438}
+  m_Children: []
+  m_Father: {fileID: 794469431}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1372914361
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1372914359}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1408554253
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -31,4 +31,13 @@ public class PlayerAttacks : MonoBehaviour, CooldownActive
         }
 
     }
+     //Visuals for testing range
+ private void OnDrawGizmosSelected()
+ {   
+     Gizmos.color = Color.magenta;
+     Gizmos.DrawWireSphere(attkPos.position, attkRange);
+
+
+ }
+
 }
