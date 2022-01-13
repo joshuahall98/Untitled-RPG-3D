@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController controller;
 
-    [SerializeField] Vector3 playerMoveInput;
     [SerializeField] private float speed = 8;
 
     public PlayerInputActions playerInput;
@@ -20,8 +19,8 @@ public class PlayerController : MonoBehaviour
     Animator anim;
 
     //action checker
-    [SerializeField]private bool isMoving;
-    [SerializeField]bool isRolling;
+    [SerializeField] private bool isMoving;
+    [SerializeField] bool isRolling;
     [SerializeField] bool isAttacking;
     [SerializeField] bool isDizzy;
     [SerializeField] bool isGrounded;
@@ -30,7 +29,7 @@ public class PlayerController : MonoBehaviour
     public int dmg;
 
     //Roll
-    [SerializeField ]float rollCDTimer = 0;
+    [SerializeField] float rollCDTimer = 0;
     [SerializeField] int rollUsed = 0;
     public float rollSpeed = 20;
     public float rollTime = 0.5f;
@@ -136,30 +135,30 @@ public class PlayerController : MonoBehaviour
         }
 
         //falling animation and detection
-        if(Physics.Raycast(transform.position + new Vector3(0.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround1, 1f))
+        if(Physics.Raycast(transform.position + new Vector3(0.6f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround1, 1f))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround1.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(0.6f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround1.distance, Color.red);
         }
-        else if(Physics.Raycast(transform.position + new Vector3(-0.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround2, 1f))
+        else if(Physics.Raycast(transform.position + new Vector3(-0.6f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround2, 1f))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(-0.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround2.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(-0.6f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround2.distance, Color.red);
             
         }
-        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, 0.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround3, 1f))
+        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, 0.6f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround3, 1f))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0.5f), transform.TransformDirection(Vector3.down) * touchGround3.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0.6f), transform.TransformDirection(Vector3.down) * touchGround3.distance, Color.red);
         }
-        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, -0.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround4, 1f))
+        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, -0.6f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround4, 1f))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, -0.5f), transform.TransformDirection(Vector3.down) * touchGround4.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, -0.6f), transform.TransformDirection(Vector3.down) * touchGround4.distance, Color.red);
         }
         else
         {
@@ -212,7 +211,7 @@ public class PlayerController : MonoBehaviour
         anim.SetTrigger("Dizzy");
         isDizzy = true;
         roll.Disable();
-        dizzyAffect.SetActive(true);
+        //dizzyAffect.SetActive(true);
         yield return new WaitForSeconds(3);
         dizzyAffect.SetActive(false);
         isDizzy = false;
