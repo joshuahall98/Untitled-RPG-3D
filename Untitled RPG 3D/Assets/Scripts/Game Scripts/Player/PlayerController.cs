@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] int rollUsed = 0;
     public float rollSpeed = 20;
     public float rollTime = 0.5f;
+    public GameObject dizzyAffect;
     
     //HealthBar
     public Image HealthBar;
@@ -66,16 +67,16 @@ public class PlayerController : MonoBehaviour
         move = playerInput.Player.Move;
         roll = playerInput.Player.Dash;
 
-
-       
+        dizzyAffect = GameObject.Find("DizzyAffect");
+        dizzyAffect.SetActive(false);
 
     }
 
     void Update()
     {
-            
-            //action checks
-            if (!isAttacking) 
+        
+        //action checks
+        if (!isAttacking) 
         {
             if (!isRolling)
             {
@@ -196,14 +197,13 @@ public class PlayerController : MonoBehaviour
             }
             controller.center = new Vector3(0, 1, 0);
             controller.height = 2;
+            isRolling = false;
             if ((rollCDTimer > 0) && (rollUsed == 3))
             {
                 StartCoroutine(Dizzy());
             }
-            isRolling = false;
-                
-        }
 
+        }
     }
 
     //this affect occurs when you roll too much
@@ -212,7 +212,9 @@ public class PlayerController : MonoBehaviour
         anim.SetTrigger("Dizzy");
         isDizzy = true;
         roll.Disable();
+        dizzyAffect.SetActive(true);
         yield return new WaitForSeconds(3);
+        dizzyAffect.SetActive(false);
         isDizzy = false;
         roll.Enable();
     }
@@ -247,13 +249,13 @@ public class PlayerController : MonoBehaviour
     }
 
 
-  private void OnEnable()
+    private void OnEnable()
     {
 
         playerInput.Enable();
     }
 
-   private void OnDisable()
+    private void OnDisable()
     {
        
         playerInput.Disable();
