@@ -26,12 +26,13 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public int rewindsLeft = 4;
     public int maxRewinds = 4;
 
+
     //UI
-    public Slider[] rewindsContainer;
+    public Image[] rewindFill;
+    public Image currentContainer;
 
     void Start()
     {
-        
         pointsInTime = new List<PointInTime>();
     }
 
@@ -65,23 +66,25 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         }
 
-        //Rewind UI sliders
+        //Rewind UI hour glass
         if(rewindsLeft > maxRewinds)
         {
             rewindsLeft = maxRewinds;
         }
 
-        for (int i = 0; i < rewindsContainer.Length; i++)
+        for (int i = 0; i < rewindFill.Length; i++)
         {
             if(i < rewindsLeft)
             {
                 //rewindsContainer[i].gameObject.SetActive(true);
-                rewindsContainer[i].value = 1;
+                currentContainer = rewindFill[i];
+                currentContainer.fillAmount = 1;
             }
             else
             {
                 //rewindsContainer[i].gameObject.SetActive(false);
-                rewindsContainer[i].value = 0;
+                currentContainer = rewindFill[i];
+                currentContainer.fillAmount = 0;
             }
         }
 
