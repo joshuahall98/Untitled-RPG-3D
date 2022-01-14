@@ -244,7 +244,11 @@ public class PlayerController : MonoBehaviour
     void callRewind() {
 
         //Call Rewind Script on keypress
-        GetComponent<PlayerRewind>().PlsRewind();
+        if (!isRolling)
+        {
+            GetComponent<PlayerRewind>().PlsRewind();
+        }
+        
     }
 
 
