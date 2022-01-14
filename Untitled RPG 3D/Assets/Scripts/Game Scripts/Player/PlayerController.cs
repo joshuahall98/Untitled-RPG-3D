@@ -8,11 +8,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-
+    //inputs and movement
     private CharacterController controller;
-
     [SerializeField] private float speed = 8;
-
+    Vector2 currentMoveInput;
+    Vector3 actualMovement;
     public PlayerInputActions playerInput;
 
     //Animation
@@ -39,10 +39,6 @@ public class PlayerController : MonoBehaviour
     public Image HealthBar;
     public float maxHealth = 100f;
     public float health;
-
-    //movement vectors
-    Vector2 currentMoveInput;
-    Vector3 actualMovement;
 
     //input actions
     InputAction move;
