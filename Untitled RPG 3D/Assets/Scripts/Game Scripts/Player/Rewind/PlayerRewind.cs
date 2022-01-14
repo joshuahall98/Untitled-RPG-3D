@@ -65,7 +65,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         }
 
-        //Rewind UI
+        //Rewind UI sliders
         if(rewindsLeft > maxRewinds)
         {
             rewindsLeft = maxRewinds;
@@ -75,11 +75,13 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         {
             if(i < rewindsLeft)
             {
-                rewindsContainer[i].gameObject.SetActive(true);
+                //rewindsContainer[i].gameObject.SetActive(true);
+                rewindsContainer[i].value = 1;
             }
             else
             {
-                rewindsContainer[i].gameObject.SetActive(false);
+                //rewindsContainer[i].gameObject.SetActive(false);
+                rewindsContainer[i].value = 0;
             }
         }
 
