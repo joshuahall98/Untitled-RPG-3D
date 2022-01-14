@@ -27,7 +27,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public int maxRewinds = 4;
 
     //UI
-    public Image[] rewindsContainer;
+    public Slider[] rewindsContainer;
 
     void Start()
     {
@@ -75,11 +75,11 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         {
             if(i < rewindsLeft)
             {
-                rewindsContainer[i].enabled = true;
+                rewindsContainer[i].gameObject.SetActive(true);
             }
             else
             {
-                rewindsContainer[i].enabled = false;
+                rewindsContainer[i].gameObject.SetActive(false);
             }
         }
 
