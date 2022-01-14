@@ -27,10 +27,10 @@ public class EnemyTest : MonoBehaviour
         anim = GetComponent<Animator>();
 
         //Declaring Health + HealthBar prefab
-      /*  HealthSystem healthSystem = new HealthSystem(100);
+        HealthSystem healthSystem = new HealthSystem(100);
         Transform healthBarTansform = Instantiate(HealthBarPrefab, new Vector3(0, 10), Quaternion.identity);
         HealthBar healthbar = healthBarTansform.GetComponent<HealthBar>();
-        healthbar.StartHealthSystem(healthSystem); */
+        healthbar.StartHealthSystem(healthSystem); 
 
         //NavMesh
         agent = GetComponent<NavMeshAgent>();
