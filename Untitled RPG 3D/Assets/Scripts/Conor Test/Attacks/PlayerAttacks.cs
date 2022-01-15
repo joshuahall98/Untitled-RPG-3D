@@ -25,7 +25,7 @@ public class PlayerAttacks : MonoBehaviour, CooldownActive
             Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attkPos.position, attkRange, Enemy);
             for(int i=0; i < enemiesToDamage.Length; i++)
             {
-                enemiesToDamage[i].GetComponent<HealthSystem>().Damage(damage);
+              //  enemiesToDamage[i]
             }
             CooldownSytem.PutOnCooldown(this);
         }
