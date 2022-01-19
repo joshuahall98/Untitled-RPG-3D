@@ -2,37 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerRewind : MonoBehaviour, CooldownActive
 {
 
     //Cooldown
-    [SerializeField] private CooldownSystem CooldownSytem;
-
+    [SerializeField] private CooldownSystem CooldownSystem;
     private string Id = "Rewind";
     [SerializeField] private float CooldownDuration;
-
-    //Used to record the no. of seconds before rewind
-    [SerializeField] private int RecordRewindTime;
-    //Lambda declaration
     public string id => Id;
     public float cooldownDuration => CooldownDuration;
 
-    public float health;
+    //Used to record the no. of seconds before rewind
+    [SerializeField] private int RecordRewindTime;
+
+    //variables for keeping track of player health
+    public int playerHealth;
+    public int rewindFadedHealth;
 
     //Rewind
     bool Rewinding = false;
     List<PointInTime> pointsInTime;
     public int rewindsLeft = 4;
     public int maxRewinds = 4;
-
+    public bool isRecording = true;
 
     //UI
     public Image[] rewindFill;
     public Image currentContainer;
+    public HealthBar healthBar;
+    public HealthBar rewindFadedHPBar;
+
+    //Input actions
+    public PlayerInputActions playerInput;
+    InputAction rewind;
 
     void Start()
     {
+        playerInput = new PlayerInputActions();
+
+        rewind = playerInput.Player.Rewind;
+
         pointsInTime = new List<PointInTime>();
     }
 
@@ -40,11 +51,9 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     void FixedUpdate()
     {
         //Run rewind function if variables are met 
-        if (Rewinding == true && rewindsLeft >= 0)
+        if (Rewinding == true && rewindsLeft > 0)
         {
-
             Rewind();
-
 
         }
         else
@@ -55,19 +64,28 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         void Record()
         {
-            
+
             //Keep log of the last x seconds delete everything else
             if (pointsInTime.Count > Mathf.Round(RecordRewindTime / Time.fixedDeltaTime))
             {
                 pointsInTime.RemoveAt(pointsInTime.Count - 1);
             }
 
-            pointsInTime.Insert(0, new PointInTime(transform.position, transform.rotation, health));
+            //making sure rewind system keeps track of player's HP
+            playerHealth = TestTakeDamage.currentHP;
+
+            //storing all variables in the array
+            pointsInTime.Insert(0, new PointInTime(transform.position, transform.rotation, playerHealth));
+
+            //show the player how much health they can heal
+            PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
+            rewindFadedHealth = pointInTime.hp;
+            rewindFadedHPBar.SetHealth(rewindFadedHealth);
 
         }
 
         //Rewind UI hour glass
-        if(rewindsLeft > maxRewinds)
+        if (rewindsLeft > maxRewinds)
         {
             rewindsLeft = maxRewinds;
         }
@@ -88,17 +106,30 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             }
         }
 
+        //make sure rewinds don't fall below 0
+        if (rewindsLeft <= 0)
+        {
+            rewindsLeft = 0;
+        }
+
     }
+
     //rewind player to point x seconds ago
     void Rewind()
     {
       
-
+        //takes point of time from array and sets player to position
         PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
         transform.position = pointInTime.position;
         transform.rotation = pointInTime.rotation;
-        health = pointInTime.hp;
-        pointsInTime.RemoveAt(pointsInTime.Count - 1);
+
+        //updating the players health that it has healed
+        playerHealth = pointInTime.hp;
+        TestTakeDamage.currentHP = playerHealth;
+        healthBar.SetHealth(playerHealth);
+
+        //empty rewind array to start fresh
+        pointsInTime.Clear();
         Rewinding = false;
        
     }
@@ -107,13 +138,13 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public void PlsRewind()
     {
 
-        if (CooldownSytem.IsOnCooldown(id)) { return; }
+        if (CooldownSystem.IsOnCooldown(id)) { return; }
         {
            
             Rewinding = true;
             rewindsLeft -= 1;
 ;
-            CooldownSytem.PutOnCooldown(this);
+            CooldownSystem.PutOnCooldown(this);
         }
 
     }
