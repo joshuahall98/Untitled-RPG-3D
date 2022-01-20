@@ -8,7 +8,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 {
 
     //Cooldown
-    [SerializeField] private CooldownSystem CooldownSystem;
+    [SerializeField] private CooldownSystem cooldownSystem;
     private string Id = "Rewind";
     [SerializeField] private float CooldownDuration;
     public string id => Id;
@@ -34,15 +34,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public HealthBar healthBar;
     public HealthBar rewindFadedHPBar;
 
-    //Input actions
-    public PlayerInputActions playerInput;
-    InputAction rewind;
-
     void Start()
     {
-        playerInput = new PlayerInputActions();
-
-        rewind = playerInput.Player.Rewind;
 
         pointsInTime = new List<PointInTime>();
     }
@@ -138,13 +131,13 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public void PlsRewind()
     {
 
-        if (CooldownSystem.IsOnCooldown(id)) { return; }
+        if (cooldownSystem.IsOnCooldown(id)) { return; }
         {
            
             Rewinding = true;
             rewindsLeft -= 1;
-;
-            CooldownSystem.PutOnCooldown(this);
+
+            cooldownSystem.PutOnCooldown(this);
         }
 
     }
