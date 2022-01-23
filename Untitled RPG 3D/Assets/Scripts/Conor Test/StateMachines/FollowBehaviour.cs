@@ -21,12 +21,20 @@ public class FollowBehaviour : StateMachineBehaviour
     {
         distFromPlayer = Vector3.Distance(playerPos.position, animator.transform.position);
         animator.transform.position = Vector3.MoveTowards(animator.transform.position, playerPos.position, speed * Time.deltaTime);
-        if(distFromPlayer > 5)
+        if(distFromPlayer > 15)
         {
             animator.SetBool("isFollowing", false);
-            animator.SetBool("isPatrolling", true);
+            
         }
-       
+        if (distFromPlayer <= 2)
+        {
+            animator.SetTrigger("isAttacking");
+        }
+        else
+        {
+          
+        }
+
     }
     
 

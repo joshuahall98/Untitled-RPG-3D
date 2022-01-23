@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PatrolBehaviour : StateMachineBehaviour
 {
@@ -9,10 +10,15 @@ public class PatrolBehaviour : StateMachineBehaviour
     public float speed;
     private int randomWayPoint;
     public float distFromPlayer;
+    NavMeshAgent agent;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        //Call NavMesh
+        agent = animator.GetComponent<NavMeshAgent>();
+        //Find Objects needed
+
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         wayPoints = GameObject.FindGameObjectWithTag("WayPoint").GetComponent<PatrolArea>();
         randomWayPoint = Random.Range(0, wayPoints.waypoints.Length);
