@@ -7880,7 +7880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3198b04fab4f7724e9cae9417b82d245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CooldownSytem: {fileID: 1859203576}
+  cooldownSystem: {fileID: 1859203576}
   CooldownDuration: 5
   RecordRewindTime: 5
   playerHealth: 0

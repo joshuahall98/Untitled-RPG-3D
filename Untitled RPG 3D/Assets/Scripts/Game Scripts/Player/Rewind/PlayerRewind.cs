@@ -10,12 +10,12 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //Cooldown
     [SerializeField] private CooldownSystem cooldownSystem;
     private string Id = "Rewind";
-    [SerializeField] private float CooldownDuration;
+    [SerializeField] private float CooldownDuration = 5;
     public string id => Id;
     public float cooldownDuration => CooldownDuration;
 
     //Used to record the no. of seconds before rewind
-    [SerializeField] private int RecordRewindTime;
+    [SerializeField] private int RecordRewindTime = 5;
 
     //variables for keeping track of player health
     public int playerHealth;
