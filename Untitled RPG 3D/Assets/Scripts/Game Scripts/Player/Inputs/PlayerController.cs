@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     Animator anim;
 
     //action checker
+    //these action checkers are universal and other scripts must access them in the update to make sure they all correspond
     [SerializeField] public static bool isMoving;
     [SerializeField] public static bool isRolling;
     [SerializeField] public static bool isAttacking;
