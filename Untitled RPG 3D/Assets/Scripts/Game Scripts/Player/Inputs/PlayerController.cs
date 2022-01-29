@@ -19,11 +19,11 @@ public class PlayerController : MonoBehaviour
     Animator anim;
 
     //action checker
-    [SerializeField] private bool isMoving;
-    [SerializeField] bool isRolling;
-    [SerializeField] bool isAttacking;
-    [SerializeField] bool isDizzy;
-    [SerializeField] bool isGrounded;
+    [SerializeField] public static bool isMoving;
+    [SerializeField] public static bool isRolling;
+    [SerializeField] public static bool isAttacking;
+    [SerializeField] public static bool isDizzy;
+    [SerializeField] public static bool isGrounded;
 
     public LayerMask Enemy;
     public int dmg;
@@ -43,7 +43,6 @@ public class PlayerController : MonoBehaviour
     //input actions
     InputAction move;
     InputAction roll;
-    InputAction rewind;
     
 
     void Awake()
@@ -58,13 +57,11 @@ public class PlayerController : MonoBehaviour
 
         playerInput.Player.Attack.performed += lightAtk;
         playerInput.Player.HeavyAttk.performed += HeavyAtk;
-        playerInput.Player.Rewind.performed += rewindPerformed => callRewind();
         playerInput.Player.Roll.performed += rollPerformed => StartCoroutine(Roll());
         playerInput.Player.TakeDamageTest.performed += damagePerformed => TakeDamage();
 
         move = playerInput.Player.Move;
         roll = playerInput.Player.Roll;
-        rewind = playerInput.Player.Rewind;
 
         dizzyAffect = GameObject.Find("DizzyAffect");
         dizzyAffect.SetActive(false);
@@ -211,13 +208,13 @@ public class PlayerController : MonoBehaviour
         anim.SetTrigger("Dizzy");
         isDizzy = true;
         roll.Disable();
-        rewind.Disable();
+        GetComponent<PlayerRewind>().DisableRewind();
         dizzyAffect.SetActive(true);
         yield return new WaitForSeconds(3);
         dizzyAffect.SetActive(false);
         isDizzy = false;
-        rewind.Enable();
         roll.Enable();
+        GetComponent<PlayerRewind>().EnableRewind();
     }
 
     void lightAtk(InputAction.CallbackContext attk)
@@ -246,30 +243,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    //Call PlayerRewind script
-    void callRewind() {
-
-        //Call Rewind Script on keypress
-        if (!isRolling)
-        {
-            GetComponent<PlayerRewind>().PlsRewind();
-        }
-        
-    }
-
-
-    private void OnEnable()
-    {
-
-        playerInput.Enable();
-    }
-
-    private void OnDisable()
-    {
-       
-        playerInput.Disable();
-    }
-
     public void PlayerTakeDamage(float dmg)
     {
         health -= dmg;
@@ -293,6 +266,18 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage()
     {
         GetComponent<PlayerHealth>().InputTakeDamage();
+    }
+
+    private void OnEnable()
+    {
+
+        playerInput.Enable();
+    }
+
+    private void OnDisable()
+    {
+
+        playerInput.Disable();
     }
 
 }

@@ -34,15 +34,35 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public HealthBar healthBar;
     public HealthBar rewindFadedHPBar;
 
+    //inputs
+    public PlayerInputActions playerInput;
+    InputAction rewind;
+
+    //action checkers
+    [SerializeField] bool isRolling;
+    [SerializeField] bool isAttacking;
+
+    private void Awake()
+    {
+        playerInput = new PlayerInputActions();
+
+        playerInput.Player.Rewind.performed += rewindPerformed => PlsRewind();
+        rewind = playerInput.Player.Rewind;
+    }
+
     void Start()
     {
-
         pointsInTime = new List<PointInTime>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+
+        //making sure action checkers correspond with player controller
+        isRolling = PlayerController.isRolling;
+        isAttacking = PlayerController.isAttacking;
+
         //Run rewind function if variables are met 
         if (Rewinding == true && rewindsLeft > 0)
         {
@@ -130,16 +150,44 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //Rewind button function
     public void PlsRewind()
     {
-
-        if (cooldownSystem.IsOnCooldown(id)) { return; }
+        if (!isAttacking)
         {
-           
-            Rewinding = true;
-            rewindsLeft -= 1;
+            if (!isRolling)
+            {
+                if (cooldownSystem.IsOnCooldown(id)) { return; }
+                {
 
-            cooldownSystem.PutOnCooldown(this);
+                    Rewinding = true;
+                    rewindsLeft -= 1;
+
+                    cooldownSystem.PutOnCooldown(this);
+                }
+            }
         }
+    }
 
+    //disable rewind input
+    public void DisableRewind()
+    {
+        rewind.Disable();
+    }
+
+    //enable rewind input
+    public void EnableRewind()
+    {
+        rewind.Enable();
+    }
+
+    private void OnEnable()
+    {
+
+        playerInput.Enable();
+    }
+
+    private void OnDisable()
+    {
+
+        playerInput.Disable();
     }
 
 }
