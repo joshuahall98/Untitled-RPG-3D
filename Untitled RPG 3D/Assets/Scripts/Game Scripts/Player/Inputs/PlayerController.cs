@@ -56,8 +56,8 @@ public class PlayerController : MonoBehaviour
 
         controller = GetComponent<CharacterController>();
 
-        playerInput.Player.Attack.started += lightAtk;
-        playerInput.Player.HeavyAttk.started += HeavyAtk;
+        playerInput.Player.Attack.performed += lightAtk;
+        playerInput.Player.HeavyAttk.performed += HeavyAtk;
         playerInput.Player.Rewind.performed += rewindPerformed => callRewind();
         playerInput.Player.Roll.performed += rollPerformed => StartCoroutine(Roll());
         playerInput.Player.TakeDamageTest.performed += damagePerformed => TakeDamage();
@@ -178,7 +178,7 @@ public class PlayerController : MonoBehaviour
 
             isRolling = true;
 
-            anim.SetTrigger("isRolling");
+            anim.SetTrigger("Roll");
             float startTime = Time.time;
                 
             //these variables are used for the roll timer if you roll too much
@@ -223,22 +223,26 @@ public class PlayerController : MonoBehaviour
     void lightAtk(InputAction.CallbackContext attk)
     {
 
-        anim.SetTrigger("isAttacking");
+        anim.SetTrigger("LightAttack");
+        Debug.Log("LightAttack");
         StartCoroutine(LightAttackAction());
+        
         
     }
 
     IEnumerator LightAttackAction()
     {
         isAttacking = true;
+        JAHPlayerPunch.attacking = true;
         yield return new WaitForSeconds(1);
         isAttacking = false;
+        JAHPlayerPunch.attacking = false;
     }
 
     void HeavyAtk(InputAction.CallbackContext HeavyAttk)
     {
-
-        anim.SetTrigger("HeavyAttk");
+        Debug.Log("HeavyAtk");
+        //anim.SetTrigger("HeavyAttk");
 
     }
 
@@ -288,7 +292,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage()
     {
-        GetComponent<TestTakeDamage>().InputTakeDamage();
+        GetComponent<PlayerHealth>().InputTakeDamage();
     }
 
 }

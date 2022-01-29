@@ -65,7 +65,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             }
 
             //making sure rewind system keeps track of player's HP
-            playerHealth = TestTakeDamage.currentHP;
+            playerHealth = PlayerHealth.currentHP;
 
             //storing all variables in the array
             pointsInTime.Insert(0, new PointInTime(transform.position, transform.rotation, playerHealth));
@@ -118,7 +118,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         //updating the players health that it has healed
         playerHealth = pointInTime.hp;
-        TestTakeDamage.currentHP = playerHealth;
+        PlayerHealth.currentHP = playerHealth;
         healthBar.SetHealth(playerHealth);
 
         //empty rewind array to start fresh
