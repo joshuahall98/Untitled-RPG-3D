@@ -24,11 +24,6 @@ public class EnemyHealth : MonoBehaviour
         currentHPVisible = currentHP;
     }
 
-    public void InputTakeDamage()
-    {
-        TakeDamage(20);
-    }
-
     public void TakeDamage(int damage)
     {
         currentHP -= damage;

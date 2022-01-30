@@ -6,8 +6,15 @@ using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, CooldownActive
 {
+    //Cooldown
+    [SerializeField] private CooldownSystem cooldownSystem;
+    private string Id = "Dizzy";
+    [SerializeField] private float CooldownDuration = 3;
+    public string id => Id;
+    public float cooldownDuration => CooldownDuration;
+
     //inputs and movement
     private CharacterController controller;
     [SerializeField] private float speed = 8;
@@ -211,11 +218,24 @@ public class PlayerController : MonoBehaviour
         roll.Disable();
         GetComponent<PlayerRewind>().DisableRewind();
         dizzyAffect.SetActive(true);
+
         yield return new WaitForSeconds(3);
+
+        /*if (cooldownSystem.IsOnCooldown(id)) { return; }
+        {
+
+            
+
+            cooldownSystem.PutOnCooldown(this);
+        }*/
+
         dizzyAffect.SetActive(false);
-        isDizzy = false;
-        roll.Enable();
-        GetComponent<PlayerRewind>().EnableRewind();
+            isDizzy = false;
+            roll.Enable();
+            GetComponent<PlayerRewind>().EnableRewind();
+
+
+        
     }
 
     void lightAtk(InputAction.CallbackContext attk)
