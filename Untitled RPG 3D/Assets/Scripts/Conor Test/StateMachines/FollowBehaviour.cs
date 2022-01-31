@@ -31,15 +31,12 @@ public class FollowBehaviour : StateMachineBehaviour
         {
             animator.SetTrigger("isAttacking");
 
-            //this is meant to enable the hit box for the sword while you're attacking, doesn't work though, it is somewhat working as it does log the attacking temporarily then stops
+          /*  //this is meant to enable the hit box for the sword while you're attacking, doesn't work though, it is somewhat working as it does log the attacking temporarily then stops
             //how to keep hit box active while attacking??
             JAHEnemySword.isAttacking = true;
-            Debug.Log("I am attacking");
+            Debug.Log("I am attacking");*/
         }
-        else
-        {
-          
-        }
+
 
     }
     

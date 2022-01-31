@@ -62,7 +62,6 @@ public class EnemyTest : MonoBehaviour
             waypointIndex = 0;
         }
     }
-
     void PlayerFound()
     {
         agent.SetDestination(Player.position);

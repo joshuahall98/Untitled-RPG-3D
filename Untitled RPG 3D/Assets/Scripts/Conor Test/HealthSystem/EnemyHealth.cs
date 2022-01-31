@@ -29,5 +29,10 @@ public class EnemyHealth : MonoBehaviour
         currentHP -= damage;
 
         healthBar.SetHealth(currentHP);
+
+        if(currentHP == 0)
+        {
+            Destroy(gameObject, 5);
+        }
     }
 }

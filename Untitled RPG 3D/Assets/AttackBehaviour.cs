@@ -13,13 +13,19 @@ public class AttackBehaviour : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-     
+        //this is meant to enable the hit box for the sword while you're attacking, doesn't work though, it is somewhat working as it does log the attacking temporarily then stops
+        //how to keep hit box active while attacking??
+        JAHEnemySword.isAttacking = true;
+        Debug.Log("I am attacking");
+
+        animator.SetBool("isAttacking", false);
     }
 
     //OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
    {
-        animator.SetBool("isAttacking", false);
+        
+        
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
