@@ -6,15 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour, CooldownActive
+public class PlayerController : MonoBehaviour
 {
-    //Cooldown
-    [SerializeField] private CooldownSystem cooldownSystem;
-    private string Id = "Dizzy";
-    [SerializeField] private float CooldownDuration = 3;
-    public string id => Id;
-    public float cooldownDuration => CooldownDuration;
-
     //inputs and movement
     private CharacterController controller;
     [SerializeField] private float speed = 8;
@@ -221,47 +214,33 @@ public class PlayerController : MonoBehaviour, CooldownActive
 
         yield return new WaitForSeconds(3);
 
-        /*if (cooldownSystem.IsOnCooldown(id)) { return; }
-        {
-
-            
-
-            cooldownSystem.PutOnCooldown(this);
-        }*/
-
         dizzyAffect.SetActive(false);
-            isDizzy = false;
-            roll.Enable();
-            GetComponent<PlayerRewind>().EnableRewind();
-
-
-        
+        isDizzy = false;
+        roll.Enable();
+        GetComponent<PlayerRewind>().EnableRewind();
     }
 
     void lightAtk(InputAction.CallbackContext attk)
     {
-
         anim.SetTrigger("LightAttack");
         Debug.Log("LightAttack");
         StartCoroutine(LightAttackAction());
-        
-        
+  
     }
 
     IEnumerator LightAttackAction()
     {
         isAttacking = true;
-        JAHPlayerPunch.attacking = true;
+        JAHPlayerPunch.isAttacking = true;
         yield return new WaitForSeconds(1);
         isAttacking = false;
-        JAHPlayerPunch.attacking = false;
+        JAHPlayerPunch.isAttacking = false;
     }
 
     void HeavyAtk(InputAction.CallbackContext HeavyAttk)
     {
         Debug.Log("HeavyAtk");
         //anim.SetTrigger("HeavyAttk");
-
     }
 
     public void PlayerTakeDamage(float dmg)

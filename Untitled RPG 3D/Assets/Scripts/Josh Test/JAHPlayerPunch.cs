@@ -5,13 +5,12 @@ using UnityEngine;
 public class JAHPlayerPunch : MonoBehaviour
 {
 
-    public static bool attacking = false;
-    public bool currentAttackVisible = false;
+    public static bool isAttacking = false;
 
     private void OnCollisionEnter(Collision collision)
     {
 
-        if (attacking == true)
+        if (isAttacking == true)
         {
             if (collision.gameObject.tag == "Enemy")
             {
@@ -21,8 +20,4 @@ public class JAHPlayerPunch : MonoBehaviour
 
     }
 
-    private void Update()
-    {
-        currentAttackVisible = attacking;
-    }
 }
