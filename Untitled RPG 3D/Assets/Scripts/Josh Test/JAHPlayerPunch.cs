@@ -14,7 +14,7 @@ public class JAHPlayerPunch : MonoBehaviour
         {
             if (collision.gameObject.tag == "Enemy")
             {
-                collision.gameObject.GetComponent<EnemyHealth>().TakeDamage(20);
+                collision.gameObject.GetComponent<EnemyHealth>().TakeDamage(100);
             }
         }
 

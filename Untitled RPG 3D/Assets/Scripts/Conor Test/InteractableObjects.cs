@@ -25,7 +25,6 @@ public class InteractableObjects : MonoBehaviour
         if (collision.gameObject.name == "Player")
         {
             Debug.Log("PlayerCollided");
-            PlayerObject.PlayerTakeDamage(dmg);
             Destroy(gameObject);
         }
     }

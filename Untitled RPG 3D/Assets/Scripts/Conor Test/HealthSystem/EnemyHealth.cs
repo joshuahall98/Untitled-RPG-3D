@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    
     public int maxHP = 100;
     public static int currentHP = 0;
     public int currentHPVisible = 0;
@@ -22,17 +23,21 @@ public class EnemyHealth : MonoBehaviour
     void Update()
     {
         currentHPVisible = currentHP;
+
+       
     }
 
     public void TakeDamage(int damage)
     {
         currentHP -= damage;
+        
 
         healthBar.SetHealth(currentHP);
 
         if(currentHP == 0)
         {
-            Destroy(gameObject, 5);
+
+            GetComponent<EnemyTest>().Death();
         }
     }
 }

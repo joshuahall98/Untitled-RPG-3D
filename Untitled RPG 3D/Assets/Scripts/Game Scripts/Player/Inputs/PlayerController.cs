@@ -26,9 +26,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public static bool isDizzy;
     [SerializeField] public static bool isGrounded;
 
-    public LayerMask Enemy;
-    public int dmg;
-
     //Roll
     [SerializeField] float rollCDTimer = 0;
     [SerializeField] int rollUsed = 0;
@@ -36,10 +33,6 @@ public class PlayerController : MonoBehaviour
     public float rollTime = 0.5f;
     public GameObject dizzyAffect;
     
-    //HealthBar
-    public Image HealthBar;
-    public float maxHealth = 100f;
-    public float health;
 
     //input actions
     InputAction move;
@@ -50,7 +43,7 @@ public class PlayerController : MonoBehaviour
     { 
         anim = GetComponent<Animator>();
 
-        health = maxHealth;
+       
 
         playerInput = new PlayerInputActions();
 
@@ -243,26 +236,14 @@ public class PlayerController : MonoBehaviour
         //anim.SetTrigger("HeavyAttk");
     }
 
-    public void PlayerTakeDamage(float dmg)
+
+    public void PlayerDeath()
     {
-        health -= dmg;
-        Debug.Log("PlayerTookDamage");
+        Debug.Log("Player ded");
+        move.Disable();
+        anim.Play("PlayerDeath");
+        
     }
-
-     
-
-   /* //Visuals for testing range
-    private void OnDrawGizmosSelected()
-    {   
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(attackPos.position, attackRange);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(aoe.position, aoeAttkRange);
-
-    }
-   */
-
     public void TakeDamage()
     {
         GetComponent<PlayerHealth>().InputTakeDamage();
