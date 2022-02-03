@@ -28,6 +28,7 @@ public class IdleBeahviour : StateMachineBehaviour
             animator.SetBool("isFollowing", false);
             animator.SetBool("isPatrolling", true);
         }
+      
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

@@ -5,19 +5,24 @@ using UnityEngine.AI;
 
 public class PatrolBehaviour : StateMachineBehaviour
 {
-    private Transform playerPos;
-    private Transform[] waypoints;
-    int waypointIndex;
-    Vector3 target;
+    List<Transform> wayPoints = new List<Transform>();
     NavMeshAgent agent;
+    private float enemySpeed;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        waypoints  = animator.GetComponent<EnemyTest>().waypoints;
-
-        playerPos = GameObject.FindGameObjectWithTag("Player").transform;
+        Transform wayPointsObj = GameObject.FindGameObjectWithTag("Waypoints").transform;
        
+        foreach (Transform W in wayPointsObj)
+        {
+            wayPoints.Add(W);
+        }
+        agent = animator.GetComponent<NavMeshAgent>();
+        agent.SetDestination(wayPoints[0].position);
+        
+        enemySpeed = animator.GetComponent<EnemyTest>().speed;
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -26,16 +31,15 @@ public class PatrolBehaviour : StateMachineBehaviour
       
         EnemyTest Distance = animator.GetComponent<EnemyTest>();
 
-      
-            target = waypoints[waypointIndex].position;
-            agent.SetDestination(target);
-        
-        
-            waypointIndex++;
-            if (waypointIndex == waypoints.Length)
-            {
-                waypointIndex = 0;
-            }
+        //Move the Player
+
+       if(agent.remainingDistance <= agent.stoppingDistance)
+        {
+            agent.SetDestination(wayPoints[Random.Range(0, wayPoints.Count)].position);
+
+           
+        }    
+            
        
         if (Distance.distFromPlayer <15)
         {

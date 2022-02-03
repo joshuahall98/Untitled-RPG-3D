@@ -22,7 +22,10 @@ public class FollowBehaviour : StateMachineBehaviour
     {
         JAHEnemySword.isAttacking = false;
         EnemyTest Distance = animator.GetComponent<EnemyTest>();
+        //Move the Player
         animator.transform.position = Vector3.MoveTowards(animator.transform.position, playerPos.position, enemySpeed * Time.deltaTime);
+        //Rotate Enemy towards player
+        animator.transform.LookAt(playerPos);
         if (Distance.distFromPlayer > 15)
         {
             animator.SetBool("isFollowing", false);
