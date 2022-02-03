@@ -8,27 +8,26 @@ public class EnemyTest : MonoBehaviour
 {
     //Animator
     private Animator anim;
-
-    public Transform HealthBarPrefab;
-    NavMeshAgent agent;
     public Transform[] waypoints;
-    int waypointIndex;
-    Vector3 target;
+    public Transform HealthBarPrefab;
     public Transform Player;
     public float speed = 5f;
 
     public float distFromPlayer;
 
-    public float LineOfSightDist = 10f;
-    public float Spinnyboi = 3f;
+
+    bool isPlayerDead;
+
 
     private void Start()
     {
         anim = GetComponent<Animator>();
 
         //NavMesh
-        agent = GetComponent<NavMeshAgent>();
+     //   agent = GetComponent<NavMeshAgent>();
     //    UpdateDest();
+
+        
 
     }
     // Update is called once per frame
@@ -36,20 +35,28 @@ public class EnemyTest : MonoBehaviour
     {
                 
     
-       //Distance between points go back to patrol
+/*       //Distance between points go back to patrol
         if(Vector3.Distance(transform.position,target) < 3)
         {
             IterateWaypointIndex();
             UpdateDest();
-        }
+        }*/
 
+        isPlayerDead = PlayerHealth.playerIsDead;
+
+        if (isPlayerDead == true)
+        {
+            PlayerDead();
+        }
         //Track distance from Enemy to Player
         distFromPlayer = Vector3.Distance(Player.position, transform.position);
-                
+       
+
     }
 
+
     //Change waypoint to go to
-    void UpdateDest()
+  /*  void UpdateDest()
     {
         target = waypoints[waypointIndex].position;
         agent.SetDestination(target);
@@ -61,9 +68,20 @@ public class EnemyTest : MonoBehaviour
         {
             waypointIndex = 0;
         }
-    }
-    void PlayerFound()
+    }*/
+
+
+ public void Death()
     {
-        agent.SetDestination(Player.position);
+        Debug.Log("I ded");
+        anim.Play("Die");
+        Destroy(gameObject, 2);
+        GetComponent<ConXP>().DropXP();
+
+    }
+  public  void PlayerDead()
+    {
+        Debug.Log("PlayerisDead");
+        anim.Play("Victory");
     }
 }

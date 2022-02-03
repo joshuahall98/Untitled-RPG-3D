@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+
+    public static bool playerIsDead = false;
     public int maxHP = 100;
     public static int currentHP = 0;
     public int currentHPVisible = 0;
@@ -22,6 +24,7 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         currentHPVisible = currentHP;
+
     }
 
     public void InputTakeDamage()
@@ -34,5 +37,11 @@ public class PlayerHealth : MonoBehaviour
         currentHP -= damage;
 
         healthBar.SetHealth(currentHP);
+
+        if (currentHP == 0)
+        {
+            playerIsDead = true;
+            GetComponent<PlayerController>().PlayerDeath();
+        }
     }
 }

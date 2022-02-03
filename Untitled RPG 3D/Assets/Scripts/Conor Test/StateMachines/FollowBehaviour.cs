@@ -6,35 +6,37 @@ public class FollowBehaviour : StateMachineBehaviour
 {
 
     private Transform playerPos;
-    public float speed;
-    float distFromPlayer;
+    private float enemySpeed;
+
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
-        
-    }
+        enemySpeed = animator.GetComponent<EnemyTest>().speed;
+       
+    } 
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        distFromPlayer = Vector3.Distance(playerPos.position, animator.transform.position);
-        animator.transform.position = Vector3.MoveTowards(animator.transform.position, playerPos.position, speed * Time.deltaTime);
-        if(distFromPlayer > 15)
+        JAHEnemySword.isAttacking = false;
+        EnemyTest Distance = animator.GetComponent<EnemyTest>();
+        //Move the Player
+        animator.transform.position = Vector3.MoveTowards(animator.transform.position, playerPos.position, enemySpeed * Time.deltaTime);
+        //Rotate Enemy towards player
+        animator.transform.LookAt(playerPos);
+        if (Distance.distFromPlayer > 15)
         {
             animator.SetBool("isFollowing", false);
-            JAHEnemySword.isAttacking = false;
 
         }
-        if (distFromPlayer <= 2)
+        if (Distance.distFromPlayer <= 2)
+        
         {
             animator.SetTrigger("isAttacking");
-
-          /*  //this is meant to enable the hit box for the sword while you're attacking, doesn't work though, it is somewhat working as it does log the attacking temporarily then stops
-            //how to keep hit box active while attacking??
-            JAHEnemySword.isAttacking = true;
-            Debug.Log("I am attacking");*/
+            
+       
         }
 
 

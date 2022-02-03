@@ -5,39 +5,43 @@ using UnityEngine.AI;
 
 public class PatrolBehaviour : StateMachineBehaviour
 {
-    private Transform playerPos;
-    private PatrolArea wayPoints;
-    public float speed;
-    private int randomWayPoint;
-    public float distFromPlayer;
+    List<Transform> wayPoints = new List<Transform>();
     NavMeshAgent agent;
+    private float enemySpeed;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        //Call NavMesh
+        Transform wayPointsObj = GameObject.FindGameObjectWithTag("Waypoints").transform;
+       
+        foreach (Transform W in wayPointsObj)
+        {
+            wayPoints.Add(W);
+        }
         agent = animator.GetComponent<NavMeshAgent>();
-        //Find Objects needed
-
-        playerPos = GameObject.FindGameObjectWithTag("Player").transform;
-        wayPoints = GameObject.FindGameObjectWithTag("WayPoint").GetComponent<PatrolArea>();
-        randomWayPoint = Random.Range(0, wayPoints.waypoints.Length);
+        agent.SetDestination(wayPoints[0].position);
+        
+        enemySpeed = animator.GetComponent<EnemyTest>().speed;
 
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        distFromPlayer = Vector3.Distance(playerPos.position, animator.transform.position);
-        if (Vector3.Distance(animator.transform.position, wayPoints.waypoints[randomWayPoint].position) < 0.2f){
+      
+        EnemyTest Distance = animator.GetComponent<EnemyTest>();
 
-            animator.transform.position = Vector3.MoveTowards(animator.transform.position, wayPoints.waypoints[randomWayPoint].position, speed * Time.deltaTime);
-        }
-        else
+        //Move the Player
+
+       if(agent.remainingDistance <= agent.stoppingDistance)
         {
-            randomWayPoint = Random.Range(0, wayPoints.waypoints.Length);
-        }
-        if (distFromPlayer > 5)
+            agent.SetDestination(wayPoints[Random.Range(0, wayPoints.Count)].position);
+
+           
+        }    
+            
+       
+        if (Distance.distFromPlayer <15)
         {
             animator.SetBool("isPatrolling", false);
         }
