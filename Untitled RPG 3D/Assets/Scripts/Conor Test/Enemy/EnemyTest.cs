@@ -11,7 +11,7 @@ public class EnemyTest : MonoBehaviour
     public Transform[] waypoints;
     public Transform HealthBarPrefab;
     public Transform Player;
-    public float speed = 5f;
+    public float speed = 0f;
 
     public float distFromPlayer;
 

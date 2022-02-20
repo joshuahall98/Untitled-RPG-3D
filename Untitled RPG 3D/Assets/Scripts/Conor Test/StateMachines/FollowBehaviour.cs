@@ -14,7 +14,8 @@ public class FollowBehaviour : StateMachineBehaviour
     {
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         enemySpeed = animator.GetComponent<EnemyTest>().speed;
-       
+        
+
     } 
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -25,8 +26,10 @@ public class FollowBehaviour : StateMachineBehaviour
         //Move the Player
         animator.transform.position = Vector3.MoveTowards(animator.transform.position, playerPos.position, enemySpeed * Time.deltaTime);
         //Rotate Enemy towards player
-        animator.transform.LookAt(playerPos);
-        if (Distance.distFromPlayer > 15)
+
+        animator.GetComponent<SmoothLookAt>().StartRotating();
+
+        if (Distance.distFromPlayer > 10)
         {
             animator.SetBool("isFollowing", false);
 
