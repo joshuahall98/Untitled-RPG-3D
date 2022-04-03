@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class FollowBehaviour : StateMachineBehaviour
 {
 
     private Transform playerPos;
-    private float enemySpeed;
+    
+    private NavMeshAgent nav;
 
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
-        enemySpeed = animator.GetComponent<EnemyTest>().speed;
-       
+
+        nav = animator.GetComponent<EnemyTest>().agent;
+        
+
     } 
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -23,10 +27,13 @@ public class FollowBehaviour : StateMachineBehaviour
         JAHEnemySword.isAttacking = false;
         EnemyTest Distance = animator.GetComponent<EnemyTest>();
         //Move the Player
-        animator.transform.position = Vector3.MoveTowards(animator.transform.position, playerPos.position, enemySpeed * Time.deltaTime);
+        //animator.transform.position = Vector3.MoveTowards(animator.transform.position, playerPos.position, enemySpeed * Time.deltaTime);
+        nav.SetDestination(playerPos.position);
         //Rotate Enemy towards player
-        animator.transform.LookAt(playerPos);
-        if (Distance.distFromPlayer > 15)
+
+        animator.GetComponent<SmoothLookAt>().StartRotating();
+
+        if (Distance.distFromPlayer > 10)
         {
             animator.SetBool("isFollowing", false);
 

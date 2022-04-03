@@ -4,16 +4,27 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-public class EnemyTest : MonoBehaviour
+public class EnemyTest : MonoBehaviour, CooldownActive
 {
+
+    //Cooldown
+    [SerializeField] private CooldownSystem cooldownSystem;
+    private string Id = "RangedAttk";
+    [SerializeField] private float CooldownDuration = 2;
+    public string id => Id;
+    public float cooldownDuration => CooldownDuration;
+
     //Animator
     private Animator anim;
     public Transform[] waypoints;
     public Transform HealthBarPrefab;
     public Transform Player;
-    public float speed = 5f;
+    public float speed = 0f;
+    public NavMeshAgent agent;
 
     public float distFromPlayer;
+
+    public GameObject projectile;
 
 
     bool isPlayerDead;
@@ -24,8 +35,7 @@ public class EnemyTest : MonoBehaviour
         anim = GetComponent<Animator>();
 
         //NavMesh
-     //   agent = GetComponent<NavMeshAgent>();
-    //    UpdateDest();
+        agent = GetComponent<NavMeshAgent>();
 
         
 
@@ -33,14 +43,7 @@ public class EnemyTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-                
-    
-/*       //Distance between points go back to patrol
-        if(Vector3.Distance(transform.position,target) < 3)
-        {
-            IterateWaypointIndex();
-            UpdateDest();
-        }*/
+                   
 
         isPlayerDead = PlayerHealth.playerIsDead;
 
@@ -54,26 +57,22 @@ public class EnemyTest : MonoBehaviour
 
     }
 
-
-    //Change waypoint to go to
-  /*  void UpdateDest()
+    void RangedAttack()
     {
-        target = waypoints[waypointIndex].position;
-        agent.SetDestination(target);
-    }
-    void IterateWaypointIndex()
-    {
-        waypointIndex++;
-        if(waypointIndex == waypoints.Length)
+        if (cooldownSystem.IsOnCooldown(id)) { return; }
         {
-            waypointIndex = 0;
+
+            Instantiate(projectile, transform.position, Quaternion.identity);
+
+            cooldownSystem.PutOnCooldown(this);
         }
-    }*/
 
 
- public void Death()
+    }
+
+
+    public void Death()
     {
-        Debug.Log("I ded");
         anim.Play("Die");
         Destroy(gameObject, 2);
         GetComponent<ConXP>().DropXP();
@@ -81,7 +80,7 @@ public class EnemyTest : MonoBehaviour
     }
   public  void PlayerDead()
     {
-        Debug.Log("PlayerisDead");
+        
         anim.Play("Victory");
     }
 }
