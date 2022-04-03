@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     //Roll
     [SerializeField] float rollCDTimer = 0;
     [SerializeField] int rollUsed = 0;
-    public float rollSpeed = 20;
+    public float rollSpeed = 10;
     public float rollTime = 0.5f;
     public GameObject dizzyAffect;
     
@@ -37,6 +37,9 @@ public class PlayerController : MonoBehaviour
     //input actions
     InputAction move;
     InputAction roll;
+
+    //weapons
+    public GameObject sword;
     
 
     void Awake()
@@ -60,11 +63,18 @@ public class PlayerController : MonoBehaviour
         dizzyAffect = GameObject.Find("DizzyAffect");
         dizzyAffect.SetActive(false);
 
+
+        //weapons
+        sword.SetActive(false);
+
     }
 
     void Update()
     {
-        
+
+        //walking animation
+        anim.SetBool("isMoving", isMoving);
+
         //action checks
         if (!isAttacking) 
         {
@@ -110,9 +120,6 @@ public class PlayerController : MonoBehaviour
         }
 
         controller.SimpleMove(Vector3.forward * 0); //Adds Gravity for some reason
-
-        //walking animation
-        anim.SetBool("isMoving", isMoving);
 
         //this prevents you from rolling too much
         if (rollCDTimer > 0)
@@ -176,7 +183,7 @@ public class PlayerController : MonoBehaviour
             rollUsed++;
             rollCDTimer = 2;
                 
-            controller.center = new Vector3(0, -0.5f, 0);
+            controller.center = new Vector3(0, 1.4f, 0);
             controller.height = 2.5f;
             while (Time.time < startTime + rollTime)
             {
@@ -185,7 +192,7 @@ public class PlayerController : MonoBehaviour
                 yield return null;
 
             }
-            controller.center = new Vector3(0, 0, 0);
+            controller.center = new Vector3(0, 2, 0);
             controller.height = 4;
             isRolling = false;
             if ((rollCDTimer > 0) && (rollUsed == 3))
@@ -225,9 +232,11 @@ public class PlayerController : MonoBehaviour
     {
         isAttacking = true;
         JAHPlayerPunch.isAttacking = true;
+        sword.SetActive(true);
         yield return new WaitForSeconds(1);
         isAttacking = false;
         JAHPlayerPunch.isAttacking = false;
+        sword.SetActive(false);
     }
 
     void HeavyAtk(InputAction.CallbackContext HeavyAttk)
