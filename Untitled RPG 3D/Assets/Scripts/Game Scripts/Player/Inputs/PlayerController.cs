@@ -40,13 +40,12 @@ public class PlayerController : MonoBehaviour
 
     //weapons
     public GameObject sword;
+    public GameObject sheathedSword;
     
 
     void Awake()
     { 
         anim = GetComponent<Animator>();
-
-       
 
         playerInput = new PlayerInputActions();
 
@@ -54,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
         playerInput.Player.Attack.performed += lightAtk;
         playerInput.Player.HeavyAttk.performed += HeavyAtk;
-        playerInput.Player.Roll.performed += rollPerformed => StartCoroutine(Roll());
+        playerInput.Player.Roll.performed += rollPerformed => RollAnimation();
         playerInput.Player.TakeDamageTest.performed += damagePerformed => TakeDamage();
 
         move = playerInput.Player.Move;
@@ -66,6 +65,7 @@ public class PlayerController : MonoBehaviour
 
         //weapons
         sword.SetActive(false);
+        sheathedSword.SetActive(true);
 
     }
 
@@ -80,40 +80,44 @@ public class PlayerController : MonoBehaviour
         {
             if (!isRolling)
             {
-                if (!isDizzy)
+                if (isGrounded)
                 {
-                    currentMoveInput = move.ReadValue<Vector2>();
-                    actualMovement = new Vector3();
-                    //Condensed movement -- Converted y to z axis
-                    actualMovement.x = currentMoveInput.x;
-                    actualMovement.z = currentMoveInput.y;
-                    controller.Move(actualMovement * speed * Time.deltaTime);
-                    isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+                    if (!isDizzy)
+                    {
+                        currentMoveInput = move.ReadValue<Vector2>();
+                        actualMovement = new Vector3();
+                        //Condensed movement -- Converted y to z axis
+                        actualMovement.x = currentMoveInput.x;
+                        actualMovement.z = currentMoveInput.y;
+                        controller.Move(actualMovement * speed * Time.deltaTime);
+                        isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
 
-                    //Character Rotation
-                    Vector3 currentPos = transform.position;
+                        //Character Rotation
+                        Vector3 currentPos = transform.position;
 
-                    Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
-                    Vector3 posLookAt = currentPos + newPos;
-                    transform.LookAt(posLookAt);
+                        Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
+                        Vector3 posLookAt = currentPos + newPos;
+                        transform.LookAt(posLookAt);
+                    }
+                    else
+                    {
+                        currentMoveInput = move.ReadValue<Vector2>();
+                        actualMovement = new Vector3();
+                        //Condensed movement -- Converted y to z axis
+                        actualMovement.z = currentMoveInput.x;
+                        actualMovement.x = currentMoveInput.y;
+                        controller.Move(actualMovement * speed * Time.deltaTime);
+                        isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+
+                        //Character Rotation
+                        Vector3 currentPos = transform.position;
+
+                        Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
+                        Vector3 posLookAt = currentPos + newPos;
+                        transform.LookAt(posLookAt);
+                    }
                 }
-                else
-                {
-                    currentMoveInput = move.ReadValue<Vector2>();
-                    actualMovement = new Vector3();
-                    //Condensed movement -- Converted y to z axis
-                    actualMovement.z = currentMoveInput.x;
-                    actualMovement.x = currentMoveInput.y;
-                    controller.Move(actualMovement * speed * Time.deltaTime);
-                    isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
-
-                    //Character Rotation
-                    Vector3 currentPos = transform.position;
-
-                    Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
-                    Vector3 posLookAt = currentPos + newPos;
-                    transform.LookAt(posLookAt);
-                }
+                
                 
             }
             
@@ -133,26 +137,26 @@ public class PlayerController : MonoBehaviour
         }
 
         //falling animation and detection
-        if(Physics.Raycast(transform.position + new Vector3(1.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround1, 2f))
+        if(Physics.Raycast(transform.position + new Vector3(1.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround1, 1.4f))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
             Debug.DrawRay(transform.position + new Vector3(1.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround1.distance, Color.red);
         }
-        else if(Physics.Raycast(transform.position + new Vector3(-1.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround2, 2f))
+        else if(Physics.Raycast(transform.position + new Vector3(-1.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround2, 1.4f))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
             Debug.DrawRay(transform.position + new Vector3(-1.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround2.distance, Color.red);
             
         }
-        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, 1.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround3, 2f))
+        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, 1.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround3, 1.4f))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
             Debug.DrawRay(transform.position + new Vector3(0f, 0f, 1.5f), transform.TransformDirection(Vector3.down) * touchGround3.distance, Color.red);
         }
-        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, -1.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround4, 2f))
+        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, -1.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround4, 1.4f))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
@@ -168,23 +172,29 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    //rolling animation
+    void RollAnimation()
+    {
+        anim.SetTrigger("Roll");
+    }
+
     //rolling method
-    IEnumerator Roll()
+    IEnumerator RollAnimEvent()
     {
         if(isMoving == true && !isRolling  && isGrounded)
         {
 
             isRolling = true;
 
-            anim.SetTrigger("Roll");
+            
             float startTime = Time.time;
                 
             //these variables are used for the roll timer if you roll too much
             rollUsed++;
             rollCDTimer = 2;
                 
-            controller.center = new Vector3(0, 1.4f, 0);
-            controller.height = 2.5f;
+            controller.center = new Vector3(0, -0.5f, 0);
+            controller.height = 1f;
             while (Time.time < startTime + rollTime)
             {
                     
@@ -192,14 +202,18 @@ public class PlayerController : MonoBehaviour
                 yield return null;
 
             }
-            controller.center = new Vector3(0, 2, 0);
-            controller.height = 4;
-            isRolling = false;
-            if ((rollCDTimer > 0) && (rollUsed == 3))
-            {
-                StartCoroutine(Dizzy());
-            }
+            controller.center = new Vector3(0, 0, 0);
+            controller.height = 2;
+            
+        }
+    }
 
+    void RollEndAnimEvent()
+    {
+        isRolling = false;
+        if ((rollCDTimer > 0) && (rollUsed == 3))
+        {
+            StartCoroutine(Dizzy());
         }
     }
 
@@ -223,22 +237,30 @@ public class PlayerController : MonoBehaviour
     void lightAtk(InputAction.CallbackContext attk)
     {
         anim.SetTrigger("LightAttack");
-        Debug.Log("LightAttack");
-        StartCoroutine(LightAttackAction());
+        //StartCoroutine(LightAttackAction());
   
     }
 
-    IEnumerator LightAttackAction()
+    //starting the attack animation
+    void LightAttackStartAnimEvent()
     {
         isAttacking = true;
-        JAHPlayerPunch.isAttacking = true;
+        WeaponDamage.isAttacking = true;
+        sheathedSword.SetActive(false);
         sword.SetActive(true);
-        yield return new WaitForSeconds(1);
+        
+    }
+
+    //ending the attack animation
+    void LightAttackEndAnimEvent()
+    {
         isAttacking = false;
-        JAHPlayerPunch.isAttacking = false;
+        WeaponDamage.isAttacking = false;
+        sheathedSword.SetActive(true);
         sword.SetActive(false);
     }
 
+    
     void HeavyAtk(InputAction.CallbackContext HeavyAttk)
     {
         Debug.Log("HeavyAtk");
