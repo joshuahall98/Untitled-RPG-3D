@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    //Animation
+    Animator anim;
 
     public static bool playerIsDead = false;
     public int maxHP = 100;
@@ -16,6 +18,8 @@ public class PlayerHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
+
         currentHP = maxHP;
         healthBar.SetMaxHealth(maxHP);
     }
@@ -41,7 +45,11 @@ public class PlayerHealth : MonoBehaviour
         if (currentHP == 0)
         {
             playerIsDead = true;
-            GetComponent<PlayerController>().PlayerDeath();
+            anim.SetTrigger("Dead");
+            GetComponent<PlayerController>().DisableMovement();
+            GetComponent<PlayerLightAttack>().DisableAttack();
+            GetComponent<PlayerHeavyAttack>().DisableHeavyAttackCharge();
         }
     }
+
 }

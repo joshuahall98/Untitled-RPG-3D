@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,10 +28,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public static bool isGrounded;
 
     //Roll
-    [SerializeField] float rollCDTimer = 0;
-    [SerializeField] int rollUsed = 0;
+    float rollCDTimer = 0;
+    int rollUsed = 0;
     public float rollSpeed = 10;
-    public float rollTime = 0.5f;
+    float rollTime = 0.5f;
     public GameObject dizzyAffect;
     
 
@@ -38,21 +39,16 @@ public class PlayerController : MonoBehaviour
     InputAction move;
     InputAction roll;
 
-    //weapons
-    public GameObject sword;
-    public GameObject sheathedSword;
-    
 
     void Awake()
-    { 
+    {
+
         anim = GetComponent<Animator>();
 
         playerInput = new PlayerInputActions();
 
         controller = GetComponent<CharacterController>();
 
-        playerInput.Player.Attack.performed += lightAtk;
-        playerInput.Player.HeavyAttk.performed += HeavyAtk;
         playerInput.Player.Roll.performed += rollPerformed => RollAnimation();
         playerInput.Player.TakeDamageTest.performed += damagePerformed => TakeDamage();
 
@@ -61,11 +57,6 @@ public class PlayerController : MonoBehaviour
 
         dizzyAffect = GameObject.Find("DizzyAffect");
         dizzyAffect.SetActive(false);
-
-
-        //weapons
-        sword.SetActive(false);
-        sheathedSword.SetActive(true);
 
     }
 
@@ -109,18 +100,37 @@ public class PlayerController : MonoBehaviour
                         controller.Move(actualMovement * speed * Time.deltaTime);
                         isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
 
+
                         //Character Rotation
                         Vector3 currentPos = transform.position;
 
                         Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
                         Vector3 posLookAt = currentPos + newPos;
                         transform.LookAt(posLookAt);
+
+                        GetComponent<PlayerLightAttack>().DisableAttack();
+                        GetComponent<PlayerHeavyAttack>().DisableHeavyAttackCharge();
+                        GetComponent<PlayerRewind>().DisableRewind();
+                        roll.Disable();
                     }
-                }
-                
+                }  
                 
             }
             
+        }
+
+        //check to see if not moving, possible bug to fix to frozen running
+        if (currentMoveInput.x == 0 && currentMoveInput.y == 0)
+        {
+            isMoving = false;
+        }
+
+        //stop the bug that caused roll to be active while not moving, possible fix
+        if (!isRolling)
+        {
+            anim.ResetTrigger("Roll");
+            PlayerHeavyAttack.isRolling = false;
+            PlayerLightAttack.isRolling = false;
         }
 
         controller.SimpleMove(Vector3.forward * 0); //Adds Gravity for some reason
@@ -172,40 +182,44 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    //rolling animation
+    //rolling animation, CREATED IENUMERAOTR TO STOP 
     void RollAnimation()
     {
-        anim.SetTrigger("Roll");
+        if (isMoving == true && !isRolling && isGrounded && !isAttacking && !isDizzy)
+        {
+            isRolling = true;
+            anim.SetTrigger("Roll");
+            PlayerHeavyAttack.isRolling = true;
+            PlayerLightAttack.isRolling = true;
+        }
     }
 
     //rolling method
     IEnumerator RollAnimEvent()
     {
-        if(isMoving == true && !isRolling  && isGrounded)
+
+        GetComponent<PlayerLightAttack>().DisableAttack();
+        GetComponent<PlayerHeavyAttack>().DisableHeavyAttackCharge();
+        GetComponent<PlayerRewind>().DisableRewind();
+
+        float startTime = Time.time;
+                
+        //these variables are used for the roll timer if you roll too much
+        rollUsed++;
+        rollCDTimer = 2;
+                
+        controller.center = new Vector3(0, -0.5f, 0);
+        controller.height = 1f;
+        while (Time.time < startTime + rollTime)
         {
-
-            isRolling = true;
-
-            
-            float startTime = Time.time;
-                
-            //these variables are used for the roll timer if you roll too much
-            rollUsed++;
-            rollCDTimer = 2;
-                
-            controller.center = new Vector3(0, -0.5f, 0);
-            controller.height = 1f;
-            while (Time.time < startTime + rollTime)
-            {
                     
-                controller.Move(actualMovement * rollSpeed * Time.deltaTime);
-                yield return null;
+            controller.Move(actualMovement * rollSpeed * Time.deltaTime);
+            yield return null;
 
-            }
-            controller.center = new Vector3(0, 0, 0);
-            controller.height = 2;
-            
         }
+        controller.center = new Vector3(0, 0, 0);
+        controller.height = 2;
+
     }
 
     void RollEndAnimEvent()
@@ -215,6 +229,14 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(Dizzy());
         }
+
+        GetComponent<PlayerLightAttack>().EnableAttack();
+        GetComponent<PlayerHeavyAttack>().EnableHeavyAttackCharge();
+        GetComponent<PlayerRewind>().EnableRewind();
+        PlayerHeavyAttack.isRolling = false;
+        PlayerLightAttack.isRolling = false;
+        anim.ResetTrigger("Roll");
+
     }
 
     //this affect occurs when you roll too much
@@ -222,8 +244,6 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("Dizzy");
         isDizzy = true;
-        roll.Disable();
-        GetComponent<PlayerRewind>().DisableRewind();
         dizzyAffect.SetActive(true);
 
         yield return new WaitForSeconds(3);
@@ -231,53 +251,36 @@ public class PlayerController : MonoBehaviour
         dizzyAffect.SetActive(false);
         isDizzy = false;
         roll.Enable();
+        GetComponent<PlayerLightAttack>().EnableAttack();
+        GetComponent<PlayerHeavyAttack>().EnableHeavyAttackCharge();
         GetComponent<PlayerRewind>().EnableRewind();
+        anim.ResetTrigger("Roll");
+        anim.SetTrigger("StopDizzy");
     }
 
-    void lightAtk(InputAction.CallbackContext attk)
-    {
-        anim.SetTrigger("LightAttack");
-        //StartCoroutine(LightAttackAction());
-  
-    }
-
-    //starting the attack animation
-    void LightAttackStartAnimEvent()
-    {
-        isAttacking = true;
-        WeaponDamage.isAttacking = true;
-        sheathedSword.SetActive(false);
-        sword.SetActive(true);
-        
-    }
-
-    //ending the attack animation
-    void LightAttackEndAnimEvent()
-    {
-        isAttacking = false;
-        WeaponDamage.isAttacking = false;
-        sheathedSword.SetActive(true);
-        sword.SetActive(false);
-    }
-
-    
-    void HeavyAtk(InputAction.CallbackContext HeavyAttk)
-    {
-        Debug.Log("HeavyAtk");
-        //anim.SetTrigger("HeavyAttk");
-    }
-
-
-    public void PlayerDeath()
-    {
-        Debug.Log("Player ded");
-        move.Disable();
-        anim.Play("PlayerDeath");
-        
-    }
     public void TakeDamage()
     {
         GetComponent<PlayerHealth>().InputTakeDamage();
+    }
+
+    public void EnableMovement()
+    {
+        move.Enable();
+    } 
+
+    public void DisableMovement()
+    {
+        move.Disable();
+    }
+
+    public void EnableRoll()
+    {
+        roll.Enable();
+    }
+
+    public void DisableRoll()
+    {
+        roll.Disable();
     }
 
     private void OnEnable()

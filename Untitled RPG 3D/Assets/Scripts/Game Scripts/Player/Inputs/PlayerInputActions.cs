@@ -51,7 +51,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""HeavyAttk"",
+                    ""name"": ""HeavyAtkCharge"",
                     ""type"": ""Button"",
                     ""id"": ""a72ad15a-9211-4229-909c-c6c1f6a2c3f0"",
                     ""expectedControlType"": ""Button"",
@@ -62,6 +62,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""name"": ""TakeDamageTest"",
                     ""type"": ""Button"",
                     ""id"": ""ae7ac6ba-9ee0-49a8-a725-417e66836976"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""HeavyAtkRelease"",
+                    ""type"": ""Button"",
+                    ""id"": ""ce789060-f5f3-49ec-887e-3dced18e429e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -160,10 +168,10 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""cc646fe4-7963-4d8b-b24d-b795c579687a"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Hold(duration=1.5)"",
+                    ""interactions"": ""Hold(duration=0.2)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""HeavyAttk"",
+                    ""action"": ""HeavyAtkCharge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -175,6 +183,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""TakeDamageTest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cef6dd00-3ca5-405a-843d-381be4c35f7a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""SlowTap(duration=0.2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HeavyAtkRelease"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -195,8 +214,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_Rewind = m_Player.FindAction("Rewind", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Roll = m_Player.FindAction("Roll", throwIfNotFound: true);
-        m_Player_HeavyAttk = m_Player.FindAction("HeavyAttk", throwIfNotFound: true);
+        m_Player_HeavyAtkCharge = m_Player.FindAction("HeavyAtkCharge", throwIfNotFound: true);
         m_Player_TakeDamageTest = m_Player.FindAction("TakeDamageTest", throwIfNotFound: true);
+        m_Player_HeavyAtkRelease = m_Player.FindAction("HeavyAtkRelease", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -250,8 +270,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Rewind;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Roll;
-    private readonly InputAction m_Player_HeavyAttk;
+    private readonly InputAction m_Player_HeavyAtkCharge;
     private readonly InputAction m_Player_TakeDamageTest;
+    private readonly InputAction m_Player_HeavyAtkRelease;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -260,8 +281,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Rewind => m_Wrapper.m_Player_Rewind;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Roll => m_Wrapper.m_Player_Roll;
-        public InputAction @HeavyAttk => m_Wrapper.m_Player_HeavyAttk;
+        public InputAction @HeavyAtkCharge => m_Wrapper.m_Player_HeavyAtkCharge;
         public InputAction @TakeDamageTest => m_Wrapper.m_Player_TakeDamageTest;
+        public InputAction @HeavyAtkRelease => m_Wrapper.m_Player_HeavyAtkRelease;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -283,12 +305,15 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Roll.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRoll;
                 @Roll.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRoll;
                 @Roll.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRoll;
-                @HeavyAttk.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAttk;
-                @HeavyAttk.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAttk;
-                @HeavyAttk.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAttk;
+                @HeavyAtkCharge.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkCharge;
+                @HeavyAtkCharge.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkCharge;
+                @HeavyAtkCharge.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkCharge;
                 @TakeDamageTest.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeDamageTest;
                 @TakeDamageTest.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeDamageTest;
                 @TakeDamageTest.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeDamageTest;
+                @HeavyAtkRelease.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkRelease;
+                @HeavyAtkRelease.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkRelease;
+                @HeavyAtkRelease.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkRelease;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -305,12 +330,15 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Roll.started += instance.OnRoll;
                 @Roll.performed += instance.OnRoll;
                 @Roll.canceled += instance.OnRoll;
-                @HeavyAttk.started += instance.OnHeavyAttk;
-                @HeavyAttk.performed += instance.OnHeavyAttk;
-                @HeavyAttk.canceled += instance.OnHeavyAttk;
+                @HeavyAtkCharge.started += instance.OnHeavyAtkCharge;
+                @HeavyAtkCharge.performed += instance.OnHeavyAtkCharge;
+                @HeavyAtkCharge.canceled += instance.OnHeavyAtkCharge;
                 @TakeDamageTest.started += instance.OnTakeDamageTest;
                 @TakeDamageTest.performed += instance.OnTakeDamageTest;
                 @TakeDamageTest.canceled += instance.OnTakeDamageTest;
+                @HeavyAtkRelease.started += instance.OnHeavyAtkRelease;
+                @HeavyAtkRelease.performed += instance.OnHeavyAtkRelease;
+                @HeavyAtkRelease.canceled += instance.OnHeavyAtkRelease;
             }
         }
     }
@@ -330,7 +358,8 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnRewind(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);
-        void OnHeavyAttk(InputAction.CallbackContext context);
+        void OnHeavyAtkCharge(InputAction.CallbackContext context);
         void OnTakeDamageTest(InputAction.CallbackContext context);
+        void OnHeavyAtkRelease(InputAction.CallbackContext context);
     }
 }

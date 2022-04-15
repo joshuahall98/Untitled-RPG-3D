@@ -38,7 +38,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "HeavyAttk",
+                    "name": "HeavyAtkCharge",
                     "type": "Button",
                     "id": "a72ad15a-9211-4229-909c-c6c1f6a2c3f0",
                     "expectedControlType": "Button",
@@ -49,6 +49,14 @@
                     "name": "TakeDamageTest",
                     "type": "Button",
                     "id": "ae7ac6ba-9ee0-49a8-a725-417e66836976",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "HeavyAtkRelease",
+                    "type": "Button",
+                    "id": "ce789060-f5f3-49ec-887e-3dced18e429e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -147,10 +155,10 @@
                     "name": "",
                     "id": "cc646fe4-7963-4d8b-b24d-b795c579687a",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "Hold(duration=1.5)",
+                    "interactions": "Hold(duration=0.2)",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "HeavyAttk",
+                    "action": "HeavyAtkCharge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -162,6 +170,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "TakeDamageTest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cef6dd00-3ca5-405a-843d-381be4c35f7a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "SlowTap(duration=0.2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HeavyAtkRelease",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

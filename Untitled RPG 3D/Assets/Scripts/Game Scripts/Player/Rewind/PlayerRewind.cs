@@ -10,12 +10,12 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //Cooldown
     [SerializeField] private CooldownSystem cooldownSystem;
     private string Id = "Rewind";
-    [SerializeField] private float CooldownDuration = 5;
+    private float CooldownDuration = 5;
     public string id => Id;
     public float cooldownDuration => CooldownDuration;
 
     //Used to record the no. of seconds before rewind
-    [SerializeField] private int RecordRewindTime = 5;
+    private int RecordRewindTime = 5;
 
     //variables for keeping track of player health
     public int playerHealth;
@@ -26,7 +26,6 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     List<PointInTime> pointsInTime;
     public int rewindsLeft = 4;
     public int maxRewinds = 4;
-    public bool isRecording = true;
 
     //UI
     public Image[] rewindFill;
@@ -39,14 +38,15 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     InputAction rewind;
 
     //action checkers
-    [SerializeField] bool isRolling;
-    [SerializeField] bool isAttacking;
+    bool isRolling;
+    bool isAttacking;
 
     private void Awake()
     {
         playerInput = new PlayerInputActions();
 
         playerInput.Player.Rewind.performed += rewindPerformed => PlsRewind();
+
         rewind = playerInput.Player.Rewind;
     }
 
@@ -130,7 +130,9 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //rewind player to point x seconds ago
     void Rewind()
     {
-      
+        //decreasing rewinds
+        rewindsLeft -= 1;
+
         //takes point of time from array and sets player to position
         PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
         transform.position = pointInTime.position;
@@ -156,9 +158,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             {
                 if (cooldownSystem.IsOnCooldown(id)) { return; }
                 {
-
                     Rewinding = true;
-                    rewindsLeft -= 1;
 
                     cooldownSystem.PutOnCooldown(this);
                 }
