@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class ConXP : MonoBehaviour
 {
-    
+
     int randomAmount;
     public GameObject ExpOrb;
+    float radius = 4f;
 
-    
 
     public void DropXP()
     {
-        randomAmount = Random.Range(1, 4);
-       
-        for (int i = 0; i < randomAmount; i++) {
 
-            Vector3 position = transform.position;
-            GameObject orb = Instantiate(ExpOrb, position, Quaternion.identity); //XP Drop
-            
+        randomAmount = Random.Range(10, 20);
+
+        for (int i = 0; i < randomAmount; i++)
+        {
+
+            GameObject orb = Instantiate(ExpOrb, Random.insideUnitSphere * radius + transform.position, Random.rotation); //XP Drop
+
         }
     }
 }

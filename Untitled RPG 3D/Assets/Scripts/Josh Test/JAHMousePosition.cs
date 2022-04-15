@@ -24,5 +24,7 @@ public class JAHMousePosition : MonoBehaviour
         {
             customMouse.transform.position = hit.point;
         }
+
+        //GetComponent<AttackAim>().Aim();
     }
 }

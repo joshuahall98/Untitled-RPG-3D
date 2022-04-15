@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
             rollCDTimer = 0;
         }
 
-        float touchGround = 1.5f;
+        float touchGround = 2f;
 
         //falling animation and detection
         if(Physics.Raycast(transform.position + new Vector3(1.3f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround1, touchGround))
