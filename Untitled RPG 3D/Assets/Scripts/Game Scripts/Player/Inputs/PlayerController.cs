@@ -146,31 +146,33 @@ public class PlayerController : MonoBehaviour
             rollCDTimer = 0;
         }
 
+        float touchGround = 1.5f;
+
         //falling animation and detection
-        if(Physics.Raycast(transform.position + new Vector3(1.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround1, 1.4f))
+        if(Physics.Raycast(transform.position + new Vector3(1.3f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround1, touchGround))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(1.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround1.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(1.3f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround1.distance, Color.red);
         }
-        else if(Physics.Raycast(transform.position + new Vector3(-1.5f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround2, 1.4f))
+        else if(Physics.Raycast(transform.position + new Vector3(-1.3f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround2, touchGround))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(-1.5f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround2.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(-1.3f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround2.distance, Color.red);
             
         }
-        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, 1.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround3, 1.4f))
+        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, 1.3f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround3, touchGround))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 1.5f), transform.TransformDirection(Vector3.down) * touchGround3.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 1.3f), transform.TransformDirection(Vector3.down) * touchGround3.distance, Color.red);
         }
-        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, -1.5f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround4, 1.4f))
+        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, -1.3f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround4, touchGround))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, -1.5f), transform.TransformDirection(Vector3.down) * touchGround4.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, -1.3f), transform.TransformDirection(Vector3.down) * touchGround4.distance, Color.red);
         }
         else
         {
