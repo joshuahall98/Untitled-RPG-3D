@@ -38,8 +38,9 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     InputAction rewind;
 
     //action checkers
-    bool isRolling;
-    bool isAttacking;
+    public bool isRolling;
+    public bool isAttacking;
+    public bool isDead;
 
     private void Awake()
     {
@@ -62,6 +63,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         //making sure action checkers correspond with player controller
         isRolling = PlayerController.isRolling;
         isAttacking = PlayerController.isAttacking;
+        isDead = PlayerController.isDead;
 
         //Run rewind function if variables are met 
         if (Rewinding == true && rewindsLeft > 0)
@@ -152,18 +154,22 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //Rewind button function
     public void PlsRewind()
     {
-        if (!isAttacking)
+        if (!isDead)
         {
-            if (!isRolling)
+            if (!isAttacking)
             {
-                if (cooldownSystem.IsOnCooldown(id)) { return; }
+                if (!isRolling)
                 {
-                    Rewinding = true;
+                    if (cooldownSystem.IsOnCooldown(id)) { return; }
+                    {
+                        Rewinding = true;
 
-                    cooldownSystem.PutOnCooldown(this);
+                        cooldownSystem.PutOnCooldown(this);
+                    }
                 }
             }
         }
+        
     }
 
     //disable rewind input

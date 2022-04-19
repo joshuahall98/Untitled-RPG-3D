@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AttackAim : MonoBehaviour
 {
+    //THIS ROTATES YOUR CHARACTER WHEN ACTIVATED TO FACE TOWARDS MOUSE LOCATION
+
     private Camera mainCamera;
     [SerializeField] private LayerMask groundMask;
 
@@ -26,7 +28,9 @@ public class AttackAim : MonoBehaviour
 
             // Make the transform look in the direction.
             transform.forward = direction;
+
         }
+
     }
 
     private (bool success, Vector3 position) GetMousePosition()
@@ -37,11 +41,15 @@ public class AttackAim : MonoBehaviour
         {
             // The Raycast hit something, return with the position.
             return (success: true, position: hitInfo.point);
+
         }
         else
         {
             // The Raycast did not hit anything.
             return (success: false, position: Vector3.zero);
         }
+
+
     }
+
 }

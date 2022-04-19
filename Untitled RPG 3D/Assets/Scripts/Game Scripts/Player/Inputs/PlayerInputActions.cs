@@ -73,6 +73,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""TestAttackDash"",
+                    ""type"": ""Button"",
+                    ""id"": ""608b8b8f-01cf-47dd-86cc-ba0bf645a82b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -168,7 +176,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""cc646fe4-7963-4d8b-b24d-b795c579687a"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Hold(duration=0.2)"",
+                    ""interactions"": ""Hold(duration=0.4)"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""HeavyAtkCharge"",
@@ -190,10 +198,21 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""cef6dd00-3ca5-405a-843d-381be4c35f7a"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""SlowTap(duration=0.2)"",
+                    ""interactions"": ""SlowTap(duration=0.35)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""HeavyAtkRelease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f939a360-817d-4a0f-a894-cee46d2563d1"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TestAttackDash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -217,6 +236,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_HeavyAtkCharge = m_Player.FindAction("HeavyAtkCharge", throwIfNotFound: true);
         m_Player_TakeDamageTest = m_Player.FindAction("TakeDamageTest", throwIfNotFound: true);
         m_Player_HeavyAtkRelease = m_Player.FindAction("HeavyAtkRelease", throwIfNotFound: true);
+        m_Player_TestAttackDash = m_Player.FindAction("TestAttackDash", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,6 +293,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_HeavyAtkCharge;
     private readonly InputAction m_Player_TakeDamageTest;
     private readonly InputAction m_Player_HeavyAtkRelease;
+    private readonly InputAction m_Player_TestAttackDash;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -284,6 +305,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @HeavyAtkCharge => m_Wrapper.m_Player_HeavyAtkCharge;
         public InputAction @TakeDamageTest => m_Wrapper.m_Player_TakeDamageTest;
         public InputAction @HeavyAtkRelease => m_Wrapper.m_Player_HeavyAtkRelease;
+        public InputAction @TestAttackDash => m_Wrapper.m_Player_TestAttackDash;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -314,6 +336,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @HeavyAtkRelease.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkRelease;
                 @HeavyAtkRelease.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkRelease;
                 @HeavyAtkRelease.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkRelease;
+                @TestAttackDash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTestAttackDash;
+                @TestAttackDash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTestAttackDash;
+                @TestAttackDash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTestAttackDash;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -339,6 +364,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @HeavyAtkRelease.started += instance.OnHeavyAtkRelease;
                 @HeavyAtkRelease.performed += instance.OnHeavyAtkRelease;
                 @HeavyAtkRelease.canceled += instance.OnHeavyAtkRelease;
+                @TestAttackDash.started += instance.OnTestAttackDash;
+                @TestAttackDash.performed += instance.OnTestAttackDash;
+                @TestAttackDash.canceled += instance.OnTestAttackDash;
             }
         }
     }
@@ -361,5 +389,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnHeavyAtkCharge(InputAction.CallbackContext context);
         void OnTakeDamageTest(InputAction.CallbackContext context);
         void OnHeavyAtkRelease(InputAction.CallbackContext context);
+        void OnTestAttackDash(InputAction.CallbackContext context);
     }
 }

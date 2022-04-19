@@ -10,75 +10,84 @@ public class PlayerHeavyAttack : MonoBehaviour
 
     public PlayerInputActions playerInput;
 
+    InputAction heavyAtkCharge;
+
+    //action checkers
+    public bool isMoving;
+    public bool isRolling;
+    public bool isAttacking;
+    public bool isDizzy;
+    public bool isGrounded;
+    public bool isDead;
+
     //weapons
     public GameObject sword;
     public GameObject sheathedSword;
     Collider swordCollider;
 
-    public static bool isAttacking;
-    public static bool isRolling;
-
-    public bool isAttackPub;
-    public bool isRollingPub;
-
-    InputAction heavyAtkCharge;
-
-    bool mouseAim;
     bool releaseReady = false;
+    float chargeTimer;
+    bool timerOn;
 
     private void Awake()
     {
+        anim = GetComponent<Animator>();
+
         playerInput = new PlayerInputActions();
 
         playerInput.Player.HeavyAtkCharge.performed += HeavyAtkCharge;
         playerInput.Player.HeavyAtkRelease.performed += HeavyAtkRelease;
 
         heavyAtkCharge = playerInput.Player.HeavyAtkCharge;
+
+        swordCollider = sword.GetComponent<Collider>();
     }
 
     private void Update()
     {
-        if(mouseAim == true)
+
+        isAttacking = PlayerController.isAttacking;
+        isRolling = PlayerController.isRolling;
+        isDizzy = PlayerController.isDizzy;
+        isGrounded = PlayerController.isGrounded;
+        isMoving = PlayerController.isMoving;
+
+        if (timerOn)
         {
-            GetComponent<AttackAim>().Aim();
+            chargeTimer += Time.deltaTime;
         }
+        else
+        {
 
-        isAttackPub = isAttacking;
-        isRollingPub = isRolling;
-
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        anim = GetComponent<Animator>();
-
-        //weapons
-        sword.SetActive(false);
-        sheathedSword.SetActive(true);
-        swordCollider = sword.GetComponent<Collider>();
+        }
+        
 
     }
 
     void HeavyAtkCharge(InputAction.CallbackContext HeavyAtkCharge)
     {
-        if (!isRolling && !isAttacking)
+        if (!isRolling)
         {
-            GetComponent<PlayerLightAttack>().DisableAttack();
-            GetComponent<PlayerController>().DisableRoll();
-            swordCollider.enabled = false;
-            anim.SetTrigger("HeavyAttackHold");
-            anim.ResetTrigger("HeavyAttackFail");
-            mouseAim = true;
-            PlayerController.isAttacking = true;
-            PlayerLightAttack.isAttacking = true;
-            WeaponDamage.isAttacking = true;
-            sheathedSword.SetActive(false);
-            sword.SetActive(true);
-            releaseReady = false;
+            if (!isDizzy)
+            {
+                if (isGrounded)
+                {
+                    if (!isAttacking)
+                    {
+                        anim.SetTrigger("HeavyAttackHold");
+                        anim.ResetTrigger("HeavyAttackFail");
+                        isAttacking = true;
+                        PlayerController.isAttacking = true;
+                        sword.SetActive(true);
+                        sheathedSword.SetActive(false);
+                        swordCollider.enabled = false;
+                        releaseReady = false;
+
+                    }
+                }
+            }
         }
-        
-        
+
 
     }
 
@@ -87,54 +96,50 @@ public class PlayerHeavyAttack : MonoBehaviour
     {
         releaseReady = true;
         Debug.Log("ReadyToAttack");
+        if (releaseReady == false)
+        {
+            isAttacking = false;
+            isMoving = false;
+            isRolling = false;
+        }
 
     }
 
     void HeavyAtkRelease(InputAction.CallbackContext HeavyAtkRelease)
-    { 
-
-        if (releaseReady == true)
+    {
+        if (isAttacking == true && !isMoving)
         {
-            swordCollider.enabled = true;
-            anim.SetTrigger("HeavyAttackRelease");
-            mouseAim = false;
-            PlayerController.isAttacking = true;
-            PlayerLightAttack.isAttacking = true;
-            WeaponDamage.isAttacking = true;
-            heavyAtkCharge.Disable();
+            if (releaseReady == true)
+            {
+                anim.SetTrigger("HeavyAttackRelease");
+                WeaponDamage.isAttacking = true;
+                swordCollider.enabled = true;
+                releaseReady = false;
+                GetComponent<AttackAim>().Aim();
+                GetComponent<AttackDash>().Dash();
+            }
+            else
+            {
+                anim.SetTrigger("HeavyAttackFail");
+                isAttacking = false;
+                sword.SetActive(false);
+                sheathedSword.SetActive(true);
+                PlayerController.isAttacking = false;
 
+            }
         }
-        else
-        {
-            mouseAim = false;
-            anim.SetTrigger("HeavyAttackFail");
-            PlayerController.isAttacking = false;
-            PlayerLightAttack.isAttacking = false;
-            WeaponDamage.isAttacking = false;
-            sheathedSword.SetActive(true);
-            sword.SetActive(false);
-            releaseReady = false;
-            GetComponent<PlayerLightAttack>().EnableAttack();
-            GetComponent<PlayerController>().EnableRoll();
-            swordCollider.enabled = true;
-        }
+
+
     }
 
-
-    IEnumerator HeavyAttackEndAnimEvent()
+    void HeavyAttackEndAnimEvent()
     {
-        PlayerController.isAttacking = false;
-        PlayerLightAttack.isAttacking = false;
-        WeaponDamage.isAttacking = false;
-        sheathedSword.SetActive(true);
+        isAttacking = false;
         sword.SetActive(false);
-        releaseReady = false;
-        GetComponent<PlayerLightAttack>().EnableAttack();
-        GetComponent<PlayerController>().EnableRoll();
-
-        yield return new WaitForSeconds(0.5f);
-
-        heavyAtkCharge.Enable();
+        sheathedSword.SetActive(true);
+        swordCollider.enabled = false;
+        WeaponDamage.isAttacking = false;
+        PlayerController.isAttacking = false;
     }
 
     public void EnableHeavyAttackCharge()
@@ -157,4 +162,5 @@ public class PlayerHeavyAttack : MonoBehaviour
 
         playerInput.Disable();
     }
+
 }

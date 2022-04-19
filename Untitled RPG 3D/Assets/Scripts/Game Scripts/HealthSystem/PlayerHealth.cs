@@ -7,7 +7,7 @@ public class PlayerHealth : MonoBehaviour
     //Animation
     Animator anim;
 
-    public static bool playerIsDead = false;
+    public static bool isDead = false;
     public int maxHP = 100;
     public static int currentHP = 0;
     public int currentHPVisible = 0;
@@ -44,11 +44,12 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHP == 0)
         {
-            playerIsDead = true;
+            isDead = true;
             anim.SetTrigger("Dead");
-            GetComponent<PlayerController>().DisableMovement();
-            GetComponent<PlayerLightAttack>().DisableAttack();
-            GetComponent<PlayerHeavyAttack>().DisableHeavyAttackCharge();
+            //GetComponent<PlayerController>().DisableMovement();
+            PlayerController.isDead = true;
+            /*GetComponent<PlayerLightAttack>().DisableAttack();
+            GetComponent<PlayerHeavyAttack>().DisableHeavyAttackCharge();*/
         }
     }
 

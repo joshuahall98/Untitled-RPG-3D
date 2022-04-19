@@ -45,7 +45,7 @@ public class EnemyTest : MonoBehaviour, CooldownActive
     {
                    
 
-        isPlayerDead = PlayerHealth.playerIsDead;
+        isPlayerDead = PlayerHealth.isDead;
 
         if (isPlayerDead == true)
         {

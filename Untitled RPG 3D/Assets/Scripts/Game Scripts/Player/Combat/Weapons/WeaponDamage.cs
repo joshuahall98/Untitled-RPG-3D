@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WeaponDamage : MonoBehaviour
 {
+    //THIS SCRIPT CHOOSES THE DAMAGE A WEAPON CAN DO WHEN IT COLLIDES WITH AN ENEMY
+
     public static bool isAttacking = false;
 
     [SerializeField] int damage = 100;
