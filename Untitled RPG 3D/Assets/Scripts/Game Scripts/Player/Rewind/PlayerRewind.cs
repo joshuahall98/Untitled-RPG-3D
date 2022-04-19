@@ -145,8 +145,6 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         }
 
-
-
         //make sure rewinds don't fall below 0
         if (rewindsLeft <= 0)
         {
@@ -165,8 +163,9 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         {
             rewindFillXPAmount = 0;
             rewindsLeft++;
-            j = j - 1;
-            k = rewindFill.Length - j;
+            /*j = j - 1;
+            k = rewindFill.Length - j;*/
+            k = rewindsLeft;
 
         }
 
@@ -182,10 +181,15 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     void Rewind()
     {
         //xp system
-        j = j + 1;
-        k = rewindsLeft - j;
+        //j = j + 1;
+        k = rewindsLeft - 1;
         currentFill = rewindFill[k];
         currentFill.fillAmount = 0;
+        if(rewindsLeft < rewindFill.Length)
+        {
+            currentFill = rewindFill[k + 1];
+            currentFill.fillAmount = 0;
+        }
         if (rewindsLeft == maxRewinds)
         {
             rewindFillXPAmount = 0;
@@ -193,9 +197,6 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         //decreasing rewinds
         rewindsLeft -= 1;
-
-        
-        
 
         //takes point of time from array and sets player to position
         PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
@@ -224,7 +225,11 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
                 {
                     if (cooldownSystem.IsOnCooldown(id)) { return; }
                     {
-                        Rewinding = true;
+                        if(rewindsLeft > 0)
+                        {
+                            Rewinding = true;
+                        }
+                        
 
                         cooldownSystem.PutOnCooldown(this);
                     }
