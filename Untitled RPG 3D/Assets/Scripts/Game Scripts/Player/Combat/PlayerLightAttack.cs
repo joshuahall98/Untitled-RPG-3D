@@ -82,7 +82,6 @@ public class PlayerLightAttack : MonoBehaviour
                             PlayerController.isAttacking = true;
                             sword.SetActive(true);
                             sheathedSword.SetActive(false);
-                            swordCollider.enabled = true;
                             atkNum++;
                             swingCDTimer = 1;
                             GetComponent<AttackDash>().Dash();
@@ -96,7 +95,6 @@ public class PlayerLightAttack : MonoBehaviour
                             PlayerController.isAttacking = true;
                             sword.SetActive(true);
                             sheathedSword.SetActive(false);
-                            swordCollider.enabled = true;
                             atkNum++;
                             swingCDTimer = 1;
                             GetComponent<AttackDash>().Dash();
@@ -114,7 +112,6 @@ public class PlayerLightAttack : MonoBehaviour
         PlayerController.isAttacking = false;
         sword.SetActive(false);
         sheathedSword.SetActive(true);
-        swordCollider.enabled = false;
         //3 hit combo cd
         if (atkNum >= 3)
         {
@@ -125,6 +122,16 @@ public class PlayerLightAttack : MonoBehaviour
             lightAtk.Enable();
             atkNum = 0;
         }
+    }
+
+    void LightAttackSwordColliderOn()
+    {
+        swordCollider.enabled = true;
+    }
+
+    void LightAttackSwordCollideroff()
+    {
+        swordCollider.enabled = false;
     }
 
     public void EnableAttack()

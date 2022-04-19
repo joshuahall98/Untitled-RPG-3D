@@ -29,7 +29,15 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
     //UI
     public Image[] rewindFill;
+    public Image[] rewindContainer;
+    public float rewindFillXPAmount;
+    //these two ints are used to figure out which container you are currently trying to fill up
+    int j = 0;
+    int k = 0;
+    float random;
     public Image currentContainer;
+    public Image currentFill;
+    public Image refillingContainer;
     public HealthBar healthBar;
     public HealthBar rewindFadedHPBar;
 
@@ -65,6 +73,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         isAttacking = PlayerController.isAttacking;
         isDead = PlayerController.isDead;
 
+        
+
         //Run rewind function if variables are met 
         if (Rewinding == true && rewindsLeft > 0)
         {
@@ -99,27 +109,43 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         }
 
-        //Rewind UI hour glass
+        //Rewind UI hour glass fill
         if (rewindsLeft > maxRewinds)
         {
             rewindsLeft = maxRewinds;
         }
 
+        //this fills up the rewind containers
         for (int i = 0; i < rewindFill.Length; i++)
         {
             if(i < rewindsLeft)
             {
-                //rewindsContainer[i].gameObject.SetActive(true);
-                currentContainer = rewindFill[i];
-                currentContainer.fillAmount = 1;
+                currentFill = rewindFill[i];
+                currentFill.fillAmount = 1;
+            }
+
+        }
+
+        // this makes sure the max rewind UI matches max rewinds
+        for (int i = 0; i < rewindContainer.Length; i++)
+        {
+            if (i < maxRewinds)
+            {
+                currentContainer = rewindContainer[i];
+                currentContainer.enabled = true;
             }
             else
             {
-                //rewindsContainer[i].gameObject.SetActive(false);
-                currentContainer = rewindFill[i];
-                currentContainer.fillAmount = 0;
+                currentContainer = rewindContainer[i];
+                currentFill = rewindFill[i];
+                currentFill.enabled = false;
+                currentContainer.enabled = false;
+                
             }
+
         }
+
+
 
         //make sure rewinds don't fall below 0
         if (rewindsLeft <= 0)
@@ -127,13 +153,49 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             rewindsLeft = 0;
         }
 
+        //filling up the hour glass
+        if (rewindsLeft < maxRewinds)
+        {
+            refillingContainer = rewindFill[k];
+            refillingContainer.fillAmount = rewindFillXPAmount;
+        }
+
+        //when you fill up a rewind container start the count from scratch
+        if(rewindFillXPAmount >= 1)
+        {
+            rewindFillXPAmount = 0;
+            rewindsLeft++;
+            j = j - 1;
+            k = rewindFill.Length - j;
+
+        }
+
+        //can't fill up if dead
+        if (isDead)
+        {
+            rewindFillXPAmount = 0;
+        }
+
     }
 
     //rewind player to point x seconds ago
     void Rewind()
     {
+        //xp system
+        j = j + 1;
+        k = rewindsLeft - j;
+        currentFill = rewindFill[k];
+        currentFill.fillAmount = 0;
+        if (rewindsLeft == maxRewinds)
+        {
+            rewindFillXPAmount = 0;
+        }
+
         //decreasing rewinds
         rewindsLeft -= 1;
+
+        
+        
 
         //takes point of time from array and sets player to position
         PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
@@ -170,6 +232,20 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             }
         }
         
+    }
+
+    //increase the amount of rewinds you have
+    public void IncreaseRewinds()
+    {
+        rewindsLeft++;
+    }
+
+    //random xp amount
+    public void XPAmount()
+    {
+        random = Random.Range(0.1f, 0.4f);
+        rewindFillXPAmount = rewindFillXPAmount + random;
+
     }
 
     //disable rewind input

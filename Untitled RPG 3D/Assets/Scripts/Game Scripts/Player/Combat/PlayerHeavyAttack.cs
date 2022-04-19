@@ -142,6 +142,16 @@ public class PlayerHeavyAttack : MonoBehaviour
         PlayerController.isAttacking = false;
     }
 
+    void HeavyAttackSwordColliderOn()
+    {
+        swordCollider.enabled = true;
+    }
+
+    void HeavyAttackSwordColliderOff()
+    {
+        swordCollider.enabled = false;
+    }
+
     public void EnableHeavyAttackCharge()
     {
         heavyAtkCharge.Enable();
