@@ -14,12 +14,15 @@ public class EnemyTest : MonoBehaviour, CooldownActive
     public string id => Id;
     public float cooldownDuration => CooldownDuration;
 
+    //EnemyStats from Scriptable Object
+    public EnemyScriptableObject Enemy;
+
     //Animator
     private Animator anim;
     public Transform[] waypoints;
     public Transform HealthBarPrefab;
-    public Transform Player;
-    public float speed = 0f;
+    Transform Player;
+    public float speed;
     public NavMeshAgent agent;
 
     public float distFromPlayer;
@@ -37,6 +40,9 @@ public class EnemyTest : MonoBehaviour, CooldownActive
         //NavMesh
         agent = GetComponent<NavMeshAgent>();
 
+        
+        Player = Enemy.Player;
+        
         
 
     }

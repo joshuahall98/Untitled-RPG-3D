@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    
+
     public int maxHP = 100;
     public static int currentHP = 0;
     public int currentHPVisible = 0;
