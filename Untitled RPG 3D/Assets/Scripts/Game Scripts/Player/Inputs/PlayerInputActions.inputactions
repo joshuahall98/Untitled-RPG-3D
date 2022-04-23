@@ -62,9 +62,9 @@
                     "interactions": ""
                 },
                 {
-                    "name": "TestAttackDash",
+                    "name": "Pause",
                     "type": "Button",
-                    "id": "608b8b8f-01cf-47dd-86cc-ba0bf645a82b",
+                    "id": "30af3cc4-f681-41eb-a8e8-5befa9164c57",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -194,12 +194,12 @@
                 },
                 {
                     "name": "",
-                    "id": "f939a360-817d-4a0f-a894-cee46d2563d1",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "Tap",
+                    "id": "f1d8622a-1ebb-4aed-9dc7-458936bde30f",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "TestAttackDash",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

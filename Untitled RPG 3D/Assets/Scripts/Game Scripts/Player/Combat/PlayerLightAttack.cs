@@ -1,16 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerLightAttack : MonoBehaviour
 {
     //Animation
     Animator anim;
-
-    public PlayerInputActions playerInput;
-
-    InputAction lightAtk;
 
     //action checkers
     public bool isMoving;
@@ -31,12 +26,6 @@ public class PlayerLightAttack : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
-
-        playerInput = new PlayerInputActions();
-
-        playerInput.Player.Attack.performed += LightAtk;
-
-        lightAtk = playerInput.Player.Attack;
 
         swordCollider = sword.GetComponent<Collider>();
 
@@ -64,7 +53,7 @@ public class PlayerLightAttack : MonoBehaviour
         }  
     }
 
-    void LightAtk(InputAction.CallbackContext attk)
+    public void LightAtk()
     {
         if (!isRolling)
         {
@@ -115,11 +104,11 @@ public class PlayerLightAttack : MonoBehaviour
         //3 hit combo cd
         if (atkNum >= 3)
         {
-            lightAtk.Disable();
+            GetComponent<PlayerController>().DisableLightAttack();
 
             yield return new WaitForSeconds(1);
 
-            lightAtk.Enable();
+            GetComponent<PlayerController>().EnableLightAttack();
             atkNum = 0;
         }
     }
@@ -132,27 +121,6 @@ public class PlayerLightAttack : MonoBehaviour
     void LightAttackSwordCollideroff()
     {
         swordCollider.enabled = false;
-    }
-
-    public void EnableAttack()
-    {
-        lightAtk.Enable();
-    }
-
-    public void DisableAttack()
-    {
-        lightAtk.Disable();
-    }
-
-    private void OnEnable()
-    {
-        playerInput.Enable();
-    }
-
-    private void OnDisable()
-    {
-
-        playerInput.Disable();
     }
 
 }

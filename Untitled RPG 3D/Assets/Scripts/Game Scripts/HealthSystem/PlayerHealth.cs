@@ -8,12 +8,13 @@ public class PlayerHealth : MonoBehaviour
     Animator anim;
 
     public static bool isDead = false;
-    public int maxHP = 100;
+    public static int maxHP = 100;
     public static int currentHP = 0;
     public int currentHPVisible = 0;
 
-
-    public HealthBar healthBar;
+    //UI
+    public GameObject rewindUI;
+    //public HealthBar healthBar;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +22,9 @@ public class PlayerHealth : MonoBehaviour
         anim = GetComponent<Animator>();
 
         currentHP = maxHP;
-        healthBar.SetMaxHealth(maxHP);
+
+        rewindUI = GameObject.Find("PlayerUI");
+        rewindUI.GetComponent<PlayerHPBar>().SetMaxHP();
     }
 
     // Update is called once per frame
@@ -40,16 +43,13 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHP -= damage;
 
-        healthBar.SetHealth(currentHP);
+        rewindUI.GetComponent<PlayerHPBar>().AlterHP();
 
         if (currentHP == 0)
         {
             isDead = true;
             anim.SetTrigger("Dead");
-            //GetComponent<PlayerController>().DisableMovement();
             PlayerController.isDead = true;
-            /*GetComponent<PlayerLightAttack>().DisableAttack();
-            GetComponent<PlayerHeavyAttack>().DisableHeavyAttackCharge();*/
         }
     }
 

@@ -4851,7 +4851,7 @@ GameObject:
   - component: {fileID: 1288114960008931179}
   - component: {fileID: 3402051730587648007}
   - component: {fileID: 2195279927249736963}
-  - component: {fileID: -1644106249419817510}
+  - component: {fileID: 1936359118536193936}
   m_Layer: 0
   m_Name: XP
   m_TagString: Untagged
@@ -4991,7 +4991,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-1644106249419817510
+--- !u!114 &1936359118536193936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5000,6 +5000,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8392189609667884288}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc361a56401983b4fb7a9085539a4c4f, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ae0deab139d41d4086ea413469f2713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
