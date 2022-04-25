@@ -75,9 +75,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""TestAttackDash"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
-                    ""id"": ""608b8b8f-01cf-47dd-86cc-ba0bf645a82b"",
+                    ""id"": ""30af3cc4-f681-41eb-a8e8-5befa9164c57"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -207,12 +207,12 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f939a360-817d-4a0f-a894-cee46d2563d1"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": ""Tap"",
+                    ""id"": ""f1d8622a-1ebb-4aed-9dc7-458936bde30f"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""TestAttackDash"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -236,7 +236,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_HeavyAtkCharge = m_Player.FindAction("HeavyAtkCharge", throwIfNotFound: true);
         m_Player_TakeDamageTest = m_Player.FindAction("TakeDamageTest", throwIfNotFound: true);
         m_Player_HeavyAtkRelease = m_Player.FindAction("HeavyAtkRelease", throwIfNotFound: true);
-        m_Player_TestAttackDash = m_Player.FindAction("TestAttackDash", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -293,7 +293,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_HeavyAtkCharge;
     private readonly InputAction m_Player_TakeDamageTest;
     private readonly InputAction m_Player_HeavyAtkRelease;
-    private readonly InputAction m_Player_TestAttackDash;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -305,7 +305,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @HeavyAtkCharge => m_Wrapper.m_Player_HeavyAtkCharge;
         public InputAction @TakeDamageTest => m_Wrapper.m_Player_TakeDamageTest;
         public InputAction @HeavyAtkRelease => m_Wrapper.m_Player_HeavyAtkRelease;
-        public InputAction @TestAttackDash => m_Wrapper.m_Player_TestAttackDash;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -336,9 +336,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @HeavyAtkRelease.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkRelease;
                 @HeavyAtkRelease.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkRelease;
                 @HeavyAtkRelease.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkRelease;
-                @TestAttackDash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTestAttackDash;
-                @TestAttackDash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTestAttackDash;
-                @TestAttackDash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTestAttackDash;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -364,9 +364,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @HeavyAtkRelease.started += instance.OnHeavyAtkRelease;
                 @HeavyAtkRelease.performed += instance.OnHeavyAtkRelease;
                 @HeavyAtkRelease.canceled += instance.OnHeavyAtkRelease;
-                @TestAttackDash.started += instance.OnTestAttackDash;
-                @TestAttackDash.performed += instance.OnTestAttackDash;
-                @TestAttackDash.canceled += instance.OnTestAttackDash;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -389,6 +389,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnHeavyAtkCharge(InputAction.CallbackContext context);
         void OnTakeDamageTest(InputAction.CallbackContext context);
         void OnHeavyAtkRelease(InputAction.CallbackContext context);
-        void OnTestAttackDash(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

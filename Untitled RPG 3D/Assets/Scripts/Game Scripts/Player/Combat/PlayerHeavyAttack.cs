@@ -1,16 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerHeavyAttack : MonoBehaviour
 {
     //Animation
     Animator anim;
-
-    public PlayerInputActions playerInput;
-
-    InputAction heavyAtkCharge;
 
     //action checkers
     public bool isMoving;
@@ -26,19 +21,10 @@ public class PlayerHeavyAttack : MonoBehaviour
     Collider swordCollider;
 
     bool releaseReady = false;
-    float chargeTimer;
-    bool timerOn;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
-
-        playerInput = new PlayerInputActions();
-
-        playerInput.Player.HeavyAtkCharge.performed += HeavyAtkCharge;
-        playerInput.Player.HeavyAtkRelease.performed += HeavyAtkRelease;
-
-        heavyAtkCharge = playerInput.Player.HeavyAtkCharge;
 
         swordCollider = sword.GetComponent<Collider>();
     }
@@ -50,21 +36,11 @@ public class PlayerHeavyAttack : MonoBehaviour
         isRolling = PlayerController.isRolling;
         isDizzy = PlayerController.isDizzy;
         isGrounded = PlayerController.isGrounded;
-        isMoving = PlayerController.isMoving;
-
-        if (timerOn)
-        {
-            chargeTimer += Time.deltaTime;
-        }
-        else
-        {
-
-        }
-        
+        isMoving = PlayerController.isMoving;   
 
     }
 
-    void HeavyAtkCharge(InputAction.CallbackContext HeavyAtkCharge)
+    public void HeavyAtkCharge()
     {
         if (!isRolling)
         {
@@ -105,7 +81,7 @@ public class PlayerHeavyAttack : MonoBehaviour
 
     }
 
-    void HeavyAtkRelease(InputAction.CallbackContext HeavyAtkRelease)
+    public void HeavyAtkRelease()
     {
         if (isAttacking == true && !isMoving)
         {
@@ -150,27 +126,6 @@ public class PlayerHeavyAttack : MonoBehaviour
     void HeavyAttackSwordColliderOff()
     {
         swordCollider.enabled = false;
-    }
-
-    public void EnableHeavyAttackCharge()
-    {
-        heavyAtkCharge.Enable();
-    }
-
-    public void DisableHeavyAttackCharge()
-    {
-        heavyAtkCharge.Disable();
-    }
-
-    private void OnEnable()
-    {
-        playerInput.Enable();
-    }
-
-    private void OnDisable()
-    {
-
-        playerInput.Disable();
     }
 
 }
