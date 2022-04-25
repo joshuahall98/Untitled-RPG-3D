@@ -21,16 +21,17 @@ public class EnemyTest : MonoBehaviour, CooldownActive
     private Animator anim;
     public Transform[] waypoints;
     public Transform HealthBarPrefab;
-    Transform Player;
+    public GameObject Player;
     public float speed;
     public NavMeshAgent agent;
 
     public float distFromPlayer;
-
-    public GameObject projectile;
-
+    public float retreatDistance;
+    public float attackRadius;
+    public float stoppingDistance;
 
     bool isPlayerDead;
+   
 
 
     private void Start()
@@ -40,8 +41,10 @@ public class EnemyTest : MonoBehaviour, CooldownActive
         //NavMesh
         agent = GetComponent<NavMeshAgent>();
 
+
+        Player = GameObject.FindGameObjectWithTag("Player");
+        retreatDistance = Enemy.retreatDist;
         
-        Player = Enemy.Player;
         
         
 
@@ -58,27 +61,15 @@ public class EnemyTest : MonoBehaviour, CooldownActive
             PlayerDead();
         }
         //Track distance from Enemy to Player
-        distFromPlayer = Vector3.Distance(Player.position, transform.position);
+        distFromPlayer = Vector3.Distance(Player.transform.position, transform.position);
        
-
-    }
-
-    void RangedAttack()
-    {
-        if (cooldownSystem.IsOnCooldown(id)) { return; }
-        {
-
-            Instantiate(projectile, transform.position, Quaternion.identity);
-
-            cooldownSystem.PutOnCooldown(this);
-        }
-
 
     }
 
 
     public void Death()
     {
+        anim.SetBool("isDead", true);
         anim.Play("Die");
         Destroy(gameObject, 2);
         GetComponent<ConXP>().DropXP();
