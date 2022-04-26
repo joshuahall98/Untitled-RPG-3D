@@ -36,8 +36,8 @@ public class EnemyHealth : MonoBehaviour
 
         if(currentHP == 0)
         {
-
-            //GetComponent<EnemyTest>().Death();
+           
+            GetComponent<EnemyTest>().Death();
             GetComponent<ConXP>().DropXP();
         }
     }

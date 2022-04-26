@@ -11,6 +11,7 @@ public class AttackBehaviour : StateMachineBehaviour
     {
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         enemySpeed = animator.GetComponent<EnemyTest>().speed;
+      
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -19,12 +20,14 @@ public class AttackBehaviour : StateMachineBehaviour
         //this is meant to enable the hit box for the sword while you're attacking, doesn't work though, it is somewhat working as it does log the attacking temporarily then stops
         //how to keep hit box active while attacking??
         JAHEnemySword.isAttacking = true;
-        Debug.Log("I am attacking");
+        EnemyTest Agent = animator.GetComponent<EnemyTest>();
+        Agent.agent.velocity = Vector3.zero;
 
         animator.SetBool("isAttacking", false);
+        animator.SetBool("isFollowing", true);
 
-       // animator.transform.position = Vector3.MoveTowards(animator.transform.position, playerPos.position, -enemySpeed * Time.deltaTime);
-       
+        // animator.transform.position = Vector3.MoveTowards(animator.transform.position, playerPos.position, -enemySpeed * Time.deltaTime);
+
 
     }
 
