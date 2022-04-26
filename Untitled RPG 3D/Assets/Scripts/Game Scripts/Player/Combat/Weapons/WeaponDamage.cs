@@ -8,6 +8,8 @@ public class WeaponDamage : MonoBehaviour
 
     public static bool isAttacking = false;
 
+    public WeaponScriptableObject Weapon;
+
     [SerializeField] int damage = 100;
 
     private void OnCollisionEnter(Collision collision)
@@ -22,4 +24,16 @@ public class WeaponDamage : MonoBehaviour
         }
 
     }
+
+    public void LightAttackDamage()
+    {
+        damage = Weapon.baseDmg;
+    }
+
+    public void HeavyAttackDamage()
+    {
+        damage = Weapon.heavyDmg;
+    }
+
+
 }

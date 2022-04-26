@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerStartSword
   m_EditorClassIdentifier: 
   baseDmg: 10
-  heavyDmg: 0
+  heavyDmg: 20

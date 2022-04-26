@@ -65,6 +65,7 @@ public class PlayerLightAttack : MonoBehaviour
                     {
                         if (atkNum == 0 || atkNum == 2)
                         {
+                            sword.GetComponent<WeaponDamage>().LightAttackDamage();
                             anim.SetTrigger("LightAttack1");
                             GetComponent<AttackAim>().Aim();
                             WeaponDamage.isAttacking = true;
@@ -78,6 +79,7 @@ public class PlayerLightAttack : MonoBehaviour
                         }
                         else
                         {
+                            sword.GetComponent<WeaponDamage>().LightAttackDamage();
                             anim.SetTrigger("LightAttack2");
                             GetComponent<AttackAim>().Aim();
                             WeaponDamage.isAttacking = true;

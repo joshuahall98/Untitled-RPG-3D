@@ -20,7 +20,7 @@ public class PlayerHeavyAttack : MonoBehaviour
     public GameObject sheathedSword;
     Collider swordCollider;
 
-    bool releaseReady = false;
+    public bool releaseReady = false;
 
     private void Awake()
     {
@@ -87,6 +87,7 @@ public class PlayerHeavyAttack : MonoBehaviour
         {
             if (releaseReady == true)
             {
+                sword.GetComponent<WeaponDamage>().HeavyAttackDamage();
                 anim.SetTrigger("HeavyAttackRelease");
                 WeaponDamage.isAttacking = true;
                 swordCollider.enabled = true;

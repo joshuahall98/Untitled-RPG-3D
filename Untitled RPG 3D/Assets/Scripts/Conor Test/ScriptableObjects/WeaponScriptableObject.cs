@@ -7,5 +7,7 @@ public class WeaponScriptableObject : ScriptableObject
 {
     public int baseDmg;
     public int heavyDmg;
+    public int dashSpeed;
+    public int dashDistance;
     
 }
