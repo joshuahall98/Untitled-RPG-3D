@@ -8,21 +8,23 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: KKK
-  m_Shader: {fileID: 4800000, guid: 1f53b2e079258874d987bc2948630b78, type: 3}
-  m_ShaderKeywords: _BASEWINDCHANNEL_B _BLENDNORMALS_ON _DETAILSOURCE_SPECULARALPHA
-    _ENABLETRIPLANARPROJECTION_ON _GLOSSYREFLECTIONS_OFF _LAYERCHANNEL_G _SOURCE_SPECULARALPHA
-    _TRIPLANARSPACEPROJECTION_OBJECTSPACE _USEAOFROMMAINPROPERTIES_ON _USEEMISSIONFROMMAINPROPERTIES_ON
-    _USEFOG_ON _VERTEXCOLORCHANNEL_G
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: _ALPHATEST_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2450
+  stringTagMap:
+    RenderType: TransparentCutout
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _BackTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -130,19 +132,36 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _2ndNormalPower: 1
+    - _AlphaClip: 1
     - _AoIntensity: 1
     - _BaseWindChannel: 2
+    - _Blend: 0
     - _BlendMainNormal: 0
     - _BlendNormals: 1
     - _BlendmodeOverlay: 0
     - _Brightness: 1
     - _BumpScale: 1
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
     - _ContrastDetailMap: 0
     - _Coverage: 0.3
     - _Cull: 0
     - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
     - _DetailBrightness: 1
     - _DetailGlossiness: 0.5
     - _DetailNormalMapScale: 1
@@ -153,6 +172,7 @@ Material:
     - _EmissionIntensity: 1
     - _EnableDetailMask: 0
     - _EnableTriplanarProjection: 1
+    - _EnvironmentReflections: 1
     - _Exposure: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -179,12 +199,16 @@ Material:
     - _OcclusionStrength: 1
     - _Octaves: 8
     - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
     - _Rotation: 0
+    - _SampleGI: 0
     - _Saturation: 0
     - _ScatteringPower: 10
     - _SecondNormalPower: 1
     - _SeeVertexColor: 0
     - _SeeVertexColors: 0
+    - _Smoothness: 0.5
     - _SmoothnessPower: 0
     - _SmoothnessTextureChannel: 0
     - _Softness: 0.25
@@ -193,6 +217,7 @@ Material:
     - _SpecularIntensity: 0.2
     - _SpreadDetailMap: 0
     - _SrcBlend: 1
+    - _Surface: 0
     - _Tiling: 1
     - _Tiling01: 0.02
     - _Tiling02: 0.03
@@ -212,6 +237,7 @@ Material:
     - _WindMultiplier: 0
     - _WindTrunkContrast: 10
     - _WindTrunkPosition: 0
+    - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 1
     - __dirty: 1
@@ -219,6 +245,7 @@ Material:
     - _cloudsPosition: 1
     m_Colors:
     - _2ndColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.84705883, g: 0.84313726, b: 0.8352941, a: 1}
     - _CloudsColor: {r: 0.18431365, g: 0.35686278, b: 0.462745, a: 1}
     - _Color: {r: 0.8470589, g: 0.8431373, b: 0.8352942, a: 1}
     - _DetailColor: {r: 1, g: 1, b: 1, a: 0}
@@ -233,3 +260,16 @@ Material:
     - _TriplanarXYTilingXYZWOffsetXY: {r: 1, g: 1, b: 0, a: 0}
     - _TriplanarXYTilingXYZWOffsetXY1: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
+--- !u!114 &72058254308962214
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 4
