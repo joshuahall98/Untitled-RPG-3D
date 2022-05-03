@@ -13,17 +13,21 @@ public class AttackDash : MonoBehaviour
 
     public bool hitReg = false;
     public bool canDash = false;
-    public float dashDistance = 2;
-    public float speed = 10;
+    public static float dashDistance;
+    public static float speed;
 
     Vector3 startingPoint;
     float distTravelled;
+
+    public GameObject sword;
 
     Ray ray;
     RaycastHit hit;
 
     void Awake()
     {
+        sword.GetComponent<WeaponDashStats>().WeaponDashDistance();
+        sword.GetComponent<WeaponDashStats>().WeaponDashSpeed();
 
         mainCamera = Camera.main;
 

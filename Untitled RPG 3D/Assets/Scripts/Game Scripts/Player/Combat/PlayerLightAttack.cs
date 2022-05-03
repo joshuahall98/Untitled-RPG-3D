@@ -19,6 +19,7 @@ public class PlayerLightAttack : MonoBehaviour
     public GameObject sword;
     public GameObject sheathedSword;
     Collider swordCollider;
+    AudioSource audio;
 
     public float swingCDTimer = 0;
     public int atkNum = 0;
@@ -28,6 +29,8 @@ public class PlayerLightAttack : MonoBehaviour
         anim = GetComponent<Animator>();
 
         swordCollider = sword.GetComponent<Collider>();
+
+        audio = sword.GetComponent<AudioSource>();
 
     }
 
@@ -74,7 +77,7 @@ public class PlayerLightAttack : MonoBehaviour
                             sheathedSword.SetActive(false);
                             atkNum++;
                             swingCDTimer = 1;
-                            GetComponent<AttackDash>().Dash();
+                            //GetComponent<AttackDash>().Dash();
                             
                         }
                         else
@@ -88,7 +91,7 @@ public class PlayerLightAttack : MonoBehaviour
                             sheathedSword.SetActive(false);
                             atkNum++;
                             swingCDTimer = 1;
-                            GetComponent<AttackDash>().Dash();
+                            //GetComponent<AttackDash>().Dash();
                         }
                     }
                 }
@@ -115,6 +118,12 @@ public class PlayerLightAttack : MonoBehaviour
         }
     }
 
+    void LightAttackStartSwingAnimEvent()
+    {
+        LightAttackSwordColliderOn();
+        LightAttackAudio();
+    }
+
     void LightAttackSwordColliderOn()
     {
         swordCollider.enabled = true;
@@ -124,5 +133,12 @@ public class PlayerLightAttack : MonoBehaviour
     {
         swordCollider.enabled = false;
     }
+
+    void LightAttackAudio()
+    {
+        audio.Play();
+    }
+
+
 
 }

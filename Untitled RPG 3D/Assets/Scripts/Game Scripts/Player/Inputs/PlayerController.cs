@@ -268,6 +268,8 @@ public class PlayerController : MonoBehaviour
                         {
                             isRolling = true;
                             anim.SetTrigger("Roll");
+                            //DisableHeavyAttackCharge();
+                            DisableLightAttack();
                         }
                     }
                 }
@@ -301,18 +303,26 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void RollEndAnimEvent()
+    IEnumerator RollEndAnimEvent()
     {
         isRolling = false;
         if ((rollCDTimer > 0) && (rollUsed == 3))
         {
             StartCoroutine(Dizzy());
+
         }
         else
         {
             rewind.Enable();
             anim.ResetTrigger("Roll");
+   
         }
+
+        //this prevents issue where attack after roll are clunky, this line prevents users from being able to instantly attack after rolling
+        yield return new WaitForSeconds(0.2f);
+
+        EnableLightAttack();
+        //EnableHeavyAttackCharge();
 
     }
 
