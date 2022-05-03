@@ -93,7 +93,7 @@ public class PlayerHeavyAttack : MonoBehaviour
                 swordCollider.enabled = true;
                 releaseReady = false;
                 GetComponent<AttackAim>().Aim();
-                GetComponent<AttackDash>().Dash();
+                //GetComponent<AttackDash>().Dash();
             }
             else
             {
