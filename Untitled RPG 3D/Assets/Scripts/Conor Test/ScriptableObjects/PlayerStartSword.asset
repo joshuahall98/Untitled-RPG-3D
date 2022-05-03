@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseDmg: 10
   heavyDmg: 20
+  dashSpeed: 10
+  dashDistance: 2
+  heavyDashDistance: 0
