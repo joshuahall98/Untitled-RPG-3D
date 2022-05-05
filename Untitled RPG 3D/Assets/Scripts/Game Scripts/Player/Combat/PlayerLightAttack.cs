@@ -77,7 +77,7 @@ public class PlayerLightAttack : MonoBehaviour
                             sheathedSword.SetActive(false);
                             atkNum++;
                             swingCDTimer = 1;
-                            //GetComponent<AttackDash>().Dash();
+                            FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
                             
                         }
                         else
@@ -91,7 +91,7 @@ public class PlayerLightAttack : MonoBehaviour
                             sheathedSword.SetActive(false);
                             atkNum++;
                             swingCDTimer = 1;
-                            //GetComponent<AttackDash>().Dash();
+                            FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
                         }
                     }
                 }
@@ -118,12 +118,6 @@ public class PlayerLightAttack : MonoBehaviour
         }
     }
 
-    void LightAttackStartSwingAnimEvent()
-    {
-        LightAttackSwordColliderOn();
-        LightAttackAudio();
-    }
-
     void LightAttackSwordColliderOn()
     {
         swordCollider.enabled = true;
@@ -133,12 +127,6 @@ public class PlayerLightAttack : MonoBehaviour
     {
         swordCollider.enabled = false;
     }
-
-    void LightAttackAudio()
-    {
-        audio.Play();
-    }
-
 
 
 }

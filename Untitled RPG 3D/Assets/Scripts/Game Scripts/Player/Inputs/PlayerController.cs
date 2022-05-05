@@ -375,6 +375,7 @@ public class PlayerController : MonoBehaviour
     //Pause game 
     void PressEsc(InputAction.CallbackContext PauseInput)
     {
+        Debug.Log("Pause");
         gameManager.GetComponent<MenuManager>().PressEsc();
     }
 

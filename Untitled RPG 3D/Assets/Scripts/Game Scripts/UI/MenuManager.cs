@@ -13,7 +13,7 @@ public class MenuManager : MonoBehaviour
     public bool paused = false;
 
     GameObject player;
-    public GameObject menuUI;
+    GameObject menuUI;
 
     private void Awake()
     {
@@ -23,6 +23,12 @@ public class MenuManager : MonoBehaviour
         menuUI = GameObject.Find("PlayerUI");
 
         playerInput.Menu.Pause.performed += PressEscMenu;
+
+    }
+
+    private void Start()
+    {
+        DisableMenuActionMap();
     }
 
     private void PressEscMenu(InputAction.CallbackContext press)
@@ -45,8 +51,8 @@ public class MenuManager : MonoBehaviour
         {
             UnPauseGame();
             paused = false;
+            DisableMenuActionMap();
             player.GetComponent<PlayerController>().EnablePlayerActionMap();
-            EnableMenuActionMap();
             menuUI.GetComponent<MenuUI>().DisablePauseText();
         }
     }
