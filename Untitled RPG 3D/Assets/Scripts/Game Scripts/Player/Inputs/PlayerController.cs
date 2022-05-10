@@ -63,6 +63,9 @@ public class PlayerController : MonoBehaviour
     //menu script
     public GameObject gameManager;
 
+    //audio
+    bool runningAudio;
+
 
     void Awake()
     {
@@ -101,6 +104,7 @@ public class PlayerController : MonoBehaviour
         swordCollider = sword.GetComponent<Collider>();
         swordCollider.enabled = false;
 
+        
         
 
     }
@@ -154,6 +158,8 @@ public class PlayerController : MonoBehaviour
                             Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
                             Vector3 posLookAt = currentPos + newPos;
                             transform.LookAt(posLookAt);
+
+
                         }
                         else
                         {
@@ -174,12 +180,23 @@ public class PlayerController : MonoBehaviour
                             Vector3 posLookAt = currentPos + newPos;
                             transform.LookAt(posLookAt);
 
+
+                            
                         }
                     }
 
                 }
 
             }
+        }
+
+        if(isMoving == true)
+        {
+            FindObjectOfType<SoundManager>().PlaySound("Running");
+        }
+        else
+        {
+            FindObjectOfType<SoundManager>().StopSound("Running");
         }
         
         //BUGS
@@ -281,6 +298,7 @@ public class PlayerController : MonoBehaviour
     //rolling method
     IEnumerator RollAnimEvent()
     {
+        
 
         rewind.Disable();
         float startTime = Time.time;
