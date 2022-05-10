@@ -29,6 +29,7 @@ public class EnemyTest : MonoBehaviour, CooldownActive
     public float retreatDistance;
     public float attackRadius;
     public float stoppingDistance;
+    public float AISpace;
 
     bool isPlayerDead;
    
@@ -44,6 +45,7 @@ public class EnemyTest : MonoBehaviour, CooldownActive
 
         Player = GameObject.FindGameObjectWithTag("Player");
         retreatDistance = Enemy.retreatDist;
+        AISpace = Enemy.distFromAI;
         
         
         
