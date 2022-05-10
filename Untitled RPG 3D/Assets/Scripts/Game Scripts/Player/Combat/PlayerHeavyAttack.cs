@@ -18,6 +18,7 @@ public class PlayerHeavyAttack : MonoBehaviour
     //weapons
     public GameObject sword;
     public GameObject sheathedSword;
+    public GameObject sparkle;
     Collider swordCollider;
 
     public bool releaseReady = false;
@@ -27,6 +28,8 @@ public class PlayerHeavyAttack : MonoBehaviour
         anim = GetComponent<Animator>();
 
         swordCollider = sword.GetComponent<Collider>();
+
+        sparkle.SetActive(false);
     }
 
     private void Update()
@@ -70,23 +73,23 @@ public class PlayerHeavyAttack : MonoBehaviour
     //this line of code checks to see if the animation has reached full charge before allowing the swing to commence
     void HeavyAttackReleaseReadyAnimEvent()
     {
-        releaseReady = true;
-        Debug.Log("ReadyToAttack");
-        if (releaseReady == false)
+        if(isAttacking == true)
         {
-            isAttacking = false;
-            isMoving = false;
-            isRolling = false;
+            releaseReady = true;
+            sparkle.SetActive(true);
+            FindObjectOfType<SoundManager>().PlaySound("Heavy Attack Ding");
+            Debug.Log("ReadyToAttack");
         }
-
     }
 
     public void HeavyAtkRelease()
     {
+        
         if (isAttacking == true && !isMoving)
         {
             if (releaseReady == true)
             {
+                sparkle.SetActive(false);
                 sword.GetComponent<WeaponDamage>().HeavyAttackDamage();
                 anim.SetTrigger("HeavyAttackRelease");
                 WeaponDamage.isAttacking = true;
@@ -97,16 +100,14 @@ public class PlayerHeavyAttack : MonoBehaviour
             }
             else
             {
+                releaseReady = false;
                 anim.SetTrigger("HeavyAttackFail");
                 isAttacking = false;
                 sword.SetActive(false);
                 sheathedSword.SetActive(true);
                 PlayerController.isAttacking = false;
-
             }
         }
-
-
     }
 
     void HeavyAttackEndAnimEvent()
