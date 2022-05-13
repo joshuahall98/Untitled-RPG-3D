@@ -12,7 +12,7 @@ public class JAHEnemySwordCollision : MonoBehaviour
         {
             if (collision.gameObject.tag == "Player")
             {
-                collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(20);
+                collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(5);
                 
             } 
         }

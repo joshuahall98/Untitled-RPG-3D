@@ -14,12 +14,15 @@ public class PlayerHealth : MonoBehaviour
 
     //UI
     public GameObject rewindUI;
+    GameObject menuUI;
     //public HealthBar healthBar;
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+
+        menuUI = GameObject.Find("PlayerUI");
 
         currentHP = maxHP;
 
@@ -50,6 +53,7 @@ public class PlayerHealth : MonoBehaviour
             isDead = true;
             anim.SetTrigger("Dead");
             PlayerController.isDead = true;
+            menuUI.GetComponent<MenuUI>().EnableDeathText();
         }
     }
 
