@@ -7,10 +7,12 @@ using TMPro;
 public class MenuUI : MonoBehaviour
 {
     public TextMeshProUGUI paused;
+    public TextMeshProUGUI death;
 
     public void Awake()
     {
         DisablePauseText();
+        DisableDeathText();
     }
 
     public void EnablePauseText()
@@ -21,5 +23,15 @@ public class MenuUI : MonoBehaviour
     public void DisablePauseText()
     {
         paused.enabled = false;
+    }
+
+    public void EnableDeathText()
+    {
+        death.enabled = true;
+    }
+
+    public void DisableDeathText()
+    {
+        death.enabled = false;
     }
 }

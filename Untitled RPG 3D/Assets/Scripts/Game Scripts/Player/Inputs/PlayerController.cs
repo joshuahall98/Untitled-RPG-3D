@@ -190,12 +190,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(isMoving == true)
+        //running sound
+        if(isMoving && !isGrounded)
         {
             FindObjectOfType<SoundManager>().PlaySound("Running");
         }
         else
-        {
+        {   
             FindObjectOfType<SoundManager>().StopSound("Running");
         }
         
