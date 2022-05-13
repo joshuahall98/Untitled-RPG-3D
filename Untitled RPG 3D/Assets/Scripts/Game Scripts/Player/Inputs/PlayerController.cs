@@ -191,7 +191,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //running sound
-        if(isMoving && !isGrounded)
+        if(isMoving && isGrounded)
         {
             FindObjectOfType<SoundManager>().PlaySound("Running");
         }
