@@ -17,6 +17,9 @@ public class PlayerHealth : MonoBehaviour
     GameObject menuUI;
     //public HealthBar healthBar;
 
+    //action checker
+    public bool isRolling;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +36,8 @@ public class PlayerHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isRolling = PlayerController.isRolling;
+
         currentHPVisible = currentHP;
 
     }
@@ -44,9 +49,13 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        currentHP -= damage;
+        if (!isRolling)
+        {
+            currentHP -= damage;
 
-        rewindUI.GetComponent<PlayerHPBar>().AlterHP();
+            rewindUI.GetComponent<PlayerHPBar>().AlterHP();
+        }
+        
 
         if (currentHP == 0)
         {
