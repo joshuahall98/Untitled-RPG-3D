@@ -54,3 +54,18 @@ MonoBehaviour:
     volume: 0.05
     pitch: 1
     source: {fileID: 0}
+  - name: Heavy Attack Ding
+    clip: {fileID: 8300000, guid: 021dd3d34fc287745b4ce0adcbe11ae2, type: 3}
+    volume: 0.4
+    pitch: 1.5
+    source: {fileID: 0}
+  - name: Heavy Attack Charge
+    clip: {fileID: 8300000, guid: 4db529701c0df04478ffedb360ab1962, type: 3}
+    volume: 0.07
+    pitch: 1.5
+    source: {fileID: 0}
+  - name: Running
+    clip: {fileID: 8300000, guid: eedfbec388915c94c817ebbdd10de2fd, type: 3}
+    volume: 0.2
+    pitch: 0.6
+    source: {fileID: 0}
