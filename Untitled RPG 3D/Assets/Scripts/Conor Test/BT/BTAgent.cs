@@ -32,17 +32,17 @@ public class BTAgent : MonoBehaviour
     }
 
     //This doesn't work so feel free to edit
-    public Node.Status EnemyExists(Vector3 enemy, string tag, float distance, float maxAngle)
+    public Node.Status TargetExists(Vector3 target, string tag, float distance, float maxAngle)
     {
         
-        Vector3 directionToEnemy = enemy - this.transform.position;
-        float angle = Vector3.Angle(directionToEnemy, this.transform.forward);
+        Vector3 directionToTarget = target - this.transform.position;
+        float angle = Vector3.Angle(directionToTarget, this.transform.forward);
 
         //To Fake Hearing behind AI make it OR ||
-        if (angle <= maxAngle && directionToEnemy.magnitude <= distance)
+        if (angle <= maxAngle && directionToTarget.magnitude <= distance)
         {
             RaycastHit hitInfo;
-            if(Physics.Raycast(this.transform.position, directionToEnemy, out hitInfo))
+            if(Physics.Raycast(this.transform.position, directionToTarget, out hitInfo))
             {
                 if (hitInfo.collider.gameObject.CompareTag(tag))
                 {
@@ -66,26 +66,6 @@ public class BTAgent : MonoBehaviour
     }
 
 
-    public Node.Status PlayerExists(Vector3 player, string tag, float distance, float maxAngle)
-    {
-        Vector3 directionToPlayer = player - this.transform.position;
-        float angle = Vector3.Angle(directionToPlayer, this.transform.forward);
-
-        //"Fake Hearing behind AI
-        if (angle <= maxAngle || directionToPlayer.magnitude <= distance)
-        {
-            RaycastHit hitInfo;
-            if (Physics.Raycast(this.transform.position, directionToPlayer, out hitInfo))
-            {
-                if (hitInfo.collider.gameObject.CompareTag(tag))
-                {
-                    return Node.Status.SUCCESS;
-                }
-            }
-        }
-
-        return Node.Status.FAILURE;
-    }
 
 
     //Manage Moving to Destination

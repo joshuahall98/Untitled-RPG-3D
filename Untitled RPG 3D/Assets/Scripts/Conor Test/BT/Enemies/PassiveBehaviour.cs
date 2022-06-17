@@ -7,18 +7,18 @@ public class PassiveBehaviour : BTAgent
 {
 
     public GameObject Player;
-    public GameObject Safe;
     private Transform Enemy;
 
 
-    
+
     // Start is called before the first frame update
     new void Start()
     {
+
         Enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
 
         base.Start();
-      
+
 
         //Leaf Nodes - The Basic Decision
         Leaf followPlayer = new Leaf("Following the Player", FollowPlayer);
@@ -99,7 +99,7 @@ public class PassiveBehaviour : BTAgent
         return s;
     }
 
-    
+
 
     public Node.Status HideFromEnemy()
     {
@@ -141,9 +141,9 @@ public class PassiveBehaviour : BTAgent
     public Node.Status CanSeeEnemy()
     {
         //Enemy, tag, distance, pov
-       
-        return EnemyExists(Enemy.transform.position, "Enemy", 1,90);
-        
+
+        return TargetExists(Enemy.transform.position, "Enemy", 1, 90);
+
     }
 
     public Node.Status RunAwayMethod()
