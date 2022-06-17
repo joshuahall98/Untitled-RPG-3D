@@ -2,14 +2,18 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Cape
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ShaderKeywords: _ALPHATEST_ON
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ALPHATEST_ON
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
@@ -17,6 +21,7 @@ Material:
   stringTagMap:
     RenderType: TransparentCutout
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -144,6 +149,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _2ndNormalPower: 1
     - _AlphaClip: 1
@@ -151,6 +157,7 @@ Material:
     - _BaseWindChannel: 2
     - _Blend: 0
     - _BlendMainNormal: 0
+    - _BlendModePreserveSpecular: 1
     - _BlendNormals: 1
     - _BlendmodeOverlay: 0
     - _Brightness: 1
@@ -169,6 +176,7 @@ Material:
     - _DetailSource: 0
     - _DetailSpecularIntensity: 0.2
     - _DstBlend: 0
+    - _DstBlendAlpha: 0
     - _EmissionIntensity: 1
     - _EnableDetailMask: 0
     - _EnableTriplanarProjection: 1
@@ -217,6 +225,7 @@ Material:
     - _SpecularIntensity: 0.2
     - _SpreadDetailMap: 0
     - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
     - _Surface: 0
     - _Tiling: 1
     - _Tiling01: 0.02
@@ -247,7 +256,7 @@ Material:
     - _2ndColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 0.84705883, g: 0.84313726, b: 0.8352941, a: 1}
     - _CloudsColor: {r: 0.18431365, g: 0.35686278, b: 0.462745, a: 1}
-    - _Color: {r: 0.8470589, g: 0.8431373, b: 0.8352942, a: 1}
+    - _Color: {r: 0.84705883, g: 0.8431372, b: 0.8352941, a: 1}
     - _DetailColor: {r: 1, g: 1, b: 1, a: 0}
     - _DetailSpecularColor: {r: 1, g: 1, b: 1, a: 0}
     - _DirectionSpeed: {r: 20, g: 5, b: 10, a: -5}
@@ -272,4 +281,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 4
+  version: 6
