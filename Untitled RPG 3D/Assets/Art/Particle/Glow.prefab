@@ -10,7 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 9092128158282901177}
   - component: {fileID: 8011091829539257811}
+<<<<<<< Updated upstream
   - component: {fileID: 3000457591358866592}
+=======
+  - component: {fileID: -7213291337980785139}
+>>>>>>> Stashed changes
   m_Layer: 0
   m_Name: Glow
   m_TagString: Untagged
@@ -95,7 +99,11 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+<<<<<<< Updated upstream
 --- !u!114 &3000457591358866592
+=======
+--- !u!114 &-7213291337980785139
+>>>>>>> Stashed changes
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
