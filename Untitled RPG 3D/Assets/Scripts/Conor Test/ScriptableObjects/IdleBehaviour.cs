@@ -14,10 +14,9 @@ public class IdleBehaviour : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         EnemyTest Distance = animator.GetComponent<EnemyTest>();
-        EnemyTest Agent = animator.GetComponent<EnemyTest>();
-        EnemyTest stoppingDistance = animator.GetComponent<EnemyTest>();
+       
 
-        if (Distance.distFromPlayer < stoppingDistance.stoppingDistance)
+        if (Distance.distFromPlayer < Distance.stoppingDistance)
         {
             animator.SetBool("isFollowing", true);
 

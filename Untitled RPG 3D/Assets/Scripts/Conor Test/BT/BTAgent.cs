@@ -34,14 +34,17 @@ public class BTAgent : MonoBehaviour
     //This doesn't work so feel free to edit
     public Node.Status TargetExists(Vector3 target, string tag, float distance, float maxAngle)
     {
-        
+
         Vector3 directionToTarget = target - this.transform.position;
         float angle = Vector3.Angle(directionToTarget, this.transform.forward);
 
+       
         //To Fake Hearing behind AI make it OR ||
-        if (angle <= maxAngle && directionToTarget.magnitude <= distance)
+        if (angle <= maxAngle || directionToTarget.magnitude <= distance)
+
         {
             RaycastHit hitInfo;
+                Debug.DrawRay(this.transform.position, directionToTarget, Color.red);
             if(Physics.Raycast(this.transform.position, directionToTarget, out hitInfo))
             {
                 if (hitInfo.collider.gameObject.CompareTag(tag))

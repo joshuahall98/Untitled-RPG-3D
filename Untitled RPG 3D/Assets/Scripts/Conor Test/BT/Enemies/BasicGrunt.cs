@@ -6,9 +6,9 @@ using UnityEngine.AI;
 public class BasicGrunt : BTAgent
 {
 
-    public GameObject Player;
+    private Transform Player;
     private Transform Enemy;
-    public EnemyTest EnemyVar;
+    [SerializeField] private EnemyTest EnemyVar;
 
 
 
@@ -17,12 +17,13 @@ public class BasicGrunt : BTAgent
     {
         EnemyVar = EnemyVar.GetComponent<EnemyTest>();
         Enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
+        Player = GameObject.FindGameObjectWithTag("Player").transform;
 
         base.Start();
 
 
         //Leaf Nodes - The Basic Decision
-        Leaf guardArea = new Leaf("Following the Player", GuardArea);
+        Leaf guardArea = new Leaf("GuardArea", GuardArea);
 
         Leaf guardStand = new Leaf("Stand Still", GuardStanding);
         Leaf guardPatrol = new Leaf("GuardPatrol around Player", GuardPatrol);
@@ -32,15 +33,15 @@ public class BasicGrunt : BTAgent
         Selector BattleChoice = new Selector("Select Battle Choice");
 
 
-        //When Enemy is detected
+        //When Player is detected
         Sequence inBattle = new Sequence("PlayerDetected");
         Leaf canSee = new Leaf("Can see Player", CanSeePlayer);
-        Leaf approachPlayer = new Leaf("Run away", ApproachPlayer);
+        Leaf approachPlayer = new Leaf("Approach Player", ApproachPlayer);
         //Leaf hideFromEnemy = new Leaf("Hide from the Enemy", HideFromEnemy, 2);
 
 
-        //Inverts CanSeeEnemy
-        Inverter cantSeePlayer = new Inverter("Can't see Enemy");
+        //Inverts CanSeePlayer
+        Inverter cantSeePlayer = new Inverter("Can't see Player");
         cantSeePlayer.AddChild(canSee);
 
         //IdleChoice
@@ -48,10 +49,7 @@ public class BasicGrunt : BTAgent
         guardChoice.AddChild(guardStand);
         guardChoice.AddChild(guardPatrol);
 
-        /*  //Battle Choice
-          BattleChoice.AddChild(approachPlayer);
-          //  BattleChoice.AddChild(hideFromEnemy);
-  */
+        //Player detected 
         inBattle.AddChild(canSee);
         inBattle.AddChild(approachPlayer);
         //BT Condition 
@@ -60,14 +58,14 @@ public class BasicGrunt : BTAgent
         seePlayer.AddChild(cantSeePlayer);
 
         //Sequence Node -- The Main Action PassThrough BT and Nav agent
-        DepSequence enemyGuard = new DepSequence("COMPANION", seePlayer, agent);
+        DepSequence enemyGuard = new DepSequence("ENEMY", seePlayer, agent);
 
         enemyGuard.AddChild(guardArea);
         enemyGuard.AddChild(guardChoice);
 
 
         //Join the Trees
-        Selector iAmTheEnemy = new Selector("I am the Companion");
+        Selector iAmTheEnemy = new Selector("I am the Enemy");
         iAmTheEnemy.AddChild(enemyGuard);
         iAmTheEnemy.AddChild(inBattle);
 
@@ -103,7 +101,7 @@ public class BasicGrunt : BTAgent
     public Node.Status GuardStanding()
     {
 
-       agent.velocity = Vector3.zero;
+        agent.velocity = Vector3.zero;
         return tree.status;
 
     }
@@ -111,9 +109,11 @@ public class BasicGrunt : BTAgent
 
     public Node.Status CanSeePlayer()
     {
-        //Enemy, tag, distance, pov
-
-        return TargetExists(Player.transform.position, "Enemy", 1, 90);
+        //Player, tag, distance, pov
+        Debug.Log("I can see");
+        //Explain why this doesn't work please
+        return TargetExists(Player.transform.position, "Player", 10 ,90);
+        
 
     }
 

@@ -9,6 +9,7 @@ public class EnemyScriptableObject : ScriptableObject
     public float speed;
     public float retreatDist;
     public float distFromAI;
-   
-    
+    public float stoppingDist;
+
+
 }

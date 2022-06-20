@@ -30,9 +30,11 @@ public class EnemyTest : MonoBehaviour, CooldownActive
     public float attackRadius;
     public float stoppingDistance;
     public float AISpace;
-
+    
     bool isPlayerDead;
-   
+
+    public GameObject[] AI;
+
 
 
     private void Start()
@@ -43,9 +45,12 @@ public class EnemyTest : MonoBehaviour, CooldownActive
         agent = GetComponent<NavMeshAgent>();
 
 
-        Player = GameObject.FindGameObjectWithTag("Player");
-        retreatDistance = Enemy.retreatDist;
-        AISpace = Enemy.distFromAI;
+           Player = GameObject.FindGameObjectWithTag("Player");
+           retreatDistance = Enemy.retreatDist;
+           AISpace = Enemy.distFromAI;
+           stoppingDistance = Enemy.stoppingDist;
+
+        AI = GameObject.FindGameObjectsWithTag("Enemy");
         
         
         
@@ -54,7 +59,7 @@ public class EnemyTest : MonoBehaviour, CooldownActive
     // Update is called once per frame
     void Update()
     {
-                   
+
 
         isPlayerDead = PlayerHealth.isDead;
 
@@ -64,8 +69,23 @@ public class EnemyTest : MonoBehaviour, CooldownActive
         }
         //Track distance from Enemy to Player
         distFromPlayer = Vector3.Distance(Player.transform.position, transform.position);
-       
 
+
+        //Seperation
+        foreach (GameObject go in AI)
+        {
+            if (go != gameObject)
+            {
+                float distance = Vector3.Distance(go.transform.position, this.transform.position);
+                if (distance <= AISpace)
+                {
+                    Vector3 direction = transform.position - go.transform.position;
+                    transform.Translate(direction * Time.deltaTime);
+                }
+            }
+
+
+        }
     }
 
 

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MovementBehaviour : StateMachineBehaviour
 {
+    
+    
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -14,31 +16,29 @@ public class MovementBehaviour : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        EnemyTest Player = animator.GetComponent<EnemyTest>();
-        EnemyTest Agent = animator.GetComponent<EnemyTest>();
-        EnemyTest Distance = animator.GetComponent<EnemyTest>();
-        EnemyTest attackRadius = animator.GetComponent<EnemyTest>();
-        EnemyTest stoppingDistance = animator.GetComponent<EnemyTest>();
+        EnemyTest enemyTest = animator.GetComponent<EnemyTest>();
 
 
-        Vector3 newPos = Player.Player.transform.position;
+        //go to the Player
+        Vector3 newPos = enemyTest.Player.transform.position;
 
-        if (Distance.distFromPlayer > attackRadius.attackRadius)
+
+        if (enemyTest.distFromPlayer > enemyTest.attackRadius)
         {
-            Agent.agent.SetDestination(newPos);
+            enemyTest.agent.SetDestination(newPos);
         }
-        if (Distance.distFromPlayer < attackRadius.attackRadius)
+        if (enemyTest.distFromPlayer < enemyTest.attackRadius)
         {
             animator.SetBool("isAttacking", true);
 
         }
-        else if(Distance.distFromPlayer > stoppingDistance.stoppingDistance)
+        else if (enemyTest.distFromPlayer > enemyTest.stoppingDistance)
         {
             animator.SetBool("isFollowing", false);
-            Agent.agent.SetDestination(animator.transform.position);
+            enemyTest.agent.SetDestination(animator.transform.position);
         }
-    }
 
+    }   
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {

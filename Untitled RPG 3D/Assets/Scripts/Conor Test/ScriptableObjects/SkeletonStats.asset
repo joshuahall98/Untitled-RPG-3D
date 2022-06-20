@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SkeletonStats
   m_EditorClassIdentifier: 
   maxHP: 100
-  speed: 0
+  speed: 7
   retreatDist: 0
-  distFromAI: 1.5
+  distFromAI: 10
+  stoppingDist: 30
