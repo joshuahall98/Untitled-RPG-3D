@@ -41,19 +41,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoTexture1:
-        m_Texture: {fileID: 2800000, guid: 9a06a65cb1e5f4b4aad44f0c375a4e1c, type: 3}
+        m_Texture: {fileID: 2800000, guid: ec5b4ce7331a3b844ac43b2181077e50, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoTexture2:
-        m_Texture: {fileID: 2800000, guid: 5842062ef14f60447b77b52551133cf1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9a06a65cb1e5f4b4aad44f0c375a4e1c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoTexture3:
-        m_Texture: {fileID: 2800000, guid: 02cd9c11a5b33af4786fb28f0ae7cc81, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0632a61a70e4f484da85dffb637b7209, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoTexture4:
-        m_Texture: {fileID: 2800000, guid: ec5b4ce7331a3b844ac43b2181077e50, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5842062ef14f60447b77b52551133cf1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseBump:
