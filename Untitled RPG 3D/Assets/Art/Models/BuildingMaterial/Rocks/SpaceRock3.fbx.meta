@@ -1,44 +1,8 @@
 fileFormatVersion: 2
-guid: 14ba473d0f8a9854aaafc1e0fdf4d4c5
+guid: 0348aab7aaca2214cb0e62006c0eff79
 ModelImporter:
   serializedVersion: 22102
-  internalIDToNameTable:
-  - first:
-      74: -3100369314251171874
-    second: Idle
-  - first:
-      74: 864546719200000708
-    second: WALK
-  - first:
-      74: 7053003676385121903
-    second: slam hold
-  - first:
-      74: 6360691361026469826
-    second: slam hit
-  - first:
-      74: -4255894705482637672
-    second: swipe hold
-  - first:
-      74: 6805914968781862344
-    second: swipe hit
-  - first:
-      74: 4699274299699868179
-    second: Armature.001|Idle
-  - first:
-      74: -135183041893684044
-    second: Armature.001|slam hit
-  - first:
-      74: -8580657854625103754
-    second: Armature.001|slam hold
-  - first:
-      74: 5512445292600915746
-    second: Armature.001|swipe hit
-  - first:
-      74: -4330823357555078437
-    second: Armature.001|swipe hold
-  - first:
-      74: 3136419592607325371
-    second: Armature.001|WALK
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -60,7 +24,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -128,13 +92,13 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 3
+  animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   additionalBone: 0
