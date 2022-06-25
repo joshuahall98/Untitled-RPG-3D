@@ -55,6 +55,9 @@ public class MenuManager : MonoBehaviour
             player.GetComponent<PlayerController>().EnablePlayerActionMap();
             menuUI.GetComponent<MenuUI>().DisablePauseText();
         }
+
+        //stop heavy attack charge bug 
+        player.GetComponent<PlayerHeavyAttack>().CancelAttackOnPause();
     }
 
     void PauseGame()
