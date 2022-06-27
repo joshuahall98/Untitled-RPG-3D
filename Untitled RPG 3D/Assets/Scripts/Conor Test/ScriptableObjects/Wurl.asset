@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Wurl
   m_EditorClassIdentifier: 
   maxHP: 500
-  speed: 15
+  speed: 9
   retreatDist: 0
   distFromAI: 0
-  stoppingDist: 20
+  stoppingDist: 30
   attackRadius: 5
