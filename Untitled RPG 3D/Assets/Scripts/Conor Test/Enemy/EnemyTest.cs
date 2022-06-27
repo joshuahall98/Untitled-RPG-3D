@@ -49,11 +49,15 @@ public class EnemyTest : MonoBehaviour, CooldownActive
            retreatDistance = Enemy.retreatDist;
            AISpace = Enemy.distFromAI;
            stoppingDistance = Enemy.stoppingDist;
+           attackRadius = Enemy.attackRadius;
+           speed = Enemy.speed;
+
 
         AI = GameObject.FindGameObjectsWithTag("Enemy");
-        
-        
-        
+
+        agent.speed = speed;
+
+                
 
     }
     // Update is called once per frame
@@ -101,5 +105,6 @@ public class EnemyTest : MonoBehaviour, CooldownActive
     {
         
         anim.Play("Victory");
+        agent.velocity = Vector3.zero;
     }
 }

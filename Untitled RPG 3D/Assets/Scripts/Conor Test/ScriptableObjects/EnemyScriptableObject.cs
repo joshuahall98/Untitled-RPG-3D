@@ -10,6 +10,7 @@ public class EnemyScriptableObject : ScriptableObject
     public float retreatDist;
     public float distFromAI;
     public float stoppingDist;
+    public float attackRadius;
 
 
 }

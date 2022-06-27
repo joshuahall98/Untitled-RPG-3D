@@ -29,7 +29,7 @@ public class MovementBehaviour : StateMachineBehaviour
         }
         if (enemyTest.distFromPlayer < enemyTest.attackRadius)
         {
-            animator.SetBool("isAttacking", true);
+            animator.SetBool("isCharging", true);
 
         }
         else if (enemyTest.distFromPlayer > enemyTest.stoppingDistance)
