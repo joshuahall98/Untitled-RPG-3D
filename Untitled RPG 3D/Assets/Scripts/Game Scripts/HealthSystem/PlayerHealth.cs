@@ -8,6 +8,8 @@ public class PlayerHealth : MonoBehaviour
     Animator anim;
 
     public static bool isDead = false;
+    public bool damageTaken = false;
+    public float damageTakenTimer;
     public static int maxHP = 100;
     public static int currentHP = 0;
     public int currentHPVisible = 0;
@@ -15,7 +17,7 @@ public class PlayerHealth : MonoBehaviour
     //UI
     public GameObject rewindUI;
     GameObject menuUI;
-    //public HealthBar healthBar;
+
 
     //action checker
     public bool isRolling;
@@ -40,6 +42,12 @@ public class PlayerHealth : MonoBehaviour
 
         currentHPVisible = currentHP;
 
+        if(damageTakenTimer > 0)
+        {
+            damageTakenTimer -= Time.deltaTime;
+            damageTaken = false;
+        }
+
     }
 
     public void InputTakeDamage()
@@ -49,9 +57,12 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (!isRolling)
+        if (!isRolling && damageTaken == false)
         {
             currentHP -= damage;
+
+            damageTaken = true;
+            damageTakenTimer = 1;
 
             rewindUI.GetComponent<PlayerHPBar>().AlterHP();
         }
