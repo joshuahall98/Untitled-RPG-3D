@@ -46,6 +46,7 @@ public class MenuManager : MonoBehaviour
             player.GetComponent<PlayerController>().DisablePlayerActionMap();
             EnableMenuActionMap();
             menuUI.GetComponent<MenuUI>().EnablePauseText();
+            Cursor.lockState = CursorLockMode.None;
         }
         else
         {
@@ -54,6 +55,7 @@ public class MenuManager : MonoBehaviour
             DisableMenuActionMap();
             player.GetComponent<PlayerController>().EnablePlayerActionMap();
             menuUI.GetComponent<MenuUI>().DisablePauseText();
+            Cursor.lockState = CursorLockMode.Confined;
         }
 
         //stop heavy attack charge bug 

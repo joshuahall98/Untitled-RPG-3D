@@ -193,7 +193,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PlayerHeavyRelease
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8691648968869208600}
@@ -424,7 +424,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PlayerAttack2
-  m_Speed: 1.8
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -7754039268674985474}
@@ -540,7 +540,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PlayerHeavyHold
-  m_Speed: 0.3
+  m_Speed: 0.4
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1736059743687836960}
@@ -1272,7 +1272,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PlayerAttack1
-  m_Speed: 1.8
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 3649644320510258074}

@@ -12,7 +12,7 @@ public class WeaponDamage : MonoBehaviour
 
     [SerializeField] int damage = 100;
 
-    private void OnCollisionEnter(Collision collision)
+    /*private void OnCollisionEnter(Collision collision)
     {
 
         if (isAttacking == true)
@@ -23,6 +23,17 @@ public class WeaponDamage : MonoBehaviour
             }
         }
 
+    }*/
+
+    public void OnTriggerEnter(Collider collision)
+    {
+        if (isAttacking == true)
+        {
+            if (collision.gameObject.tag == "Enemy")
+            {
+                collision.gameObject.GetComponent<EnemyHealth>().TakeDamage(damage);
+            }
+        }
     }
 
     public void LightAttackDamage()
