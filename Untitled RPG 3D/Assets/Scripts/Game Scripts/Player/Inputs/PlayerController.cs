@@ -271,7 +271,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    //rolling animation, CREATED IENUMERAOTR TO STOP 
+    //rolling animation, CREATED IENUMERAOTR TO STOP bug?
     void RollAnimation()
     {
         if (isMoving == true)

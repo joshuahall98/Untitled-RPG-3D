@@ -1,0 +1,36 @@
+newmtl HouseGrey
+Kd 0.5660378 0.5660378 0.5660378
+d 1
+
+newmtl HouseBrickGrey
+Kd 0.7264151 0.7264151 0.7264151
+d 1
+
+newmtl wood
+Kd 0.42 0.27 0
+d 1
+
+newmtl HouseCream
+Kd 1 0.854902 0.682353
+d 1
+
+newmtl BrickRed
+Kd 0.9528301 0.327423 0.2292185
+d 1
+
+newmtl WindowBlue
+Kd 0.9019608 0.9647059 0.9647059
+d 1
+
+newmtl wood_1
+Kd 0.5283019 0.3406807 0
+d 1
+
+newmtl MetalGrey
+Kd 0.3113208 0.3113208 0.3113208
+d 1
+
+newmtl Lit
+Kd 0.5 0.5 0.5
+d 1
+
