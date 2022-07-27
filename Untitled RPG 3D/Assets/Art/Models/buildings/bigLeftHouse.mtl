@@ -1,0 +1,29 @@
+newmtl PolyBrush
+Kd 1.0 1.0 1.0
+d 1.0
+
+newmtl houseColour
+Kd 0.6235294 0.6235294 0.5921568
+d 1
+
+newmtl StoneWall
+map_Kd -o 0 0 -s 0.3 0.3 wall3.png
+Kd 0.7735849 0.7735849 0.7735849
+d 1
+
+newmtl wood
+Kd 0.42 0.27 0
+d 1
+
+newmtl Lit
+Kd 0.5 0.5 0.5
+d 1
+
+newmtl roofColour2
+Kd 0.1981132 0.1878129 0.1691438
+d 1
+
+newmtl houseWindow
+Kd 0.6274511 0.6431373 0.7215686
+d 1
+
