@@ -15,11 +15,12 @@ public class OghamStoneFloat : MonoBehaviour
 
     public bool rotated = false;
     public bool startFloating = false;
-    public bool inRange = true;
+    public bool inRange = false;
 
     Vector3 startingPos;
     [SerializeField]Vector3 rotation;
     Vector3 originalPos;
+    Quaternion originalRotation;
     [SerializeField]float vecCounter;
     [SerializeField] float vecCounterCompare;
     public float distance;
@@ -30,7 +31,8 @@ public class OghamStoneFloat : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        originalPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        originalPos = transform.position;
+        originalRotation = transform.rotation;
         currentPosY = transform.position.y;
         height = Random.Range(0.9f, 1.1f);
         distance = Random.Range(0.1f, 0.3f);
@@ -45,8 +47,10 @@ public class OghamStoneFloat : MonoBehaviour
     void Update()
     {
 
+        inRange = OghamStoneRadius.inRange;
+
         //getting the objects to float up
-        if(inRange == true)
+        if(rotated == false && inRange == true)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(90, 0, 0), turnSpeed * Time.deltaTime);
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, newPosY, transform.position.z), moveSpeed * Time.deltaTime);
@@ -93,23 +97,10 @@ public class OghamStoneFloat : MonoBehaviour
     void StonesInactive()
     {
         rotated = false;
-        transform.position = originalPos;
+        startFloating = false;
+        transform.position = Vector3.MoveTowards(transform.position, originalPos, moveSpeed * Time.deltaTime); ;
+        transform.rotation = Quaternion.Slerp(transform.rotation, originalRotation, turnSpeed * Time.deltaTime); 
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.tag == "Player")
-        {
-            inRange = true;
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            inRange = false;
-        }
-    }
 
 }
