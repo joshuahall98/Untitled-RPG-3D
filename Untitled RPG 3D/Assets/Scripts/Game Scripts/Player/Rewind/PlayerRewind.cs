@@ -37,9 +37,17 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public bool isAttacking;
     public bool isDead;
 
+    //animation variables
+    Animator anim;
+    public GameObject hourGlass;
+
     private void Awake()
     {
         rewindUI = GameObject.Find("PlayerUI");
+
+        anim = GetComponent<Animator>();
+
+        hourGlass.SetActive(false);
     }
 
     void Start()
@@ -121,27 +129,37 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //rewind player to point x seconds ago
     void Rewind()
     {
+        anim.SetBool("isRewinding", true);
+        PlayerController.isAttacking = true;
+        hourGlass.SetActive(true);
 
-        //call the UI update when you rewind
-        rewindUI.GetComponent<RewindUI>().Rewind();
 
-        //decreasing rewinds
-        rewindsLeft -= 1;
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerRewindStart")/*!anim.IsInTransition(0)*/)
+        {
+            anim.SetBool("isRewinding", false);
 
-        //takes point of time from array and sets player to position
-        PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
-        transform.position = pointInTime.position;
-        transform.rotation = pointInTime.rotation;
+            //call the UI update when you rewind
+            rewindUI.GetComponent<RewindUI>().Rewind();
 
-        //updating the players health that it has healed
-        playerHealth = pointInTime.hp;
-        PlayerHealth.currentHP = playerHealth;
-        rewindUI.GetComponent<RewindUI>().HealthBar();
+            //decreasing rewinds
+            rewindsLeft -= 1;
 
-        //empty rewind array to start fresh
-        pointsInTime.Clear();
-        Rewinding = false;
-       
+            //takes point of time from array and sets player to position
+            PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
+            transform.position = pointInTime.position;
+            transform.rotation = pointInTime.rotation;
+
+            //updating the players health that it has healed
+            playerHealth = pointInTime.hp;
+            PlayerHealth.currentHP = playerHealth;
+            rewindUI.GetComponent<RewindUI>().HealthBar();
+
+            //empty rewind array to start fresh
+            pointsInTime.Clear();
+            Rewinding = false;
+            hourGlass.SetActive(false);
+        }
+  
     }
 
     //Rewind button function
@@ -181,6 +199,11 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         float random = Random.Range(0.1f, 0.4f);
         rewindFillXPAmount = rewindFillXPAmount + random;
 
+    }
+
+    public void EndRewindAnimEvent()
+    {
+        PlayerController.isAttacking = false;
     }
 
 }
