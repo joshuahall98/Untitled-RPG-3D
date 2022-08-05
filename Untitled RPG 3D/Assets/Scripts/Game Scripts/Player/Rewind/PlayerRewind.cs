@@ -134,7 +134,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         hourGlass.SetActive(true);
 
 
-        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerRewindStart")/*!anim.IsInTransition(0)*/)
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerRewindStart"))
         {
             anim.SetBool("isRewinding", false);
 

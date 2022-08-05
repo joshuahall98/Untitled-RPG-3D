@@ -19,8 +19,6 @@ public class PlayerController : MonoBehaviour
     Vector3 isometric;
     public PlayerInputActions playerInput;
 
-    
-
     //Animation
     Animator anim;
 
@@ -261,12 +259,25 @@ public class PlayerController : MonoBehaviour
             isGrounded = true;
             Debug.DrawRay(transform.position + new Vector3(0f, 0f, -1.3f), transform.TransformDirection(Vector3.down) * touchGround4.distance, Color.red);
         }
+        else if (Physics.Raycast(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround5, touchGround))
+        {
+            anim.SetBool("isGrounded", true);
+            isGrounded = true;
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround2.distance, Color.red);
+
+        }
         else
         {
             anim.SetBool("isGrounded", false);
             isGrounded = false;
             Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * 1f, Color.green);
 
+        }
+
+        //animation checks
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("Roll") && isRolling == true)
+        {
+            StartCoroutine(RollEndAnim());
         }
 
     }
@@ -286,6 +297,7 @@ public class PlayerController : MonoBehaviour
                         {
                             isRolling = true;
                             anim.SetTrigger("Roll");
+                            StartCoroutine(RollAnim());
                             //DisableHeavyAttackCharge();
                             DisableLightAttack();
                         }
@@ -296,10 +308,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //rolling method
-    IEnumerator RollAnimEvent()
+    //rolling method -- there was a bug but can't remember, one solution was running this function on first frame of anim using anim event
+    IEnumerator RollAnim()
     {
-        
 
         rewind.Disable();
         float startTime = Time.time;
@@ -322,8 +333,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    IEnumerator RollEndAnimEvent()
+    IEnumerator RollEndAnim()
     {
+
         isRolling = false;
         if ((rollCDTimer > 0) && (rollUsed == 3))
         {
