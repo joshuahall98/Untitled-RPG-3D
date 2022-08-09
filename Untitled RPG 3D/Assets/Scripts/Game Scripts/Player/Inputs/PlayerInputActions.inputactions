@@ -11,7 +11,8 @@
                     "id": "49c0ac53-1c81-4d7e-a900-7e641b8d672c",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Rewind",
@@ -19,7 +20,8 @@
                     "id": "5c9c737a-5120-4d22-9704-b74d9941213e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Attack",
@@ -27,7 +29,8 @@
                     "id": "48100679-5d2b-421d-86ac-d1e2264c3e38",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Roll",
@@ -35,7 +38,8 @@
                     "id": "9994a214-78cc-4e09-b1fe-d0b9a276d27d",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "HeavyAtkCharge",
@@ -43,7 +47,8 @@
                     "id": "a72ad15a-9211-4229-909c-c6c1f6a2c3f0",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "TakeDamageTest",
@@ -51,7 +56,8 @@
                     "id": "ae7ac6ba-9ee0-49a8-a725-417e66836976",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "HeavyAtkRelease",
@@ -59,7 +65,8 @@
                     "id": "ce789060-f5f3-49ec-887e-3dced18e429e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Pause",
@@ -67,7 +74,17 @@
                     "id": "30af3cc4-f681-41eb-a8e8-5befa9164c57",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "0fa13a2a-0bd8-4c0a-9f5a-2dc83514895a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -187,7 +204,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "SlowTap(duration=0.35)",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "HeavyAtkRelease",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -198,8 +215,19 @@
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cba226ab-feac-47ff-9539-0c79090cc636",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -215,7 +243,8 @@
                     "id": "08fd428f-bee8-440f-b855-4c799671dd72",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [

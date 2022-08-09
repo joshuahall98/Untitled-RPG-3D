@@ -116,8 +116,10 @@ public class PlayerController : MonoBehaviour
         isDizzyPub = isDizzy;
         isGroundedPub = isGrounded;
 
-        //walking animation
-        anim.SetBool("isMoving", isMoving);
+
+
+    //walking animation
+    anim.SetBool("isMoving", isMoving);
 
         //action checks
         if (!isDead)
