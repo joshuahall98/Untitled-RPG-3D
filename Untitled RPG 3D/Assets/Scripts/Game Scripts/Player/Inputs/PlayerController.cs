@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     public static bool isDizzy;
     public static bool isGrounded;
     public static bool isDead;
+    //need to add this everywhere
+    public static bool isKnockdown;
 
     public bool isMovingPub;
     public bool isRollingPub;
