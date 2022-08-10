@@ -277,7 +277,12 @@ public class PlayerController : MonoBehaviour
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("Roll") && isRolling == true)
         {
             StartCoroutine(RollEndAnim());
-        }      
+        }
+
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerKnockdown"))
+        {
+            Debug.Log("FINISHED");
+        }
 
     }
 
