@@ -102,9 +102,6 @@ public class PlayerController : MonoBehaviour
         swordCollider = sword.GetComponent<Collider>();
         swordCollider.enabled = false;
 
-        
-        
-
     }
 
     void Update()
@@ -280,7 +277,7 @@ public class PlayerController : MonoBehaviour
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("Roll") && isRolling == true)
         {
             StartCoroutine(RollEndAnim());
-        }
+        }      
 
     }
 
@@ -299,7 +296,7 @@ public class PlayerController : MonoBehaviour
                         {
                             isRolling = true;
                             anim.SetTrigger("Roll");
-                            StartCoroutine(RollAnim());
+                            //StartCoroutine(RollAnim());
                             //DisableHeavyAttackCharge();
                             DisableLightAttack();
                         }
@@ -310,10 +307,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //rolling method -- there was a bug but can't remember, one solution was running this function on first frame of anim using anim event
-    IEnumerator RollAnim()
+    //running the below function on the first frame of the animation to prevent the character from dashing before rolling
+    IEnumerator RollAnimEvent()
     {
-
         rewind.Disable();
         float startTime = Time.time;
                 
