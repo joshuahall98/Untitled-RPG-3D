@@ -15,6 +15,7 @@ public class DialogueTrigger : MonoBehaviour
     int i = 0;
 
     bool inRange;
+    bool isInteracting;
 
     public PlayerInputActions playerInput;
 
@@ -30,6 +31,18 @@ public class DialogueTrigger : MonoBehaviour
     {
         playerUI = GameObject.Find("PlayerUI");
         player = GameObject.Find("Player");
+    }
+
+    private void Update()
+    {
+        if(isInteracting == true)
+        {
+            player.transform.gameObject.GetComponent<PlayerController>().DisableHeavyAttackCharge();
+            player.transform.gameObject.GetComponent<PlayerController>().DisableLightAttack();
+            player.transform.gameObject.GetComponent<PlayerController>().DisableMovement();
+            player.transform.gameObject.GetComponent<PlayerController>().DisableRewind();
+            player.transform.gameObject.GetComponent<PlayerController>().DisableRoll();
+        }
     }
 
 
@@ -54,11 +67,7 @@ public class DialogueTrigger : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             DialogueText();
-            player.transform.gameObject.GetComponent<PlayerController>().DisableHeavyAttackCharge();
-            player.transform.gameObject.GetComponent<PlayerController>().DisableLightAttack();
-            player.transform.gameObject.GetComponent<PlayerController>().DisableMovement();
-            player.transform.gameObject.GetComponent<PlayerController>().DisableRewind();
-            player.transform.gameObject.GetComponent<PlayerController>().DisableRoll();
+            isInteracting = true;
             inRange = true;
         }
     }
@@ -83,6 +92,7 @@ public class DialogueTrigger : MonoBehaviour
 
     void EndDialogue()
     {
+        isInteracting = false;
         player.transform.gameObject.GetComponent<PlayerController>().EnableHeavyAttackCharge();
         player.transform.gameObject.GetComponent<PlayerController>().EnableLightAttack();
         player.transform.gameObject.GetComponent<PlayerController>().EnableMovement();
