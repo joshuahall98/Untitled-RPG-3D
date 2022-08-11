@@ -12,12 +12,26 @@ public class OghamStoneInteract : MonoBehaviour
     public PlayerInputActions playerInput;
 
     bool inRange;
+    bool isInteracting;
 
     private void Awake()
     {
         playerInput = new PlayerInputActions();
         playerInput.Player.Interact.performed += Interact;
 
+    }
+
+    private void Update()
+    {
+        // this is needed to prevent character from moving if you pause during inspect
+        if(isInteracting == true)
+        {
+            player.transform.gameObject.GetComponent<PlayerController>().DisableHeavyAttackCharge();
+            player.transform.gameObject.GetComponent<PlayerController>().DisableLightAttack();
+            player.transform.gameObject.GetComponent<PlayerController>().DisableMovement();
+            player.transform.gameObject.GetComponent<PlayerController>().DisableRewind();
+            player.transform.gameObject.GetComponent<PlayerController>().DisableRoll();
+        }
     }
 
     private void Start()
@@ -34,6 +48,7 @@ public class OghamStoneInteract : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             inRange = true;
+            ui.GetComponent<InteractText>().InteractTextActive();
  
         }
     }
@@ -43,7 +58,7 @@ public class OghamStoneInteract : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             inRange = false;
-
+            ui.GetComponent<InteractText>().InteractTextInactive();
         }
     }
 
@@ -57,6 +72,7 @@ public class OghamStoneInteract : MonoBehaviour
                 ui.SetActive(true);
                 mouse.SetActive(true);
                 Cursor.visible = false;
+                isInteracting = false;
                 player.transform.gameObject.GetComponent<PlayerController>().EnableHeavyAttackCharge();
                 player.transform.gameObject.GetComponent<PlayerController>().EnableLightAttack();
                 player.transform.gameObject.GetComponent<PlayerController>().EnableMovement();
@@ -69,11 +85,8 @@ public class OghamStoneInteract : MonoBehaviour
                 ui.SetActive(false);
                 mouse.SetActive(false);
                 Cursor.visible = true;
-                player.transform.gameObject.GetComponent<PlayerController>().DisableHeavyAttackCharge();
-                player.transform.gameObject.GetComponent<PlayerController>().DisableLightAttack();
-                player.transform.gameObject.GetComponent<PlayerController>().DisableMovement();
-                player.transform.gameObject.GetComponent<PlayerController>().DisableRewind();
-                player.transform.gameObject.GetComponent<PlayerController>().DisableRoll();
+                isInteracting = true;
+                
             }
         }
         

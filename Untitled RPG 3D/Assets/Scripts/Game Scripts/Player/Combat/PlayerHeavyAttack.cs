@@ -133,13 +133,17 @@ public class PlayerHeavyAttack : MonoBehaviour
     //stop charge attack bug when game paused
     public void CancelAttackOnPause()
     {
-        FindObjectOfType<SoundManager>().StopSound("Heavy Attack Charge");
-        releaseReady = false;
-        anim.SetTrigger("HeavyAttackFail");
-        isAttacking = false;
-        sword.SetActive(false);
-        sheathedSword.SetActive(true);
-        PlayerController.isAttacking = false;
+        if(releaseReady == true)
+        {
+            FindObjectOfType<SoundManager>().StopSound("Heavy Attack Charge");
+            releaseReady = false;
+            anim.SetTrigger("HeavyAttackFail");
+            isAttacking = false;
+            sword.SetActive(false);
+            sheathedSword.SetActive(true);
+            PlayerController.isAttacking = false;
+        }
+        
     }
 
     void HeavyAttackSwordColliderOn()

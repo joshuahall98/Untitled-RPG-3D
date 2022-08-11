@@ -223,12 +223,12 @@ GameObject:
   - component: {fileID: 968132255}
   - component: {fileID: 968132254}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: DialogueText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &968132253
 RectTransform:
   m_ObjectHideFlags: 0
@@ -277,7 +277,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Have at thee peasant!
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -439,7 +439,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1578498329
 RectTransform:
   m_ObjectHideFlags: 0
@@ -458,7 +458,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.0009765625, y: -29.000061}
+  m_AnchoredPosition: {x: -0.0009765625, y: -29}
   m_SizeDelta: {x: 5333.3, y: 2021.791}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1578498331
@@ -1394,6 +1394,7 @@ GameObject:
   - component: {fileID: 8567211392745253964}
   - component: {fileID: 8567211392745253967}
   - component: {fileID: 8567211392745253966}
+  - component: {fileID: 36168322}
   m_Layer: 5
   m_Name: PlayerUI
   m_TagString: Untagged
@@ -1424,7 +1425,7 @@ RectTransform:
   - {fileID: 359246056}
   - {fileID: 1578498329}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1552,6 +1553,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   paused: {fileID: 8567211392576184772}
   death: {fileID: 772357861}
+--- !u!114 &36168322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8567211392745253953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70701ece402acea44a663fe92bb6695d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueBox: {fileID: 1578498328}
+  dialogueText: {fileID: 968132254}
 --- !u!1 &8567211392864588025
 GameObject:
   m_ObjectHideFlags: 0
@@ -1663,7 +1678,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.06330109, y: -0}
+  m_AnchoredPosition: {x: 0.06330109, y: 0}
   m_SizeDelta: {x: -2.6593, y: -25.873}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8567211393091528469

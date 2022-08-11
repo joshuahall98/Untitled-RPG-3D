@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+//Attach this script to trigger colliders to start a text sequence
 public class DialogueTrigger : MonoBehaviour
 {
     GameObject playerUI;
