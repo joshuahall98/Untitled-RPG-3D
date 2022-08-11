@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//THIS SCRIPT IS VERY BUGGY AND NEEDS FURTHER WORK
+
 public class PlayerKnockback : MonoBehaviour
 {
     float mass = 3.0F; // defines the character mass
@@ -42,7 +45,7 @@ public class PlayerKnockback : MonoBehaviour
         {
             anim.SetTrigger("Knockdown");
             transform.LookAt(lookAtEnemy);
-            PlayerController.isAttacking = true;
+            PlayerController.isKnockdown = true;
             dir.Normalize();
             playerY = transform.position;
             if (dir.y > playerY.y) dir.y = playerY.y;
@@ -51,6 +54,7 @@ public class PlayerKnockback : MonoBehaviour
             impact += dir.normalized * force / mass;
             transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
             isKnockdown = true;
+            
         }
         
     }
@@ -58,6 +62,7 @@ public class PlayerKnockback : MonoBehaviour
     //this wouldn't run at the end of the animation, had to create an animation event
     public void KnockdownAnimEvent()
     {
+        PlayerController.isKnockdown = false;
         PlayerController.isAttacking = false;
         isKnockdown = false;
     }

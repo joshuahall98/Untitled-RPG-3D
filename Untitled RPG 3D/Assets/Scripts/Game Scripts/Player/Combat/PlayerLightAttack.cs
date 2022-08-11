@@ -14,6 +14,7 @@ public class PlayerLightAttack : MonoBehaviour
     public bool isDizzy;
     public bool isGrounded;
     public bool isDead;
+    public bool isKnockdown;
 
     //weapons
     public GameObject sword;
@@ -40,6 +41,7 @@ public class PlayerLightAttack : MonoBehaviour
         isRolling = PlayerController.isRolling;
         isDizzy = PlayerController.isDizzy;
         isGrounded = PlayerController.isGrounded;
+        isKnockdown = PlayerController.isKnockdown;
 
         //cd for combo between swings
         if (swingCDTimer > 0)
@@ -66,33 +68,37 @@ public class PlayerLightAttack : MonoBehaviour
                 {
                     if (!isAttacking)
                     {
-                        if (atkNum == 0 || atkNum == 2)
+                        if (!isKnockdown)
                         {
-                            sword.GetComponent<WeaponDamage>().LightAttackDamage();
-                            anim.SetTrigger("LightAttack1");
-                            GetComponent<AttackAim>().Aim();
-                            WeaponDamage.isAttacking = true;
-                            PlayerController.isAttacking = true;
-                            sword.SetActive(true);
-                            sheathedSword.SetActive(false);
-                            atkNum++;
-                            swingCDTimer = 1;
-                            FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
-                            
+                            if (atkNum == 0 || atkNum == 2)
+                            {
+                                sword.GetComponent<WeaponDamage>().LightAttackDamage();
+                                anim.SetTrigger("LightAttack1");
+                                GetComponent<AttackAim>().Aim();
+                                WeaponDamage.isAttacking = true;
+                                PlayerController.isAttacking = true;
+                                sword.SetActive(true);
+                                sheathedSword.SetActive(false);
+                                atkNum++;
+                                swingCDTimer = 1;
+                                FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
+
+                            }
+                            else
+                            {
+                                sword.GetComponent<WeaponDamage>().LightAttackDamage();
+                                anim.SetTrigger("LightAttack2");
+                                GetComponent<AttackAim>().Aim();
+                                WeaponDamage.isAttacking = true;
+                                PlayerController.isAttacking = true;
+                                sword.SetActive(true);
+                                sheathedSword.SetActive(false);
+                                atkNum++;
+                                swingCDTimer = 1;
+                                FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
+                            }
                         }
-                        else
-                        {
-                            sword.GetComponent<WeaponDamage>().LightAttackDamage();
-                            anim.SetTrigger("LightAttack2");
-                            GetComponent<AttackAim>().Aim();
-                            WeaponDamage.isAttacking = true;
-                            PlayerController.isAttacking = true;
-                            sword.SetActive(true);
-                            sheathedSword.SetActive(false);
-                            atkNum++;
-                            swingCDTimer = 1;
-                            FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
-                        }
+                        
                     }
                 }
             }

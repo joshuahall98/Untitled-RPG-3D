@@ -14,6 +14,7 @@ public class PlayerHeavyAttack : MonoBehaviour
     public bool isDizzy;
     public bool isGrounded;
     public bool isDead;
+    public bool isKnockdown;
 
     //weapons
     public GameObject sword;
@@ -39,7 +40,8 @@ public class PlayerHeavyAttack : MonoBehaviour
         isRolling = PlayerController.isRolling;
         isDizzy = PlayerController.isDizzy;
         isGrounded = PlayerController.isGrounded;
-        isMoving = PlayerController.isMoving;   
+        isMoving = PlayerController.isMoving;
+        isKnockdown = PlayerController.isKnockdown;
 
     }
 
@@ -51,18 +53,22 @@ public class PlayerHeavyAttack : MonoBehaviour
             {
                 if (isGrounded)
                 {
-                    if (!isAttacking)
+                    if (!isKnockdown)
                     {
-                        anim.SetTrigger("HeavyAttackHold");
-                        anim.ResetTrigger("HeavyAttackFail");
-                        isAttacking = true;
-                        PlayerController.isAttacking = true;
-                        sword.SetActive(true);
-                        sheathedSword.SetActive(false);
-                        swordCollider.enabled = false;
-                        releaseReady = false;
-                        FindObjectOfType<SoundManager>().PlaySound("Heavy Attack Charge");
+                        if (!isAttacking)
+                        {
+                            anim.SetTrigger("HeavyAttackHold");
+                            anim.ResetTrigger("HeavyAttackFail");
+                            isAttacking = true;
+                            PlayerController.isAttacking = true;
+                            sword.SetActive(true);
+                            sheathedSword.SetActive(false);
+                            swordCollider.enabled = false;
+                            releaseReady = false;
+                            FindObjectOfType<SoundManager>().PlaySound("Heavy Attack Charge");
+                        }
                     }
+                    
                 }
             }
         }
@@ -88,7 +94,7 @@ public class PlayerHeavyAttack : MonoBehaviour
         
         if (isAttacking == true && !isMoving)
         {
-            if (releaseReady == true)
+            if (releaseReady == true && !isKnockdown)
             {
                 sparkle.SetActive(false);
                 sword.GetComponent<WeaponDamage>().HeavyAttackDamage();
@@ -101,6 +107,7 @@ public class PlayerHeavyAttack : MonoBehaviour
             }
             else
             {
+                sparkle.SetActive(false);
                 FindObjectOfType<SoundManager>().StopSound("Heavy Attack Charge");
                 releaseReady = false;
                 anim.SetTrigger("HeavyAttackFail");
@@ -108,6 +115,7 @@ public class PlayerHeavyAttack : MonoBehaviour
                 sword.SetActive(false);
                 sheathedSword.SetActive(true);
                 PlayerController.isAttacking = false;
+                
             }
         }
     }

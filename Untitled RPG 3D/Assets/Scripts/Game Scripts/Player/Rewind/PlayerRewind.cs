@@ -36,6 +36,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public bool isRolling;
     public bool isAttacking;
     public bool isDead;
+    public bool isKnockdown;
 
     //animation variables
     Animator anim;
@@ -62,6 +63,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         isRolling = PlayerController.isRolling;
         isAttacking = PlayerController.isAttacking;
         isDead = PlayerController.isDead;
+        isKnockdown = PlayerController.isKnockdown;
 
         
 
@@ -130,6 +132,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     void Rewind()
     {
         anim.SetBool("isRewinding", true);
+        //use is attacking until we find a need for is rewinding
         PlayerController.isAttacking = true;
         hourGlass.SetActive(true);
 
@@ -171,16 +174,20 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             {
                 if (!isRolling)
                 {
-                    if (cooldownSystem.IsOnCooldown(id)) { return; }
+                    if (!isKnockdown)
                     {
-                        if(rewindsLeft > 0)
+                        if (cooldownSystem.IsOnCooldown(id)) { return; }
                         {
-                            Rewinding = true;
-                        }
-                        
+                            if (rewindsLeft > 0)
+                            {
+                                Rewinding = true;
+                            }
 
-                        cooldownSystem.PutOnCooldown(this);
+
+                            cooldownSystem.PutOnCooldown(this);
+                        }
                     }
+                    
                 }
             }
         }
@@ -201,6 +208,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
     }
 
+    //using animation event, should change to code
     public void EndRewindAnimEvent()
     {
         PlayerController.isAttacking = false;
