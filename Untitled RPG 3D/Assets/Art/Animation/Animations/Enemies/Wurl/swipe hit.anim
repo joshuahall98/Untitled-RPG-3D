@@ -89702,14 +89702,14 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0
+  - time: 0.125
     functionName: colliderOn
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 2.125
+  - time: 0.6666667
     functionName: colliderOff
     data: 
     objectReferenceParameter: {fileID: 0}
