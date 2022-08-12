@@ -20,7 +20,6 @@ public class PlayerLightAttack : MonoBehaviour
     public GameObject sword;
     public GameObject sheathedSword;
     Collider swordCollider;
-    AudioSource audio;
 
     public float swingCDTimer = 0;
     public int atkNum = 0;
@@ -30,8 +29,6 @@ public class PlayerLightAttack : MonoBehaviour
         anim = GetComponent<Animator>();
 
         swordCollider = sword.GetComponent<Collider>();
-
-        audio = sword.GetComponent<AudioSource>();
 
     }
 
@@ -55,7 +52,17 @@ public class PlayerLightAttack : MonoBehaviour
                 atkNum = 0;
                 swingCDTimer = 0;
             } 
-        }  
+        }
+
+        //an attempt to refine combat
+        /*if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerAttack1"))
+        {
+            StartCoroutine(LightAttackEndAnimEvent());
+        }
+        else if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerAttack2"))
+        {
+            StartCoroutine(LightAttackEndAnimEvent());
+        }*/
     }
 
     public void LightAtk()
@@ -72,8 +79,8 @@ public class PlayerLightAttack : MonoBehaviour
                         {
                             if (atkNum == 0 || atkNum == 2)
                             {
+                                GetComponent<PlayerController>().DisableLightAttack();
                                 sword.GetComponent<WeaponDamage>().LightAttackDamage();
-                                anim.SetTrigger("LightAttack1");
                                 GetComponent<AttackAim>().Aim();
                                 WeaponDamage.isAttacking = true;
                                 PlayerController.isAttacking = true;
@@ -82,12 +89,13 @@ public class PlayerLightAttack : MonoBehaviour
                                 atkNum++;
                                 swingCDTimer = 1;
                                 FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
+                                anim.SetTrigger("LightAttack1");
 
                             }
                             else
                             {
+                                GetComponent<PlayerController>().DisableLightAttack();
                                 sword.GetComponent<WeaponDamage>().LightAttackDamage();
-                                anim.SetTrigger("LightAttack2");
                                 GetComponent<AttackAim>().Aim();
                                 WeaponDamage.isAttacking = true;
                                 PlayerController.isAttacking = true;
@@ -96,6 +104,7 @@ public class PlayerLightAttack : MonoBehaviour
                                 atkNum++;
                                 swingCDTimer = 1;
                                 FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
+                                anim.SetTrigger("LightAttack2");
                             }
                         }
                         
@@ -105,9 +114,10 @@ public class PlayerLightAttack : MonoBehaviour
         }
     }
 
-    //ending the attack animation
+    //ending the attack animation as an animation event
     IEnumerator LightAttackEndAnimEvent()
     {
+        GetComponent<PlayerController>().EnableLightAttack();
         WeaponDamage.isAttacking = false;
         PlayerController.isAttacking = false;
         sword.SetActive(false);
