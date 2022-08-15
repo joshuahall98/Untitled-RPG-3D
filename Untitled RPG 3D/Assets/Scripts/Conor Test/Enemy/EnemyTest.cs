@@ -97,7 +97,7 @@ public class EnemyTest : MonoBehaviour, CooldownActive
     {
         anim.SetBool("isDead", true);
         anim.Play("Die");
-        Destroy(gameObject, 2);
+        Destroy(gameObject, 10);
         GetComponent<ConXP>().DropXP();
 
     }
