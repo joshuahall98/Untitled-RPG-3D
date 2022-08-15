@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Cape
-  m_Shader: {fileID: -6465566751694194690, guid: 40497e3b4a3f1034dbe21acf976bffb1, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: bdad719fb797ecd44affca19dd1b3610, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
