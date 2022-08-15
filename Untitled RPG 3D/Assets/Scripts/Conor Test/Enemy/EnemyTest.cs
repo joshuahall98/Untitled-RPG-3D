@@ -104,7 +104,7 @@ public class EnemyTest : MonoBehaviour, CooldownActive
   public  void PlayerDead()
     {
         
-        anim.Play("Victory");
+        anim.Play("Death");
         agent.velocity = Vector3.zero;
     }
 }
