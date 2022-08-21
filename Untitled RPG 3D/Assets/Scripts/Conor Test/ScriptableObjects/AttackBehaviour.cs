@@ -23,8 +23,8 @@ public class AttackBehaviour : StateMachineBehaviour
         EnemyTest Agent = animator.GetComponent<EnemyTest>();
         Agent.agent.velocity = Vector3.zero;
 
-        animator.SetBool("isAttacking", false);
         animator.SetBool("isFollowing", true);
+        animator.SetBool("isCharging", false);
 
         // animator.transform.position = Vector3.MoveTowards(animator.transform.position, playerPos.position, -enemySpeed * Time.deltaTime);
 
@@ -35,7 +35,7 @@ public class AttackBehaviour : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
    {
 
-
+        animator.ResetTrigger("Attack");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

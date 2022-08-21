@@ -29,15 +29,15 @@ public class MovementBehaviour : StateMachineBehaviour
         }
         if (enemyTest.distFromPlayer < enemyTest.attackRadius)
         {
-            animator.SetBool("isCharging", true);
+            animator.SetBool("isCharging",true);
 
         }
-        else if (enemyTest.distFromPlayer > enemyTest.stoppingDistance)
+        /*else if (enemyTest.distFromPlayer > enemyTest.stoppingDistance)
         {
             animator.SetBool("isFollowing", false);
             enemyTest.agent.SetDestination(animator.transform.position);
         }
-
+*/
     }   
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -45,15 +45,4 @@ public class MovementBehaviour : StateMachineBehaviour
         
     }
 
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
 }
