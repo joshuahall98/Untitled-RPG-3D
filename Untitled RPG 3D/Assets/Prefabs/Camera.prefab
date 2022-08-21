@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3883778076125461301}
-  - component: {fileID: 7749508749758014405}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -27,25 +26,13 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.6345146, y: -3.0212173, z: -2.8987968}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3883778077081460889}
   - {fileID: 3883778076425773843}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7749508749758014405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3883778076125461300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49bea54d3d4bb3c48b0a52ec5e96cbd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  camera: {fileID: 3883778076425773840}
 --- !u!1 &3883778076425773842
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,6 +60,7 @@ Transform:
   m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
   m_LocalPosition: {x: -22.043825, y: 16.66122, z: 2.1794872}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3883778076642868056}
   m_Father: {fileID: 3883778076125461301}
@@ -104,7 +92,10 @@ MonoBehaviour:
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
+    ModeOverride: 0
     LensShift: {x: 0, y: 0}
+    GateFit: 2
+    m_SensorSize: {x: 1, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -141,6 +132,7 @@ Transform:
   m_LocalRotation: {x: 0.3637548, y: 0.0078271795, z: -0.0030564223, w: -0.93145686}
   m_LocalPosition: {x: 0.28801468, y: -1.030014, z: 24.52249}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3883778076425773843}
   m_RootOrder: 0
@@ -229,6 +221,7 @@ Transform:
   m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
   m_LocalPosition: {x: -22.043825, y: 16.66122, z: 2.1794872}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3883778076125461301}
   m_RootOrder: 0
