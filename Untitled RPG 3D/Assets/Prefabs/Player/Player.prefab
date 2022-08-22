@@ -12496,6 +12496,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hour_Glass
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e880ab87d08912e498c7cf4f0d2e6758, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e880ab87d08912e498c7cf4f0d2e6758, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: e880ab87d08912e498c7cf4f0d2e6758, type: 3}

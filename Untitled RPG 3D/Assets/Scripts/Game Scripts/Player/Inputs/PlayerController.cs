@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
         playerInput.Player.Roll.performed += rollPerformed => RollAnimation();
         playerInput.Player.TakeDamageTest.performed += damagePerformed => TakeDamage();
         playerInput.Player.Rewind.performed += rewindPerformed => Rewind();
-        playerInput.Player.Attack.started += LightAtk;
+        playerInput.Player.Attack.performed += LightAtk;
         playerInput.Player.HeavyAtkCharge.performed += HeavyAtkCharge;
         playerInput.Player.HeavyAtkRelease.performed += HeavyAtkRelease;
         playerInput.Player.Pause.performed += PressEsc;
