@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+enum PlayerPortrait { None, Player, PlayerFaded }
+enum OtherPotraits { None, SideCharacter, SideCharacterFaded, Wurl, WurlFaded }
+
 //Attach this script to trigger colliders to start a text sequence
 public class DialogueTrigger : MonoBehaviour
 {
@@ -12,12 +15,17 @@ public class DialogueTrigger : MonoBehaviour
     [TextArea]
     public string[] dialogue;
     string text;
+    string playerPortraitString;
+    string otherPortraitsString;
     int i = 0;
 
     bool inRange;
     bool isInteracting;
 
     public PlayerInputActions playerInput;
+
+    [SerializeField] OtherPotraits[] otherPotraits;
+    [SerializeField] PlayerPortrait[] playerPortrait;
 
     private void Awake()
     {
@@ -48,9 +56,12 @@ public class DialogueTrigger : MonoBehaviour
 
     public void DialogueText()
     {
+        isInteracting = true;
+        inRange = true;
         if (i < dialogue.Length)
         {
             text = dialogue[i];
+            ChosenUIPotrait();
             i++;
             playerUI.GetComponent<DialogueUI>().DialogueText(text);
         }
@@ -67,8 +78,7 @@ public class DialogueTrigger : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             DialogueText();
-            isInteracting = true;
-            inRange = true;
+            
         }
     }
 
@@ -86,8 +96,6 @@ public class DialogueTrigger : MonoBehaviour
         {
             DialogueText();
         }
-
-
     }
 
     void EndDialogue()
@@ -98,6 +106,14 @@ public class DialogueTrigger : MonoBehaviour
         player.transform.gameObject.GetComponent<PlayerController>().EnableMovement();
         player.transform.gameObject.GetComponent<PlayerController>().EnableRewind();
         player.transform.gameObject.GetComponent<PlayerController>().EnableRoll();
+    }
+
+    void ChosenUIPotrait()
+    {
+        playerPortraitString = playerPortrait[i].ToString();
+        otherPortraitsString = otherPotraits[i].ToString();
+        playerUI.GetComponent<DialogueUI>().Portrait(playerPortraitString, otherPortraitsString);
+
     }
 
     private void OnEnable()
