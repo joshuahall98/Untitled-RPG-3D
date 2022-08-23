@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 enum PlayerPortrait { None, Player, PlayerFaded }
-enum OtherPotraits { None, SideCharacter, SideCharacterFaded, Wurl, WurlFaded }
+enum OtherPotraits { None, SideCharacter, SideCharacterFaded, Wurl, WurlFaded}
 
 //Attach this script to trigger colliders to start a text sequence
 public class DialogueTrigger : MonoBehaviour

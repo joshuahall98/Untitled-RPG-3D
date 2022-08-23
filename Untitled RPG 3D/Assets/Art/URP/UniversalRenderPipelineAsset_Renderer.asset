@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
-    passTag: RenderObjects
+    passTag: NotSeeThrough
     Event: 300
     filterSettings:
       RenderQueueType: 0
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_AssetVersion: 2
   m_OpaqueLayerMask:
     serializedVersion: 2
-    m_Bits: 823
+    m_Bits: 2147483647
   m_TransparentLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
