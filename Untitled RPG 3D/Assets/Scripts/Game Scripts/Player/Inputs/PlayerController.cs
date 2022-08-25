@@ -71,7 +71,6 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         
-
         gameManager = GameObject.Find("GameManager");
 
         anim = GetComponent<Animator>();
@@ -118,9 +117,9 @@ public class PlayerController : MonoBehaviour
         isKnockdownPub = isKnockdown;
 
 
-
-    //walking animation
-    anim.SetBool("isMoving", isMoving);
+        #region - Movement -
+        //walking animation
+        anim.SetBool("isMoving", isMoving);
 
         //action checks
         if (!isDead)
@@ -201,14 +200,16 @@ public class PlayerController : MonoBehaviour
         {   
             FindObjectOfType<SoundManager>().StopSound("Running");
         }
-        
+
+        #endregion
+
         //BUGS
         //isAttacking variable sometimes stays true freezing player character 
         //heavy attack charge activates but you have no weapon and can still move
 
 
         //unsure if needed, was input to stop running on spot bug
-        if(isAttacking == true)
+        if (isAttacking == true)
         {
             isMoving = false;
         }
@@ -287,13 +288,14 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(RollEndAnim());
         }
 
-        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerKnockdown"))
+        /*if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerKnockdown"))
         {
             Debug.Log("FINISHED");
-        }
+        }*/
 
     }
 
+    #region - Roll -
     //rolling animation, CREATED IENUMERAOTR TO STOP bug?
     void RollAnimation()
     {
@@ -372,6 +374,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    #endregion
+
+    #region - Dizzy -
     //this affect occurs when you roll too much
     IEnumerator Dizzy()
     {
@@ -388,6 +393,8 @@ public class PlayerController : MonoBehaviour
         anim.ResetTrigger("Roll");
         anim.SetTrigger("StopDizzy");
     }
+
+    #endregion
 
     //start light attack
     void LightAtk(InputAction.CallbackContext attk)
