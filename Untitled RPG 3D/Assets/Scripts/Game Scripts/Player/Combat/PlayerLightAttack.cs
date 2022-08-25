@@ -79,7 +79,7 @@ public class PlayerLightAttack : MonoBehaviour
                         {
                             if (atkNum == 0 || atkNum == 2)
                             {
-                                GetComponent<PlayerController>().DisableLightAttack();
+                                //GetComponent<PlayerController>().DisableLightAttack();
                                 sword.GetComponent<WeaponDamage>().LightAttackDamage();
                                 GetComponent<AttackAim>().Aim();
                                 WeaponDamage.isAttacking = true;
@@ -94,7 +94,7 @@ public class PlayerLightAttack : MonoBehaviour
                             }
                             else
                             {
-                                GetComponent<PlayerController>().DisableLightAttack();
+                                //GetComponent<PlayerController>().DisableLightAttack();
                                 sword.GetComponent<WeaponDamage>().LightAttackDamage();
                                 GetComponent<AttackAim>().Aim();
                                 WeaponDamage.isAttacking = true;
@@ -117,7 +117,7 @@ public class PlayerLightAttack : MonoBehaviour
     //ending the attack animation as an animation event
     IEnumerator LightAttackEndAnimEvent()
     {
-        GetComponent<PlayerController>().EnableLightAttack();
+        //GetComponent<PlayerController>().EnableLightAttack();
         WeaponDamage.isAttacking = false;
         PlayerController.isAttacking = false;
         sword.SetActive(false);

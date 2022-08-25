@@ -235,6 +235,7 @@ public class PlayerController : MonoBehaviour
 
 
 
+        #region - Falling -
         //falling animation and detection
         float touchGround = 2f;
 
@@ -277,6 +278,8 @@ public class PlayerController : MonoBehaviour
             Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * 1f, Color.green);
 
         }
+
+        #endregion
 
         //animation checks
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("Roll") && isRolling == true)
@@ -423,7 +426,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    //EVERYTHING BELOW THIS COMMENT DISABLES AND ENABLES INPUTS
+    #region - Inputs Enable/Disable -
     public void EnableMovement()
     {
         move.Enable();
@@ -495,5 +498,7 @@ public class PlayerController : MonoBehaviour
 
         playerInput.Disable();
     }
+
+    #endregion
 
 }
