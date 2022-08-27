@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8909925161029848837}
   - component: {fileID: 8909925161029848840}
   - component: {fileID: 8909925161029848839}
+  - component: {fileID: 6196934122264948645}
   - component: {fileID: 8909925161029848838}
-  - component: {fileID: 8909925161029848841}
   m_Layer: 8
   m_Name: MalletRB
   m_TagString: Untagged
@@ -85,6 +85,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6196934122264948645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8909925161029848836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21156994effab8843abd9bb3579e3df7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  force: 200
 --- !u!136 &8909925161029848838
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -99,19 +112,6 @@ CapsuleCollider:
   m_Height: 7
   m_Direction: 1
   m_Center: {x: 0, y: 2, z: 0}
---- !u!114 &8909925161029848841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8909925161029848836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 006d22130e730cd4291cfe9bc33bf936, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  force: 0
 --- !u!1 &8909925161310848504
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +343,7 @@ Transform:
   m_Children:
   - {fileID: 8947756113418471799}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &8959950229114561856
 NavMeshAgent:

@@ -42,11 +42,13 @@ public class PlayerHealth : MonoBehaviour
 
         currentHPVisible = currentHP;
 
-        if(damageTakenTimer > 0)
+        //this used to prevent the player from being hit more than once, moved to the attack collider on enemy so that mutiple enemies can hit the player at once
+
+        /*if(damageTakenTimer > 0)
         {
             damageTakenTimer -= Time.deltaTime;
             damageTaken = false;
-        }
+        }*/
 
     }
 
@@ -57,12 +59,12 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (!isRolling && damageTaken == false)
+        if (!isRolling /*&& damageTaken == false*/)
         {
             currentHP -= damage;
 
-            damageTaken = true;
-            damageTakenTimer = 1;
+            /*damageTaken = true;
+            damageTakenTimer = 1;*/
 
             rewindUI.GetComponent<PlayerHPBar>().AlterHP();
         }

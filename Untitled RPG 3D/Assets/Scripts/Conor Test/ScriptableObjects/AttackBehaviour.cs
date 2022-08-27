@@ -19,7 +19,10 @@ public class AttackBehaviour : StateMachineBehaviour
     {
         //this is meant to enable the hit box for the sword while you're attacking, doesn't work though, it is somewhat working as it does log the attacking temporarily then stops
         //how to keep hit box active while attacking??
-        JAHEnemySword.isAttacking = true;
+
+        //JAHEnemySword.isAttacking = true;
+
+        //!!!!!!!!!!!!!Hey ConCon, the above line is uneccesary now, I have hitbox activating using animation events as it's smoother, fixes bug!!!!!!!!!!!!!!!!!!!!!!!!!!!
         EnemyTest Agent = animator.GetComponent<EnemyTest>();
         Agent.agent.velocity = Vector3.zero;
 
