@@ -2726,8 +2726,8 @@ MonoBehaviour:
   playerPotraitFaded: {fileID: 6237211464226277845}
   sidecharacterPotrait: {fileID: 494060181989062657}
   sidecharacterPotraitFaded: {fileID: 359246055}
-  wurlPotrait: {fileID: 0}
-  wurlPotraitFaded: {fileID: 0}
+  wurlPotrait: {fileID: 3166104051292416218}
+  wurlPotraitFaded: {fileID: 8081445717030212755}
 --- !u!114 &643276708
 MonoBehaviour:
   m_ObjectHideFlags: 0

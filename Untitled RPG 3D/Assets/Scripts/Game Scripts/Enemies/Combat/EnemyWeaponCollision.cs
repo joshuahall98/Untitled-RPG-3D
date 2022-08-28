@@ -16,7 +16,7 @@ public class EnemyWeaponCollision : MonoBehaviour
             var dir = collision.transform.position - this.transform.position;
             var enemyPos = this.transform.position;
             collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(5);
-            collision.gameObject.transform.GetComponent<PlayerKnockback>().AddImpact(dir, enemyPos, 200);
+            collision.gameObject.transform.GetComponent<PlayerKnockback>().AddImpact(dir, enemyPos, force);
             playerTakingDamage = true;
 
         }
