@@ -5,16 +5,18 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
 
-    public int maxHP = 100;
+    public int maxHP = 0;
     public static int currentHP = 0;
     public int currentHPVisible = 0;
 
+    public EnemyScriptableObject Enemy;
 
     public HealthBar healthBar;
 
     // Start is called before the first frame update
     void Start()
     {
+        maxHP = Enemy.maxHP;
         currentHP = maxHP;
         healthBar.SetMaxHealth(maxHP);
     }
@@ -24,7 +26,6 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHPVisible = currentHP;
 
-       
     }
 
     public void TakeDamage(int damage)

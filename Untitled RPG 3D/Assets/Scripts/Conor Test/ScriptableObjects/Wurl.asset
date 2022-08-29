@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 392282079e498344fa376d5bfa6b1649, type: 3}
   m_Name: Wurl
   m_EditorClassIdentifier: 
-  maxHP: 500
+  maxHP: 200
   speed: 9
   retreatDist: 0
   distFromAI: 0
