@@ -237,39 +237,68 @@ public class PlayerController : MonoBehaviour
 
 
         #region - Falling -
-        //falling animation and detection
+        //falling animation and detection, currently there are two sets of detection so the player can check if they're falling mutiple times
         float touchGround = 2f;
+        float distanceFromPlayerFar = 1.3f;
+        float distanceFromPlayerFarNeg = -1.3f;
+        float distanceFromPlayer = 0.5f;
+        float distanceFromPlayerNeg = -0.5f;
 
-        if (Physics.Raycast(transform.position + new Vector3(1.3f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround1, touchGround))
+        if (Physics.Raycast(transform.position + new Vector3(distanceFromPlayerFar, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround1, touchGround))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(1.3f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround1.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(distanceFromPlayerFar, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround1.distance, Color.red);
         }
-        else if(Physics.Raycast(transform.position + new Vector3(-1.3f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround2, touchGround))
+        else if(Physics.Raycast(transform.position + new Vector3(distanceFromPlayerFarNeg, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround2, touchGround))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(-1.3f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround2.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(distanceFromPlayerFarNeg, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround2.distance, Color.red);
             
         }
-        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, 1.3f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround3, touchGround))
+        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, distanceFromPlayerFar), transform.TransformDirection(Vector3.down), out RaycastHit touchGround3, touchGround))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 1.3f), transform.TransformDirection(Vector3.down) * touchGround3.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, distanceFromPlayerFar), transform.TransformDirection(Vector3.down) * touchGround3.distance, Color.red);
         }
-        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, -1.3f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround4, touchGround))
+        else if(Physics.Raycast(transform.position + new Vector3(0f, 0f, distanceFromPlayerFarNeg), transform.TransformDirection(Vector3.down), out RaycastHit touchGround4, touchGround))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, -1.3f), transform.TransformDirection(Vector3.down) * touchGround4.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, distanceFromPlayerFarNeg), transform.TransformDirection(Vector3.down) * touchGround4.distance, Color.red);
         }
-        else if (Physics.Raycast(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround5, touchGround))
+        else if (Physics.Raycast(transform.position + new Vector3(distanceFromPlayer, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround5, touchGround))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround2.distance, Color.red);
+            Debug.DrawRay(transform.position + new Vector3(distanceFromPlayer, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround5.distance, Color.red);
+        }
+        else if (Physics.Raycast(transform.position + new Vector3(distanceFromPlayerNeg, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround6, touchGround))
+        {
+            anim.SetBool("isGrounded", true);
+            isGrounded = true;
+            Debug.DrawRay(transform.position + new Vector3(distanceFromPlayerNeg, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround6.distance, Color.red);
+
+        }
+        else if (Physics.Raycast(transform.position + new Vector3(0f, 0f, distanceFromPlayer), transform.TransformDirection(Vector3.down), out RaycastHit touchGround7, touchGround))
+        {
+            anim.SetBool("isGrounded", true);
+            isGrounded = true;
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, distanceFromPlayer), transform.TransformDirection(Vector3.down) * touchGround7.distance, Color.red);
+        }
+        else if (Physics.Raycast(transform.position + new Vector3(0f, 0f, distanceFromPlayerNeg), transform.TransformDirection(Vector3.down), out RaycastHit touchGround8, touchGround))
+        {
+            anim.SetBool("isGrounded", true);
+            isGrounded = true;
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, distanceFromPlayerNeg), transform.TransformDirection(Vector3.down) * touchGround8.distance, Color.red);
+        }
+        else if (Physics.Raycast(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround9, touchGround))
+        {
+            anim.SetBool("isGrounded", true);
+            isGrounded = true;
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround9.distance, Color.red);
 
         }
         else
