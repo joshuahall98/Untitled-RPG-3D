@@ -21,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
 
     //action checker
     public bool isRolling;
+    public bool isRewinding;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +40,7 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         isRolling = PlayerController.isRolling;
+        isRewinding = PlayerController.isRewinding;
 
         currentHPVisible = currentHP;
 
@@ -59,15 +61,19 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (!isRolling /*&& damageTaken == false*/)
+        if (!isRewinding)
         {
-            currentHP -= damage;
+            if (!isRolling /*&& damageTaken == false*/)
+            {
+                currentHP -= damage;
 
-            /*damageTaken = true;
-            damageTakenTimer = 1;*/
+                /*damageTaken = true;
+                damageTakenTimer = 1;*/
 
-            rewindUI.GetComponent<PlayerHPBar>().AlterHP();
+                rewindUI.GetComponent<PlayerHPBar>().AlterHP();
+            }
         }
+        
         
 
         if (currentHP == 0)

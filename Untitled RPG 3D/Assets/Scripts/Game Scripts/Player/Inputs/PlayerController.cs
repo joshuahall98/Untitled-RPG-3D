@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     public static bool isDead;
     //need to add this everywhere
     public static bool isKnockdown;
+    public static bool isRewinding;
 
     public bool isMovingPub;
     public bool isRollingPub;
@@ -39,6 +40,7 @@ public class PlayerController : MonoBehaviour
     public bool isDizzyPub;
     public bool isGroundedPub;
     public bool isKnockdownPub;
+    public bool isRewindingPub;
 
     //Roll
     float rollCDTimer = 0;
@@ -115,6 +117,7 @@ public class PlayerController : MonoBehaviour
         isDizzyPub = isDizzy;
         isGroundedPub = isGrounded;
         isKnockdownPub = isKnockdown;
+        isRewindingPub = isRewinding;
 
 
         #region - Movement -
@@ -130,60 +133,63 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!isRolling)
                     {
-                        if (isGrounded)
+                        if (!isRewinding)
                         {
-                            if (!isDizzy)
+                            if (isGrounded)
                             {
-                                /*Vector2 readVector = move.ReadValue<Vector2>();
-                                Vector3 toConvert = new Vector3(readVector.x, 0, readVector.y);
-                                currentMoveInput = IsoVectorConvert(toConvert);
+                                if (!isDizzy)
+                                {
+                                    /*Vector2 readVector = move.ReadValue<Vector2>();
+                                    Vector3 toConvert = new Vector3(readVector.x, 0, readVector.y);
+                                    currentMoveInput = IsoVectorConvert(toConvert);
 
-                                controller.Move(currentMoveInput * speed * Time.deltaTime);*/
+                                    controller.Move(currentMoveInput * speed * Time.deltaTime);*/
 
-                                currentMoveInput = move.ReadValue<Vector2>();
-                                actualMovement = new Vector3();
-                                //Condensed movement -- Converted y to z axis
-                                actualMovement.x = currentMoveInput.x;
-                                actualMovement.z = currentMoveInput.y;
+                                    currentMoveInput = move.ReadValue<Vector2>();
+                                    actualMovement = new Vector3();
+                                    //Condensed movement -- Converted y to z axis
+                                    actualMovement.x = currentMoveInput.x;
+                                    actualMovement.z = currentMoveInput.y;
 
-                                //magic code that converts the basic player movement into isometric
-                                isometric = new Vector3();
-                                var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
-                                isometric = matrix.MultiplyPoint3x4(actualMovement);
+                                    //magic code that converts the basic player movement into isometric
+                                    isometric = new Vector3();
+                                    var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
+                                    isometric = matrix.MultiplyPoint3x4(actualMovement);
 
-                                //move the character controller
-                                controller.Move(isometric * speed * Time.deltaTime);
-                                isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+                                    //move the character controller
+                                    controller.Move(isometric * speed * Time.deltaTime);
+                                    isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
 
-                                //Character Rotation
-                                Vector3 currentPos = transform.position;
-                                Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
-                                Vector3 posLookAt = currentPos + newPos;
-                                transform.LookAt(posLookAt);
-
-
-                            }
-                            else
-                            {
-                                currentMoveInput = move.ReadValue<Vector2>();
-                                actualMovement = new Vector3();
-                                //Condensed movement -- Converted y to z axis
-                                actualMovement.z = currentMoveInput.x;
-                                actualMovement.x = currentMoveInput.y;
-
-                                //move charachter controller
-                                controller.Move(actualMovement * speed * Time.deltaTime);
-                                isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+                                    //Character Rotation
+                                    Vector3 currentPos = transform.position;
+                                    Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
+                                    Vector3 posLookAt = currentPos + newPos;
+                                    transform.LookAt(posLookAt);
 
 
-                                //Character Rotation
-                                Vector3 currentPos = transform.position;
-                                Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
-                                Vector3 posLookAt = currentPos + newPos;
-                                transform.LookAt(posLookAt);
+                                }
+                                else
+                                {
+                                    currentMoveInput = move.ReadValue<Vector2>();
+                                    actualMovement = new Vector3();
+                                    //Condensed movement -- Converted y to z axis
+                                    actualMovement.z = currentMoveInput.x;
+                                    actualMovement.x = currentMoveInput.y;
+
+                                    //move charachter controller
+                                    controller.Move(actualMovement * speed * Time.deltaTime);
+                                    isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+
+
+                                    //Character Rotation
+                                    Vector3 currentPos = transform.position;
+                                    Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
+                                    Vector3 posLookAt = currentPos + newPos;
+                                    transform.LookAt(posLookAt);
 
 
 
+                                }
                             }
                         }
                     }
@@ -338,14 +344,18 @@ public class PlayerController : MonoBehaviour
                     {
                         if (!isKnockdown)
                         {
-                            if (!isDizzy)
+                            if (!isRewinding)
                             {
-                                isRolling = true;
-                                anim.SetTrigger("Roll");
-                                //StartCoroutine(RollAnim());
-                                //DisableHeavyAttackCharge();
-                                DisableLightAttack();
+                                if (!isDizzy)
+                                {
+                                    isRolling = true;
+                                    anim.SetTrigger("Roll");
+                                    //StartCoroutine(RollAnim());
+                                    //DisableHeavyAttackCharge();
+                                    DisableLightAttack();
+                                }
                             }
+                            
                         }
  
                     }

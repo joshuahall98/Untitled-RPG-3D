@@ -133,7 +133,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     {
         anim.SetBool("isRewinding", true);
         //use is attacking until we find a need for is rewinding
-        PlayerController.isAttacking = true;
+        PlayerController.isRewinding = true;
         hourGlass.SetActive(true);
 
 
@@ -211,7 +211,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //using animation event, should change to code
     public void EndRewindAnimEvent()
     {
-        PlayerController.isAttacking = false;
+        PlayerController.isRewinding = false;
     }
 
 }
