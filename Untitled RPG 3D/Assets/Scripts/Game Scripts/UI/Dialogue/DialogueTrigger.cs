@@ -78,10 +78,11 @@ public class DialogueTrigger : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             DialogueText();
-            
+            //GetComponent<Collider>().enabled = false;
         }
     }
 
+    
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Player")

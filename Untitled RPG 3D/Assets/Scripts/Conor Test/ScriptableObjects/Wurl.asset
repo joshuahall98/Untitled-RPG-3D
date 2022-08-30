@@ -18,3 +18,4 @@ MonoBehaviour:
   distFromAI: 0
   stoppingDist: 30
   attackRadius: 5
+  damage: 20

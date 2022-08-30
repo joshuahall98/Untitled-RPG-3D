@@ -20,7 +20,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public int playerHealth;
     public static int rewindFadedHealth;
 
-    //Rewind
+    //Rewindz
     bool Rewinding = false;
     List<PointInTime> pointsInTime;
 

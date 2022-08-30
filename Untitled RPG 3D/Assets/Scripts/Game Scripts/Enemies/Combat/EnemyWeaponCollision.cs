@@ -8,26 +8,37 @@ public class EnemyWeaponCollision : MonoBehaviour
 
     bool playerTakingDamage;
 
+    public EnemyScriptableObject Enemy;
+
     private void OnTriggerEnter(Collider collision)
     {
 
-        if (collision.gameObject.tag == "Player" && playerTakingDamage == false)
+        if (collision.gameObject.tag == "Player" /*&& playerTakingDamage == false*/)
         {
             var dir = collision.transform.position - this.transform.position;
             var enemyPos = this.transform.position;
-            collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(5);
+            collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(Enemy.damage);
             collision.gameObject.transform.GetComponent<PlayerKnockback>().AddImpact(dir, enemyPos, force);
-            playerTakingDamage = true;
+            GetComponent<Collider>().enabled = false;
+            //playerTakingDamage = true;
 
         }
 
     }
 
-    private void OnTriggerExit(Collider other)
+    //this is the old system for preventing an enemy collider hitting you more than once
+    /*private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            playerTakingDamage = false;
+            StartCoroutine(PlayerDamageDelay());
         }
     }
+
+    IEnumerator PlayerDamageDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        playerTakingDamage = false;
+    }*/
 }
