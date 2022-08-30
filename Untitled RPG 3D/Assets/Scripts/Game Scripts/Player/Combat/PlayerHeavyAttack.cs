@@ -79,7 +79,7 @@ public class PlayerHeavyAttack : MonoBehaviour
     //this line of code checks to see if the animation has reached full charge before allowing the swing to commence
     void HeavyAttackReleaseReadyAnimEvent()
     {
-        if(isAttacking == true)
+        if(isAttacking == true  && !isKnockdown)
         {
             releaseReady = true;
             sparkle.SetActive(true);

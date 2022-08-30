@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -452,10 +453,12 @@ public class PlayerController : MonoBehaviour
         GetComponent<PlayerHeavyAttack>().HeavyAtkRelease();
     }
 
-    //testing take damage
+    //testing take damage // restart game
     public void TakeDamage()
     {
         GetComponent<PlayerHealth>().InputTakeDamage();
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     //start Rewind
