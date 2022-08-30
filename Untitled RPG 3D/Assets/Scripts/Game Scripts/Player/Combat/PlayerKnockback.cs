@@ -17,6 +17,7 @@ public class PlayerKnockback : MonoBehaviour
     //action checkers
     bool isRolling;
     bool isKnockdown;
+    bool isRewinding;
 
     // Use this for initialization
     void Start()
@@ -30,6 +31,8 @@ public class PlayerKnockback : MonoBehaviour
     {
 
         isRolling = PlayerController.isRolling;
+        isRewinding = PlayerController.isRewinding;
+        isKnockdown = PlayerController.isKnockdown;
 
         // apply the impact force:
         if (impact.magnitude > 0.2F) character.Move(impact * Time.deltaTime);
@@ -41,11 +44,12 @@ public class PlayerKnockback : MonoBehaviour
     // call this function to add an impact force:
     public void AddImpact(Vector3 dir, Vector3 lookAtEnemy, float force)
     {
-        if (!isRolling && !isKnockdown)
+        if (!isRolling && !isKnockdown && !isRewinding)
         {
             anim.SetTrigger("Knockdown");
             transform.LookAt(lookAtEnemy);
             PlayerController.isKnockdown = true;
+            GetComponent<PlayerController>().DisableRewind(); //this prevents rewind bug
             dir.Normalize();
             playerY = transform.position;
             if (dir.y > playerY.y) dir.y = playerY.y;
@@ -53,7 +57,6 @@ public class PlayerKnockback : MonoBehaviour
             //if (dir.y < 0) dir.y = -dir.y; // reflect down force on the ground
             impact += dir.normalized * force / mass;
             transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
-            isKnockdown = true;
             
         }
         
@@ -62,8 +65,8 @@ public class PlayerKnockback : MonoBehaviour
     //this wouldn't run at the end of the animation, had to create an animation event
     public void KnockdownAnimEvent()
     {
+        GetComponent<PlayerController>().EnableRewind();
         PlayerController.isKnockdown = false;
         PlayerController.isAttacking = false;
-        isKnockdown = false;
     }
 }

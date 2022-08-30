@@ -37,6 +37,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public bool isAttacking;
     public bool isDead;
     public bool isKnockdown;
+    public bool isGrounded;
 
     //animation variables
     Animator anim;
@@ -64,6 +65,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         isAttacking = PlayerController.isAttacking;
         isDead = PlayerController.isDead;
         isKnockdown = PlayerController.isKnockdown;
+        isGrounded = PlayerController.isGrounded;
 
         
 
@@ -176,16 +178,20 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
                 {
                     if (!isKnockdown)
                     {
-                        if (cooldownSystem.IsOnCooldown(id)) { return; }
+                        if (isGrounded)
                         {
-                            if (rewindsLeft > 0)
+                            if (cooldownSystem.IsOnCooldown(id)) { return; }
                             {
-                                Rewinding = true;
+                                if (rewindsLeft > 0)
+                                {
+                                    Rewinding = true;
+                                }
+
+
+                                cooldownSystem.PutOnCooldown(this);
                             }
-
-
-                            cooldownSystem.PutOnCooldown(this);
                         }
+                        
                     }
                     
                 }
