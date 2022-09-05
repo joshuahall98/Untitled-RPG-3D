@@ -90,6 +90,7 @@ public class PlayerLightAttack : MonoBehaviour
                                 swingCDTimer = 1;
                                 FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
                                 anim.SetTrigger("LightAttack1");
+                                PlayerController.playerState = PlayerState.isAttacking;
 
                             }
                             else

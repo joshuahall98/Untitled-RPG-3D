@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.SceneManagement;
 
+public enum PlayerState { none, isMoving, isRolling, isAttacking, isDizzy, isGrounded, isDead, isKnockdown, isRewinding}
 public class PlayerController : MonoBehaviour
 {
     //THIS SCRIPT CONTROLS THE BASE PLAYER MOVEMENT, IT ALSO CONTROLS THE PLAYERS ROLL MECHANIC, THE DIZZY AFFECT, AND WHETHER OR NOT THE PLAYER IS GROUNDED
@@ -35,6 +36,9 @@ public class PlayerController : MonoBehaviour
     public static bool isKnockdown;
     public static bool isRewinding;
 
+    public static PlayerState playerState;
+
+
     public bool isMovingPub;
     public bool isRollingPub;
     public bool isAttackingPub;
@@ -42,6 +46,8 @@ public class PlayerController : MonoBehaviour
     public bool isGroundedPub;
     public bool isKnockdownPub;
     public bool isRewindingPub;
+
+    public PlayerState playerStatePub;
 
     //Roll
     float rollCDTimer = 0;
@@ -73,6 +79,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        playerState = PlayerState.none;
         
         gameManager = GameObject.Find("GameManager");
 
@@ -119,6 +126,7 @@ public class PlayerController : MonoBehaviour
         isGroundedPub = isGrounded;
         isKnockdownPub = isKnockdown;
         isRewindingPub = isRewinding;
+        playerStatePub = playerState;
 
 
         #region - Movement -
