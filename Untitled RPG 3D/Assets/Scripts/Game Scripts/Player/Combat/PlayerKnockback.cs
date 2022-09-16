@@ -30,10 +30,6 @@ public class PlayerKnockback : MonoBehaviour
     void Update()
     {
 
-        isRolling = PlayerController.isRolling;
-        isRewinding = PlayerController.isRewinding;
-        isKnockdown = PlayerController.isKnockdown;
-
         // apply the impact force:
         if (impact.magnitude > 0.2F) character.Move(impact * Time.deltaTime);
         // consumes the impact energy each cycle:
@@ -44,6 +40,8 @@ public class PlayerKnockback : MonoBehaviour
     // call this function to add an impact force:
     public void AddImpact(Vector3 dir, Vector3 lookAtEnemy, float force)
     {
+        CheckActions();
+
         if (!isRolling && !isKnockdown && !isRewinding)
         {
             anim.SetTrigger("Knockdown");
@@ -68,5 +66,12 @@ public class PlayerKnockback : MonoBehaviour
         GetComponent<PlayerController>().EnableRewind();
         PlayerController.isKnockdown = false;
         PlayerController.isAttacking = false;
+    }
+
+    void CheckActions()
+    {
+        isRolling = PlayerController.isRolling;
+        isRewinding = PlayerController.isRewinding;
+        isKnockdown = PlayerController.isKnockdown;
     }
 }

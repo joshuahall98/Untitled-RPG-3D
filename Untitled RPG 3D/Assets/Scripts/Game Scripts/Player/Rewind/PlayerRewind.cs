@@ -65,14 +65,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     // Update is called once per frame
     void FixedUpdate()
     {
-        //making sure action checkers correspond with player controller
-        isRolling = PlayerController.isRolling;
-        isAttacking = PlayerController.isAttacking;
-        isDead = PlayerController.isDead;
-        isKnockdown = PlayerController.isKnockdown;
-        isGrounded = PlayerController.isGrounded;
-
-        
+        CheckActions();
 
         //Run rewind function if variables are met 
         if (Rewinding == true && rewindsLeft > 0)
@@ -180,6 +173,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //Rewind button function
     public void PlsRewind()
     {
+        CheckActions();
+
         if (!isDead)
         {
             if (!isAttacking)
@@ -228,6 +223,15 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public void EndRewindAnimEvent()
     {
         PlayerController.isRewinding = false;
+    }
+
+    void CheckActions()
+    {
+        isRolling = PlayerController.isRolling;
+        isAttacking = PlayerController.isAttacking;
+        isDead = PlayerController.isDead;
+        isKnockdown = PlayerController.isKnockdown;
+        isGrounded = PlayerController.isGrounded;
     }
 
 }

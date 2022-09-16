@@ -87,7 +87,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            Destroy(this.gameObject);
+            GetComponent<Collider>().enabled = false;
         }
     }
 
