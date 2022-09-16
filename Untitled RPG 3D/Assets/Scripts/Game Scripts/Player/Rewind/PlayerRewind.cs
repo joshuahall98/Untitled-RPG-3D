@@ -43,6 +43,9 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     Animator anim;
     public GameObject hourGlass;
 
+    //rewind ghost
+    [SerializeField]GameObject rewindGhost;
+
     private void Awake()
     {
         rewindUI = GameObject.Find("PlayerUI");
@@ -50,6 +53,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         anim = GetComponent<Animator>();
 
         hourGlass.SetActive(false);
+
+        rewindGhost = GameObject.Find("RewindGhost");
     }
 
     void Start()
@@ -100,7 +105,10 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
             rewindFadedHealth = pointInTime.hp;
             rewindUI.GetComponent<RewindUI>().FadedHealthBar();
-           // rewindFadedHPBar.SetHealth(rewindFadedHealth);
+            // rewindFadedHPBar.SetHealth(rewindFadedHealth);
+
+            //PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
+            rewindGhost.transform.position = pointInTime.position;
 
         }
 
@@ -127,6 +135,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         {
             rewindFillXPAmount = 0;
         }
+
+        
 
     }
 
