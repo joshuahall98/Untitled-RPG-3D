@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.SceneManagement;
 
-public enum PlayerState { none, isMoving, isRolling, isAttacking, isDizzy, isGrounded, isDead, isKnockdown, isRewinding}
+
 public class PlayerController : MonoBehaviour
 {
     //THIS SCRIPT CONTROLS THE BASE PLAYER MOVEMENT, IT ALSO CONTROLS THE PLAYERS ROLL MECHANIC, THE DIZZY AFFECT, AND WHETHER OR NOT THE PLAYER IS GROUNDED
@@ -36,8 +36,6 @@ public class PlayerController : MonoBehaviour
     public static bool isKnockdown;
     public static bool isRewinding;
 
-    public static PlayerState playerState;
-
 
     public bool isMovingPub;
     public bool isRollingPub;
@@ -47,7 +45,6 @@ public class PlayerController : MonoBehaviour
     public bool isKnockdownPub;
     public bool isRewindingPub;
 
-    public PlayerState playerStatePub;
 
     //Roll
     float rollCDTimer = 0;
@@ -79,7 +76,6 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        playerState = PlayerState.none;
         
         gameManager = GameObject.Find("GameManager");
 
@@ -126,7 +122,6 @@ public class PlayerController : MonoBehaviour
         isGroundedPub = isGrounded;
         isKnockdownPub = isKnockdown;
         isRewindingPub = isRewinding;
-        playerStatePub = playerState;
 
 
         #region - Movement -
@@ -329,7 +324,7 @@ public class PlayerController : MonoBehaviour
         //animation checks
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("Roll") && isRolling == true)
         {
-            StartCoroutine(RollEndAnim());
+            RollEndAnim();
         }
 
         /*if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerKnockdown"))
@@ -361,7 +356,7 @@ public class PlayerController : MonoBehaviour
                                     anim.SetTrigger("Roll");
                                     //StartCoroutine(RollAnim());
                                     //DisableHeavyAttackCharge();
-                                    DisableLightAttack();
+                                    //DisableLightAttack();
                                 }
                             }
                             
@@ -398,7 +393,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    IEnumerator RollEndAnim()
+    void RollEndAnim()
     {
 
         isRolling = false;
@@ -415,9 +410,10 @@ public class PlayerController : MonoBehaviour
         }
 
         //this prevents issue where attack after roll are clunky, this line prevents users from being able to instantly attack after rolling
-        yield return new WaitForSeconds(0.2f);
+        //instead of this we added a skip state to the animation to allow for better flow of attacking
+        //yield return new WaitForSeconds(0.2f);
 
-        EnableLightAttack();
+        //EnableLightAttack();
         //EnableHeavyAttackCharge();
 
     }

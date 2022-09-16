@@ -34,11 +34,6 @@ public class PlayerLightAttack : MonoBehaviour
 
     private void Update()
     {
-        isAttacking = PlayerController.isAttacking;
-        isRolling = PlayerController.isRolling;
-        isDizzy = PlayerController.isDizzy;
-        isGrounded = PlayerController.isGrounded;
-        isKnockdown = PlayerController.isKnockdown;
 
         //cd for combo between swings
         if (swingCDTimer > 0)
@@ -67,6 +62,8 @@ public class PlayerLightAttack : MonoBehaviour
 
     public void LightAtk()
     {
+        CheckActions();
+
         if (!isRolling)
         {
             if (!isDizzy)
@@ -90,7 +87,6 @@ public class PlayerLightAttack : MonoBehaviour
                                 swingCDTimer = 1;
                                 FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
                                 anim.SetTrigger("LightAttack1");
-                                PlayerController.playerState = PlayerState.isAttacking;
 
                             }
                             else
@@ -143,6 +139,15 @@ public class PlayerLightAttack : MonoBehaviour
     void LightAttackSwordCollideroff()
     {
         swordCollider.enabled = false;
+    }
+
+    void CheckActions()
+    {
+        isAttacking = PlayerController.isAttacking;
+        isRolling = PlayerController.isRolling;
+        isDizzy = PlayerController.isDizzy;
+        isGrounded = PlayerController.isGrounded;
+        isKnockdown = PlayerController.isKnockdown;
     }
 
 

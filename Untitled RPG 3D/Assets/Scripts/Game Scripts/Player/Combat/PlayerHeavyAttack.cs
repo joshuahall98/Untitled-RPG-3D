@@ -33,20 +33,11 @@ public class PlayerHeavyAttack : MonoBehaviour
         sparkle.SetActive(false);
     }
 
-    private void Update()
-    {
-
-        isAttacking = PlayerController.isAttacking;
-        isRolling = PlayerController.isRolling;
-        isDizzy = PlayerController.isDizzy;
-        isGrounded = PlayerController.isGrounded;
-        isMoving = PlayerController.isMoving;
-        isKnockdown = PlayerController.isKnockdown;
-
-    }
 
     public void HeavyAtkCharge()
     {
+        CheckActions();
+
         if (!isRolling)
         {
             if (!isDizzy)
@@ -59,7 +50,6 @@ public class PlayerHeavyAttack : MonoBehaviour
                         {
                             anim.SetTrigger("HeavyAttackHold");
                             anim.ResetTrigger("HeavyAttackFail");
-                            isAttacking = true;
                             PlayerController.isAttacking = true;
                             sword.SetActive(true);
                             sheathedSword.SetActive(false);
@@ -79,6 +69,8 @@ public class PlayerHeavyAttack : MonoBehaviour
     //this line of code checks to see if the animation has reached full charge before allowing the swing to commence
     void HeavyAttackReleaseReadyAnimEvent()
     {
+        CheckActions();
+
         if(isAttacking == true  && !isKnockdown)
         {
             releaseReady = true;
@@ -91,7 +83,8 @@ public class PlayerHeavyAttack : MonoBehaviour
 
     public void HeavyAtkRelease()
     {
-        
+        CheckActions();
+
         if (isAttacking == true && !isMoving)
         {
             if (releaseReady == true && !isKnockdown)
@@ -122,7 +115,6 @@ public class PlayerHeavyAttack : MonoBehaviour
 
     void HeavyAttackEndAnimEvent()
     {
-        isAttacking = false;
         sword.SetActive(false);
         sheathedSword.SetActive(true);
         swordCollider.enabled = false;
@@ -138,7 +130,6 @@ public class PlayerHeavyAttack : MonoBehaviour
             FindObjectOfType<SoundManager>().StopSound("Heavy Attack Charge");
             releaseReady = false;
             anim.SetTrigger("HeavyAttackFail");
-            isAttacking = false;
             sword.SetActive(false);
             sheathedSword.SetActive(true);
             PlayerController.isAttacking = false;
@@ -154,6 +145,16 @@ public class PlayerHeavyAttack : MonoBehaviour
     void HeavyAttackSwordColliderOff()
     {
         swordCollider.enabled = false;
+    }
+
+    void CheckActions()
+    {
+        isAttacking = PlayerController.isAttacking;
+        isRolling = PlayerController.isRolling;
+        isDizzy = PlayerController.isDizzy;
+        isGrounded = PlayerController.isGrounded;
+        isMoving = PlayerController.isMoving;
+        isKnockdown = PlayerController.isKnockdown;
     }
 
 }
