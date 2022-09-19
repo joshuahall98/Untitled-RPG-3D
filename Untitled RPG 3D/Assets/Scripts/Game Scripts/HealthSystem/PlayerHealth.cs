@@ -8,20 +8,19 @@ public class PlayerHealth : MonoBehaviour
     Animator anim;
 
     public static bool isDead = false;
-    public bool damageTaken = false;
+    bool damageTaken = false;
     public float damageTakenTimer;
     public static int maxHP = 100;
     public static int currentHP = 0;
-    public int currentHPVisible = 0;
+    int currentHPVisible = 0;
 
     //UI
-    public GameObject rewindUI;
+    GameObject rewindUI;
     GameObject menuUI;
 
-
     //action checker
-    public bool isRolling;
-    public bool isRewinding;
+    bool isRolling;
+    bool isRewinding;
 
     // Start is called before the first frame update
     void Start()
@@ -39,8 +38,7 @@ public class PlayerHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isRolling = PlayerController.isRolling;
-        isRewinding = PlayerController.isRewinding;
+
 
         currentHPVisible = currentHP;
 
@@ -61,6 +59,8 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        CheckActions();
+
         if (!isRewinding)
         {
             if (!isRolling /*&& damageTaken == false*/)
@@ -83,6 +83,12 @@ public class PlayerHealth : MonoBehaviour
             PlayerController.isDead = true;
             menuUI.GetComponent<MenuUI>().EnableDeathText();
         }
+    }
+
+    void CheckActions()
+    {
+        isRolling = PlayerController.isRolling;
+        isRewinding = PlayerController.isRewinding;
     }
 
 }

@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class OghamStoneFloat : MonoBehaviour
 {
-    public float turnSpeed = 2;
-    public float floatSpeed = 1;
-    public float moveSpeed = 2;
+    [SerializeField]float turnSpeed = 2;
+    [SerializeField]float floatSpeed = 1;
+    [SerializeField]float moveSpeed = 2;
 
     [SerializeField] float currentPosY;
     [SerializeField] float newPosY;
 
     [SerializeField]float height;
 
-    public bool rotated = false;
-    public bool startFloating = false;
-    public bool inRange = false;
+    bool rotated = false;
+    bool startFloating = false;
+    bool inRange = false;
 
     Vector3 startingPos;
     [SerializeField]Vector3 rotation;
@@ -23,7 +23,7 @@ public class OghamStoneFloat : MonoBehaviour
     Quaternion originalRotation;
     [SerializeField]float vecCounter;
     [SerializeField] float vecCounterCompare;
-    public float distance;
+    float distance;
 
     
 
