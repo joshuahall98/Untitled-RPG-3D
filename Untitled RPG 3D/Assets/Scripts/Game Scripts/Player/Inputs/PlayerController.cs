@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
     //Roll
     float rollCDTimer = 0;
     int rollUsed = 0;
-    public float rollSpeed = 10;
+    [SerializeField]float rollSpeed = 10;
     float rollTime = 0.5f;
     public GameObject dizzyAffect;
     

@@ -5441,7 +5441,7 @@ Transform:
   m_Children:
   - {fileID: 1223121831110250729}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1689940224852358949
 Animator:
@@ -5500,7 +5500,8 @@ MonoBehaviour:
   isDizzyPub: 0
   isGroundedPub: 0
   isKnockdownPub: 0
-  rollSpeed: 18
+  isRewindingPub: 0
+  rollSpeed: 15
   dizzyAffect: {fileID: 1689940225372480533}
   sword: {fileID: 1995858245669972044}
   sheathedSword: {fileID: 1995858245555271080}
@@ -5524,7 +5525,9 @@ MonoBehaviour:
   isAttacking: 0
   isDead: 0
   isKnockdown: 0
+  isGrounded: 0
   hourGlass: {fileID: 1995858245425561861}
+  rewindGhost: {fileID: 0}
 --- !u!114 &1689940224852358945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5537,11 +5540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d028fabb00a0664c93218ee4166f421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageTaken: 0
   damageTakenTimer: 0
-  currentHPVisible: 0
-  rewindUI: {fileID: 0}
-  isRolling: 0
 --- !u!114 &1689940224852358944
 MonoBehaviour:
   m_ObjectHideFlags: 0
