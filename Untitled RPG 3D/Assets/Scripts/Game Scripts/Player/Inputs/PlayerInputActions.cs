@@ -73,7 +73,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""TakeDamageTest"",
+                    ""name"": ""SwitchCharacters"",
                     ""type"": ""Button"",
                     ""id"": ""ae7ac6ba-9ee0-49a8-a725-417e66836976"",
                     ""expectedControlType"": ""Button"",
@@ -216,7 +216,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""TakeDamageTest"",
+                    ""action"": ""SwitchCharacters"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -299,7 +299,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Roll = m_Player.FindAction("Roll", throwIfNotFound: true);
         m_Player_HeavyAtkCharge = m_Player.FindAction("HeavyAtkCharge", throwIfNotFound: true);
-        m_Player_TakeDamageTest = m_Player.FindAction("TakeDamageTest", throwIfNotFound: true);
+        m_Player_SwitchCharacters = m_Player.FindAction("SwitchCharacters", throwIfNotFound: true);
         m_Player_HeavyAtkRelease = m_Player.FindAction("HeavyAtkRelease", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
@@ -370,7 +370,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Roll;
     private readonly InputAction m_Player_HeavyAtkCharge;
-    private readonly InputAction m_Player_TakeDamageTest;
+    private readonly InputAction m_Player_SwitchCharacters;
     private readonly InputAction m_Player_HeavyAtkRelease;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_Interact;
@@ -383,7 +383,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Roll => m_Wrapper.m_Player_Roll;
         public InputAction @HeavyAtkCharge => m_Wrapper.m_Player_HeavyAtkCharge;
-        public InputAction @TakeDamageTest => m_Wrapper.m_Player_TakeDamageTest;
+        public InputAction @SwitchCharacters => m_Wrapper.m_Player_SwitchCharacters;
         public InputAction @HeavyAtkRelease => m_Wrapper.m_Player_HeavyAtkRelease;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
@@ -411,9 +411,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @HeavyAtkCharge.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkCharge;
                 @HeavyAtkCharge.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkCharge;
                 @HeavyAtkCharge.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkCharge;
-                @TakeDamageTest.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeDamageTest;
-                @TakeDamageTest.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeDamageTest;
-                @TakeDamageTest.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTakeDamageTest;
+                @SwitchCharacters.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchCharacters;
+                @SwitchCharacters.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchCharacters;
+                @SwitchCharacters.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwitchCharacters;
                 @HeavyAtkRelease.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkRelease;
                 @HeavyAtkRelease.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkRelease;
                 @HeavyAtkRelease.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHeavyAtkRelease;
@@ -442,9 +442,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @HeavyAtkCharge.started += instance.OnHeavyAtkCharge;
                 @HeavyAtkCharge.performed += instance.OnHeavyAtkCharge;
                 @HeavyAtkCharge.canceled += instance.OnHeavyAtkCharge;
-                @TakeDamageTest.started += instance.OnTakeDamageTest;
-                @TakeDamageTest.performed += instance.OnTakeDamageTest;
-                @TakeDamageTest.canceled += instance.OnTakeDamageTest;
+                @SwitchCharacters.started += instance.OnSwitchCharacters;
+                @SwitchCharacters.performed += instance.OnSwitchCharacters;
+                @SwitchCharacters.canceled += instance.OnSwitchCharacters;
                 @HeavyAtkRelease.started += instance.OnHeavyAtkRelease;
                 @HeavyAtkRelease.performed += instance.OnHeavyAtkRelease;
                 @HeavyAtkRelease.canceled += instance.OnHeavyAtkRelease;
@@ -507,7 +507,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);
         void OnHeavyAtkCharge(InputAction.CallbackContext context);
-        void OnTakeDamageTest(InputAction.CallbackContext context);
+        void OnSwitchCharacters(InputAction.CallbackContext context);
         void OnHeavyAtkRelease(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
