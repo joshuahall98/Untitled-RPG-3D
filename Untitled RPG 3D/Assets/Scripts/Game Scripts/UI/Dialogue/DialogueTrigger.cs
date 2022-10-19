@@ -53,7 +53,7 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-
+    //this vairable is public so that you can call dialogue text from other sources
     public void DialogueText()
     {
         isInteracting = true;

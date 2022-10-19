@@ -68,16 +68,26 @@ public class PlayerController : MonoBehaviour
     Collider swordCollider;
 
     //menu script
-    public GameObject gameManager;
+    GameObject gameManager;
 
     //audio
     bool runningAudio;
+
+    //camera
+    GameObject camera;
+
+    //sidecharachter
+    GameObject sideCharacter;
 
 
     void Awake()
     {
         
         gameManager = GameObject.Find("GameManager");
+
+        camera = GameObject.Find("Camera");
+
+        sideCharacter = GameObject.Find("SideCharacter");
 
         anim = GetComponent<Animator>();
 
@@ -87,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
         //calling all the inputs
         playerInput.Player.Roll.performed += rollPerformed => RollAnimation();
-        playerInput.Player.TakeDamageTest.performed += damagePerformed => TakeDamage();
+        playerInput.Player.SwitchCharacters.performed += damagePerformed => SwitchCharacters();
         playerInput.Player.Rewind.performed += rewindPerformed => Rewind();
         playerInput.Player.Attack.performed += LightAtk;
         playerInput.Player.HeavyAtkCharge.performed += HeavyAtkCharge;
@@ -200,16 +210,16 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
         //running sound
-        if(isMoving && isGrounded)
+        //is currently broken unsure why, need to remake it
+        /*if (isMoving && isGrounded)
         {
             FindObjectOfType<SoundManager>().PlaySound("Running");
         }
         else
         {   
             FindObjectOfType<SoundManager>().StopSound("Running");
-        }
+        }*/
 
         #endregion
 
@@ -457,12 +467,54 @@ public class PlayerController : MonoBehaviour
         GetComponent<PlayerHeavyAttack>().HeavyAtkRelease();
     }
 
-    //testing take damage // restart game
-    public void TakeDamage()
+    //switch characters
+    public void SwitchCharacters()
     {
-        GetComponent<PlayerHealth>().InputTakeDamage();
+        if (!isMoving)
+        {
+            if (!isDead)
+            {
+                if (!isAttacking)
+                {
+                    if (!isKnockdown)
+                    {
+                        if (!isRolling)
+                        {
+                            if (!isRewinding)
+                            {
+                                if (isGrounded)
+                                {
+                                    if (!isDizzy)
+                                    {
+                                        camera.GetComponent<CameraControls>().SwitchCharacter();
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                                        DisablePlayerEnableSideCharacter();
+                                    }   
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+
+    }
+
+    void DisablePlayerEnableSideCharacter()
+    {
+        sideCharacter.GetComponent<SideCharacterController>().enabled = true;
+
+        /*this.GetComponent<AttackIndicator>().enabled = false;
+        this.GetComponent<PlayerKnockback>().enabled = false;
+        this.GetComponent<AttackDash>().enabled = false;
+        this.GetComponent<PlayerHeavyAttack>().enabled = false;
+        this.GetComponent<PlayerLightAttack>().enabled = false;
+        this.GetComponent<CooldownSystem>().enabled = false;
+        this.GetComponent<PlayerHealth>().enabled = false;
+        this.GetComponent<AttackAim>().enabled = false;
+        this.GetComponent<PlayerRewind>().enabled = false;*/
+        this.GetComponent<PlayerController>().enabled = false;
     }
 
     //start Rewind

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3883778076125461301}
-  - component: {fileID: 4679920051359524492}
+  - component: {fileID: 8015287883803367778}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -34,7 +34,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4679920051359524492
+--- !u!114 &8015287883803367778
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3883778076125461300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49bea54d3d4bb3c48b0a52ec5e96cbd6, type: 3}
+  m_Script: {fileID: 11500000, guid: c2b1fbce872defa4aad52429c24bb90f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 3883778076425773840}
@@ -272,7 +272,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2147483647
+    m_Bits: 1919
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

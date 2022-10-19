@@ -52,10 +52,10 @@ public class PlayerHealth : MonoBehaviour
 
     }
 
-    public void InputTakeDamage()
+    /*public void InputTakeDamage()
     {
         TakeDamage(20);
-    }
+    }*/
 
     public void TakeDamage(int damage)
     {

@@ -55,7 +55,7 @@ public class PlayerHeavyAttack : MonoBehaviour
                             sheathedSword.SetActive(false);
                             swordCollider.enabled = false;
                             releaseReady = false;
-                            FindObjectOfType<SoundManager>().PlaySound("Heavy Attack Charge");
+                            GetComponent<SoundManager>().PlaySound("Heavy Attack Charge");
                         }
                     }
                     
@@ -75,8 +75,8 @@ public class PlayerHeavyAttack : MonoBehaviour
         {
             releaseReady = true;
             sparkle.SetActive(true);
-            FindObjectOfType<SoundManager>().StopSound("Heavy Attack Charge");
-            FindObjectOfType<SoundManager>().PlaySound("Heavy Attack Ding");
+            GetComponent<SoundManager>().StopSound("Heavy Attack Charge");
+            GetComponent<SoundManager>().PlaySound("Heavy Attack Ding");
             Debug.Log("ReadyToAttack");
         }
     }
@@ -96,12 +96,12 @@ public class PlayerHeavyAttack : MonoBehaviour
                 swordCollider.enabled = true;
                 releaseReady = false;
                 GetComponent<AttackAim>().Aim();
-                FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
+                GetComponent<SoundManager>().PlaySound("Sword Swing");
             }
             else
             {
                 sparkle.SetActive(false);
-                FindObjectOfType<SoundManager>().StopSound("Heavy Attack Charge");
+                GetComponent<SoundManager>().StopSound("Heavy Attack Charge");
                 releaseReady = false;
                 anim.SetTrigger("HeavyAttackFail");
                 isAttacking = false;
@@ -127,7 +127,7 @@ public class PlayerHeavyAttack : MonoBehaviour
     {
         if(releaseReady == true)
         {
-            FindObjectOfType<SoundManager>().StopSound("Heavy Attack Charge");
+            GetComponent<SoundManager>().StopSound("Heavy Attack Charge");
             releaseReady = false;
             anim.SetTrigger("HeavyAttackFail");
             sword.SetActive(false);

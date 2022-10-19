@@ -5420,6 +5420,7 @@ GameObject:
   - component: {fileID: 1689940224852359004}
   - component: {fileID: 3556720918372886034}
   - component: {fileID: 3556720918703039568}
+  - component: {fileID: 1581127029}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -5505,7 +5506,6 @@ MonoBehaviour:
   dizzyAffect: {fileID: 1689940225372480533}
   sword: {fileID: 1995858245669972044}
   sheathedSword: {fileID: 1995858245555271080}
-  gameManager: {fileID: 0}
 --- !u!114 &1689940224852358946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5662,6 +5662,51 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &1581127029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689940224852359003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfeb61f9e865b0d4e8e32a31e4c39416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Sword Swing
+    clip: {fileID: 8300000, guid: 8b2cb9b1ef855d345b6b19313db3a8ef, type: 3}
+    group: {fileID: 6017482611226594319, guid: 8d1a2a42e38ffe7478fea62c6e2434b7, type: 2}
+    volume: 0.8
+    pitch: 0.5
+    pan: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Heavy Attack Ding
+    clip: {fileID: 8300000, guid: 021dd3d34fc287745b4ce0adcbe11ae2, type: 3}
+    group: {fileID: 6017482611226594319, guid: 8d1a2a42e38ffe7478fea62c6e2434b7, type: 2}
+    volume: 0.4
+    pitch: 1.5
+    pan: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Heavy Attack Charge
+    clip: {fileID: 8300000, guid: 4db529701c0df04478ffedb360ab1962, type: 3}
+    group: {fileID: 6017482611226594319, guid: 8d1a2a42e38ffe7478fea62c6e2434b7, type: 2}
+    volume: 0.07
+    pitch: 1.5
+    pan: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Running
+    clip: {fileID: 8300000, guid: eedfbec388915c94c817ebbdd10de2fd, type: 3}
+    group: {fileID: 6017482611226594319, guid: 8d1a2a42e38ffe7478fea62c6e2434b7, type: 2}
+    volume: 0.581
+    pitch: 1
+    pan: 0
+    loop: 0
+    source: {fileID: 0}
 --- !u!1 &1689940225372480533
 GameObject:
   m_ObjectHideFlags: 0

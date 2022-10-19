@@ -85,7 +85,7 @@ public class PlayerLightAttack : MonoBehaviour
                                 sheathedSword.SetActive(false);
                                 atkNum++;
                                 swingCDTimer = 1;
-                                FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
+                                GetComponent<SoundManager>().PlaySound("Sword Swing");
                                 anim.SetTrigger("LightAttack1");
 
                             }
@@ -100,7 +100,7 @@ public class PlayerLightAttack : MonoBehaviour
                                 sheathedSword.SetActive(false);
                                 atkNum++;
                                 swingCDTimer = 1;
-                                FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
+                                GetComponent<SoundManager>().PlaySound("Sword Swing");
                                 anim.SetTrigger("LightAttack2");
                             }
                         }
