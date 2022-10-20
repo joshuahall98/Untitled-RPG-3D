@@ -9,7 +9,7 @@ public class OghamStoneInteract : MonoBehaviour
     GameObject ui;
     GameObject player;
     GameObject mouse;
-    public PlayerInputActions playerInput;
+    PlayerInputActions playerInput;
 
     bool inRange;
     bool isInteracting;

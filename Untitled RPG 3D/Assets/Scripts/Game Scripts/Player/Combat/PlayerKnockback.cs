@@ -29,13 +29,13 @@ public class PlayerKnockback : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
         // apply the impact force:
         if (impact.magnitude > 0.2F) character.Move(impact * Time.deltaTime);
         // consumes the impact energy each cycle:
+        //this line seems to stop the player being knockedback into oblivion
         impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
-
-        
+         
     }
     // call this function to add an impact force:
     public void AddImpact(Vector3 dir, Vector3 lookAtEnemy, float force)
@@ -44,17 +44,22 @@ public class PlayerKnockback : MonoBehaviour
 
         if (!isRolling && !isKnockdown && !isRewinding)
         {
+
             anim.SetTrigger("Knockdown");
             transform.LookAt(lookAtEnemy);
             PlayerController.isKnockdown = true;
             GetComponent<PlayerController>().DisableRewind(); //this prevents rewind bug
-            dir.Normalize();
-            playerY = transform.position;
-            if (dir.y > playerY.y) dir.y = playerY.y;
+            dir = dir.normalized;
+
+            //THIS WAS THE OLD KNOCKBACK CODE, CAUSED THE PLAYER TO GO UP TOO
+            //dir.Normalize();
+            /*playerY = transform.position;
+            if (dir.y > playerY.y) dir.y = playerY.y;*/
             // the line below cause the player to go upwards, could maybe be used in the future for downward slam attacks
             //if (dir.y < 0) dir.y = -dir.y; // reflect down force on the ground
-            impact += dir.normalized * force / mass;
+            //impact += dir.normalized * force / mass;
             transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
+            impact = dir * force;
             
         }
         

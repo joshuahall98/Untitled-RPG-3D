@@ -10,8 +10,6 @@ public class AttackIndicator : MonoBehaviour
     public GameObject attackIndicator;
     public GameObject player;
 
-    public LayerMask ground;
-
     private void Start()
     {
         attackIndicatorCanvas = GameObject.Find("AttackIndicator");

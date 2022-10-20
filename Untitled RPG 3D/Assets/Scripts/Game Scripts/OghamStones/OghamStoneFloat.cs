@@ -11,7 +11,7 @@ public class OghamStoneFloat : MonoBehaviour
     [SerializeField] float currentPosY;
     [SerializeField] float newPosY;
 
-    [SerializeField]float height;
+    [SerializeField] float height;
 
     bool rotated = false;
     bool startFloating = false;

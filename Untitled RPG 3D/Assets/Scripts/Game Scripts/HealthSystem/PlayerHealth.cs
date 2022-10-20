@@ -9,7 +9,7 @@ public class PlayerHealth : MonoBehaviour
 
     public static bool isDead = false;
     bool damageTaken = false;
-    public float damageTakenTimer;
+    [SerializeField] float damageTakenTimer;
     public static int maxHP = 100;
     public static int currentHP = 0;
     int currentHPVisible = 0;

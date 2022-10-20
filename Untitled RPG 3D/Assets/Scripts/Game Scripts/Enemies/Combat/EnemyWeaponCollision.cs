@@ -4,41 +4,24 @@ using UnityEngine;
 
 public class EnemyWeaponCollision : MonoBehaviour
 {
-    public float force;
-
-    bool playerTakingDamage;
+    [SerializeField]float force;
 
     public EnemyScriptableObject Enemy;
 
     private void OnTriggerEnter(Collider collision)
     {
 
-        if (collision.gameObject.tag == "Player" /*&& playerTakingDamage == false*/)
+        if (collision.gameObject.tag == "Player")
         {
             var dir = collision.transform.position - this.transform.position;
             var enemyPos = this.transform.position;
             collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(Enemy.damage);
             collision.gameObject.transform.GetComponent<PlayerKnockback>().AddImpact(dir, enemyPos, force);
+            //disable collider after hitting player so they can only be hit once
             GetComponent<Collider>().enabled = false;
-            //playerTakingDamage = true;
 
         }
 
     }
 
-    //this is the old system for preventing an enemy collider hitting you more than once
-    /*private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            StartCoroutine(PlayerDamageDelay());
-        }
-    }
-
-    IEnumerator PlayerDamageDelay()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        playerTakingDamage = false;
-    }*/
 }
