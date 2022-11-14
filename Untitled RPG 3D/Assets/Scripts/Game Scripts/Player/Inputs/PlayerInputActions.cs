@@ -107,6 +107,24 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""b5edbd5d-c026-46fc-b3ef-f75ba0ac1847"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""13394419-1d2d-46f1-991b-d8a17fa5cede"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -252,6 +270,28 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""895476de-9c8c-43d5-8277-11399d7fa051"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""CameraLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""68926e2c-037c-4968-9279-0e2cddb8a301"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""CameraRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -303,6 +343,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_HeavyAtkRelease = m_Player.FindAction("HeavyAtkRelease", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_CameraLeft = m_Player.FindAction("CameraLeft", throwIfNotFound: true);
+        m_Player_CameraRight = m_Player.FindAction("CameraRight", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Pause = m_Menu.FindAction("Pause", throwIfNotFound: true);
@@ -374,6 +416,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_HeavyAtkRelease;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_CameraLeft;
+    private readonly InputAction m_Player_CameraRight;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -387,6 +431,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @HeavyAtkRelease => m_Wrapper.m_Player_HeavyAtkRelease;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @CameraLeft => m_Wrapper.m_Player_CameraLeft;
+        public InputAction @CameraRight => m_Wrapper.m_Player_CameraRight;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -423,6 +469,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @CameraLeft.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCameraLeft;
+                @CameraLeft.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCameraLeft;
+                @CameraLeft.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCameraLeft;
+                @CameraRight.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCameraRight;
+                @CameraRight.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCameraRight;
+                @CameraRight.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCameraRight;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -454,6 +506,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @CameraLeft.started += instance.OnCameraLeft;
+                @CameraLeft.performed += instance.OnCameraLeft;
+                @CameraLeft.canceled += instance.OnCameraLeft;
+                @CameraRight.started += instance.OnCameraRight;
+                @CameraRight.performed += instance.OnCameraRight;
+                @CameraRight.canceled += instance.OnCameraRight;
             }
         }
     }
@@ -511,6 +569,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnHeavyAtkRelease(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnCameraLeft(InputAction.CallbackContext context);
+        void OnCameraRight(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {

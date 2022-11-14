@@ -101,7 +101,9 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             // rewindFadedHPBar.SetHealth(rewindFadedHealth);
 
             //PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
-            rewindGhost.transform.position = pointInTime.position;
+
+            //PLAYER GHOST
+            //rewindGhost.transform.position = pointInTime.position;
 
         }
 

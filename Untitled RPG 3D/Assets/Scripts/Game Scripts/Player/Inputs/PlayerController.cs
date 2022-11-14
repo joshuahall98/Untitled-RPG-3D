@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     Vector3 isometric;
     public PlayerInputActions playerInput;
 
+    [SerializeField]int isometricRotation = 45;
+
     //Animation
     Animator anim;
 
@@ -98,6 +100,8 @@ public class PlayerController : MonoBehaviour
         //calling all the inputs
         playerInput.Player.Roll.performed += rollPerformed => RollAnimation();
         playerInput.Player.SwitchCharacters.performed += damagePerformed => SwitchCharacters();
+        playerInput.Player.CameraRight.performed += CameraRight_performed => CameraRight();
+        playerInput.Player.CameraLeft.performed += CameraLeft_performed => CameraLeft();
         playerInput.Player.Rewind.performed += rewindPerformed => Rewind();
         playerInput.Player.Attack.performed += LightAtk;
         playerInput.Player.HeavyAtkCharge.performed += HeavyAtkCharge;
@@ -120,6 +124,11 @@ public class PlayerController : MonoBehaviour
         swordCollider = sword.GetComponent<Collider>();
         swordCollider.enabled = false;
 
+    }
+
+    private void CameraRight_performed(InputAction.CallbackContext obj)
+    {
+        throw new NotImplementedException();
     }
 
     void Update()
@@ -167,7 +176,7 @@ public class PlayerController : MonoBehaviour
 
                                     //magic code that converts the basic player movement into isometric
                                     isometric = new Vector3();
-                                    var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
+                                    var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, isometricRotation, 0));
                                     isometric = matrix.MultiplyPoint3x4(actualMovement);
 
                                     //move the character controller
@@ -515,6 +524,18 @@ public class PlayerController : MonoBehaviour
         this.GetComponent<AttackAim>().enabled = false;
         this.GetComponent<PlayerRewind>().enabled = false;*/
         this.GetComponent<PlayerController>().enabled = false;
+    }
+
+    public void CameraRight()
+    {
+        camera.GetComponent<CameraControls>().RotateRight();
+        isometricRotation = isometricRotation - 90;
+    }
+
+    public void CameraLeft()
+    {
+        camera.GetComponent<CameraControls>().RotateLeft();
+        isometricRotation = isometricRotation + 90;
     }
 
     //start Rewind
