@@ -71,6 +71,7 @@ public class EnemyTest : MonoBehaviour, CooldownActive
         {
             PlayerDead();
         }
+
         //Track distance from Enemy to Player
         distFromPlayer = Vector3.Distance(Player.transform.position, transform.position);
 
