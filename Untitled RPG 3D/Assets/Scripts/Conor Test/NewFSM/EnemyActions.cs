@@ -5,5 +5,4 @@ using UnityEngine;
 public class EnemyActions : ScriptableObject
 {
     public string actionAnimation;
-    
 }

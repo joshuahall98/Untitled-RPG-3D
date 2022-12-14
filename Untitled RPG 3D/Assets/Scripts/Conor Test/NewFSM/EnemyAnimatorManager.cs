@@ -7,16 +7,12 @@ public class EnemyAnimatorManager : AnimatorManager
     EnemyManager enemyManager;
     private void Awake()
     {
-        anim.GetComponent<Animator>();
+        anim = GetComponent<Animator>();
         enemyManager = GetComponentInParent<EnemyManager>();
     }
 
     private void OnAnimatorMove()
     {
-
-        if (Mathf.Approximately(Time.deltaTime, 0f)) 
-            return;
-        //Fixes Root Motion Bugs
         float delta = Time.deltaTime;
         enemyManager.enemyRigidBody.drag = 0;
         Vector3 deltaPosition = anim.deltaPosition;

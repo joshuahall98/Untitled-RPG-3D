@@ -1,67 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.AI;
 
 public class EnemyManager : MonoBehaviour
 {
 
-    EnemyLocoMotionManager enemyLocoMotionManager;
+    EnemyLocomotionManager enemyLocomotionManager;
     EnemyAnimatorManager enemyAnimatorManager;
     EnemyStats enemyStats;
-
-    public State currentState;
-    public  bool isPerformingAction;
-    public CharacterStats currentTarget;
     public NavMeshAgent navmeshAgent;
     public Rigidbody enemyRigidBody;
 
+    public State currentState;
+    public CharacterStats currentTarget;
 
+
+    public bool isPerformingAction;
     public float distanceFromTarget;
+    public float maximumAttackRange = 1.5f;
+
     public float rotationSpeed = 15;
-    public float maxiumAttackRange = 1.5f;
 
-
-
-    [Header("AI Settings")]
+    [Header("A.I Settings")]
     public float detectionRadius = 20;
-
-    //The higher, and lower, the greater detection FOV;
     public float maxiumDetectionAngle = 50;
     public float minimumDetectionAngle = -50;
     public float viewableAngle;
+    public float speed = 5f;
 
     public float currentRecoveryTime = 0;
-
-
     // Start is called before the first frame update
-    void Awake()
+
+    private void Awake()
     {
-        enemyLocoMotionManager = GetComponent<EnemyLocoMotionManager>();
+        enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
         enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
         enemyStats = GetComponent<EnemyStats>();
+        enemyRigidBody = GetComponent<Rigidbody>();
         navmeshAgent = GetComponentInChildren<NavMeshAgent>();
         navmeshAgent.enabled = false;
-        enemyRigidBody = GetComponent<Rigidbody>();
     }
 
     private void Start()
     {
-
         enemyRigidBody.isKinematic = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         HandleRecoveryTimer();
     }
 
-    public void FixedUpdate()
+    private void FixedUpdate()
     {
         HandleStateMachine();
-
     }
 
     private void HandleStateMachine()
@@ -70,11 +64,12 @@ public class EnemyManager : MonoBehaviour
         {
             State nextState = currentState.Tick(this, enemyStats, enemyAnimatorManager);
 
-            if(nextState != null)
+            if (nextState != null)
             {
                 SwitchToNextState(nextState);
             }
         }
+       
     }
 
     private void SwitchToNextState(State state)
@@ -97,13 +92,12 @@ public class EnemyManager : MonoBehaviour
             }
         }
     }
-  
 
-        
-    //View Aggro Box
+ 
+
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red; 
+        Gizmos.color = Color.red; //replace red with whatever color you prefer
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }

@@ -11,5 +11,4 @@ public class AnimatorManager : MonoBehaviour
         anim.SetBool("isInteracting", isInteracting);
         anim.CrossFade(targetAnim, 0.2f);
     }
-    
 }
