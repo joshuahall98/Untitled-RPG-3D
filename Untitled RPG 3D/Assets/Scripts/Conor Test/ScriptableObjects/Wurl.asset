@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 200
   speed: 9
-  retreatDist: 0
-  distFromAI: 0
-  stoppingDist: 30
-  attackRadius: 5
+  maxTime: 0.1
+  maxDistance: 1
+  maxSightDistance: 20
+  attackRadius: 2
   damage: 20

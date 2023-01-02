@@ -7,9 +7,9 @@ public class EnemyScriptableObject : ScriptableObject
 {
     public int maxHP;
     public float speed;
-    public float retreatDist;
-    public float distFromAI;
-    public float stoppingDist;
+    public float maxTime = 1.0f;
+    public float maxDistance = 1.0f;
+    public float maxSightDistance = 5f;
     public float attackRadius;
     public int damage;
 
