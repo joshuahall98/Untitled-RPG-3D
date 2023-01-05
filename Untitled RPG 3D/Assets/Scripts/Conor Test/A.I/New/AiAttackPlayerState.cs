@@ -11,22 +11,26 @@ public class AiAttackPlayerState : AiState
     }
     public void Enter(AIAgent agent)
     {
-        
-    }
+        agent.animator.SetTrigger("isAttacking");
+        agent.navMeshAgent.isStopped = true;
+     }
     public void Update(AIAgent agent)
     {
 
         //Attack Player
-        Debug.Log("attack");
-        agent.aiAttack.Attack();
+        Debug.Log("attack");     
 
         agent.stateMachine.ChangeState(AIStateID.ChasePlayer);
+
+
+
+
 
     }
 
     public void Exit(AIAgent agent)
     {
-        agent.animator.SetBool("isAttacking", false);
+        
     }
 
    

@@ -32,4 +32,11 @@ public class AILocomotion : MonoBehaviour
         }
     }
 
+    public void ResetAttackTrigger()
+    {
+        animator.ResetTrigger("isAttacking");
+        agent.isStopped = false;
+
+    }
+
 }
