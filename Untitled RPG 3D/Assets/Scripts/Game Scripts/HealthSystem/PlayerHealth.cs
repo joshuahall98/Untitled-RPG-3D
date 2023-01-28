@@ -8,6 +8,7 @@ public class PlayerHealth : CharacterStats
     Animator anim;
 
     public static bool isDead = false;
+
     bool damageTaken = false;
     [SerializeField] float damageTakenTimer;
     public static int maxHP = 100;
@@ -17,10 +18,6 @@ public class PlayerHealth : CharacterStats
     //UI
     GameObject rewindUI;
     GameObject menuUI;
-
-    //action checker
-    bool isRolling;
-    bool isRewinding;
 
     // Start is called before the first frame update
     void Start()
@@ -59,19 +56,15 @@ public class PlayerHealth : CharacterStats
 
     public void TakeDamage(int damage)
     {
-        CheckActions();
 
-        if (!isRewinding)
+        if(PlayerController.state != PlayerState.REWINDING || PlayerController.state != PlayerState.ROLLING)
         {
-            if (!isRolling /*&& damageTaken == false*/)
-            {
-                currentHP -= damage;
+            currentHP -= damage;
 
-                /*damageTaken = true;
-                damageTakenTimer = 1;*/
+            /*damageTaken = true;
+            damageTakenTimer = 1;*/
 
-                rewindUI.GetComponent<PlayerHPBar>().AlterHP();
-            }
+            rewindUI.GetComponent<PlayerHPBar>().AlterHP();
         }
         
         
@@ -80,15 +73,10 @@ public class PlayerHealth : CharacterStats
         {
             isDead = true;
             anim.SetTrigger("Dead");
-            PlayerController.isDead = true;
             menuUI.GetComponent<MenuUI>().EnableDeathText();
-        }
-    }
 
-    void CheckActions()
-    {
-        isRolling = PlayerController.isRolling;
-        isRewinding = PlayerController.isRewinding;
+            PlayerController.state = PlayerState.DEAD;
+        }
     }
 
 }

@@ -7,15 +7,6 @@ public class PlayerHeavyAttack : MonoBehaviour
     //Animation
     Animator anim;
 
-    //action checkers
-    public bool isMoving;
-    public bool isRolling;
-    public bool isAttacking;
-    public bool isDizzy;
-    public bool isGrounded;
-    public bool isDead;
-    public bool isKnockdown;
-
     //weapons
     public GameObject sword;
     public GameObject sheathedSword;
@@ -36,42 +27,31 @@ public class PlayerHeavyAttack : MonoBehaviour
 
     public void HeavyAtkCharge()
     {
-        CheckActions();
 
-        if (!isRolling)
-        {
-            if (!isDizzy)
-            {
-                if (isGrounded)
-                {
-                    if (!isKnockdown)
-                    {
-                        if (!isAttacking)
-                        {
-                            anim.SetTrigger("HeavyAttackHold");
-                            anim.ResetTrigger("HeavyAttackFail");
-                            PlayerController.isAttacking = true;
-                            sword.SetActive(true);
-                            sheathedSword.SetActive(false);
-                            swordCollider.enabled = false;
-                            releaseReady = false;
-                            GetComponent<SoundManager>().PlaySound("Heavy Attack Charge");
-                        }
-                    }
-                    
-                }
-            }
-        }
-
-
+        anim.SetTrigger("HeavyAttackHold");
+        anim.ResetTrigger("HeavyAttackFail");
+        sword.SetActive(true);
+        sheathedSword.SetActive(false);
+        swordCollider.enabled = false;
+        releaseReady = false;
+        GetComponent<SoundManager>().PlaySound("Heavy Attack Charge");
     }
 
     //this line of code checks to see if the animation has reached full charge before allowing the swing to commence
     void HeavyAttackReleaseReadyAnimEvent()
     {
-        CheckActions();
 
-        if(isAttacking == true  && !isKnockdown)
+        // CHECK KNOCKDOWN
+        /*if(isAttacking == true  && !isKnockdown)
+        {
+            releaseReady = true;
+            sparkle.SetActive(true);
+            GetComponent<SoundManager>().StopSound("Heavy Attack Charge");
+            GetComponent<SoundManager>().PlaySound("Heavy Attack Ding");
+            Debug.Log("ReadyToAttack");
+        }*/
+
+        if (PlayerController.state == PlayerState.ATTACKING)
         {
             releaseReady = true;
             sparkle.SetActive(true);
@@ -79,13 +59,15 @@ public class PlayerHeavyAttack : MonoBehaviour
             GetComponent<SoundManager>().PlaySound("Heavy Attack Ding");
             Debug.Log("ReadyToAttack");
         }
+
     }
 
+    //when you release the mouse button this code runs to check the stage of the charge up
     public void HeavyAtkRelease()
     {
-        CheckActions();
 
-        if (isAttacking == true && !isMoving)
+        //TO REMIND ME ABOUT KNOCKDOWN AND CHARGING
+        /*if (isAttacking == true && !isMoving)
         {
             if (releaseReady == true && !isKnockdown)
             {
@@ -105,11 +87,41 @@ public class PlayerHeavyAttack : MonoBehaviour
                 releaseReady = false;
                 anim.SetTrigger("HeavyAttackFail");
                 isAttacking = false;
+
+                PlayerController.state = PlayerState.IDLE;
+
                 sword.SetActive(false);
                 sheathedSword.SetActive(true);
                 PlayerController.isAttacking = false;
                 
             }
+        }*/
+
+
+        if (releaseReady == true)
+        {
+            sparkle.SetActive(false);
+            sword.GetComponent<WeaponDamage>().HeavyAttackDamage();
+            anim.SetTrigger("HeavyAttackRelease");
+            WeaponDamage.isAttacking = true;
+            swordCollider.enabled = true;
+            releaseReady = false;
+            GetComponent<AttackAim>().Aim();
+            GetComponent<SoundManager>().PlaySound("Sword Swing");
+        }
+        else
+        {
+            sparkle.SetActive(false);
+            GetComponent<SoundManager>().StopSound("Heavy Attack Charge");
+            releaseReady = false;
+            anim.SetTrigger("HeavyAttackFail");
+
+            PlayerController.state = PlayerState.IDLE;
+
+            sword.SetActive(false);
+            sheathedSword.SetActive(true);
+            //PlayerController.isAttacking = false;
+
         }
     }
 
@@ -119,7 +131,9 @@ public class PlayerHeavyAttack : MonoBehaviour
         sheathedSword.SetActive(true);
         swordCollider.enabled = false;
         WeaponDamage.isAttacking = false;
-        PlayerController.isAttacking = false;
+        //PlayerController.isAttacking = false;
+
+        PlayerController.state = PlayerState.IDLE;
     }
 
     //stop charge attack bug when game paused
@@ -132,7 +146,9 @@ public class PlayerHeavyAttack : MonoBehaviour
             anim.SetTrigger("HeavyAttackFail");
             sword.SetActive(false);
             sheathedSword.SetActive(true);
-            PlayerController.isAttacking = false;
+            //PlayerController.isAttacking = false;
+
+            PlayerController.state = PlayerState.IDLE;
         }
         
     }
@@ -145,16 +161,6 @@ public class PlayerHeavyAttack : MonoBehaviour
     void HeavyAttackSwordColliderOff()
     {
         swordCollider.enabled = false;
-    }
-
-    void CheckActions()
-    {
-        isAttacking = PlayerController.isAttacking;
-        isRolling = PlayerController.isRolling;
-        isDizzy = PlayerController.isDizzy;
-        isGrounded = PlayerController.isGrounded;
-        isMoving = PlayerController.isMoving;
-        isKnockdown = PlayerController.isKnockdown;
     }
 
 }

@@ -55,7 +55,7 @@ public class DoorScript : MonoBehaviour
 
         if (door.transform.position == target && move == true)
         {
-            PlayerController.isAttacking = false;
+            PlayerController.state = PlayerState.IDLE;
             move = false;
         }
 
@@ -85,7 +85,7 @@ public class DoorScript : MonoBehaviour
     {
         if (stopPlayer == true)
         {
-            PlayerController.isAttacking = true;
+            PlayerController.state = PlayerState.INTERACTING;
             stopPlayer = false;
         }
     }

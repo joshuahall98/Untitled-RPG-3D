@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Web.Mvc;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,13 +33,6 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //UI
     public GameObject rewindUI;
 
-    //action checkers
-    public bool isRolling;
-    public bool isAttacking;
-    public bool isDead;
-    public bool isKnockdown;
-    public bool isGrounded;
-
     //animation variables
     Animator anim;
     public GameObject hourGlass;
@@ -65,7 +59,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     // Update is called once per frame
     void FixedUpdate()
     {
-        CheckActions();
+        //CheckActions();
 
         //Run rewind function if variables are met 
         if (Rewinding == true && rewindsLeft > 0)
@@ -126,13 +120,10 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         }
 
         //can't fill up if dead
-        if (isDead)
+        if (PlayerController.state == PlayerState.DEAD)
         {
             rewindFillXPAmount = 0;
         }
-
-        
-
     }
 
     //rewind player to point x seconds ago
@@ -140,8 +131,10 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     {
         anim.SetBool("isRewinding", true);
         //use is attacking until we find a need for is rewinding
-        PlayerController.isRewinding = true;
+        //PlayerController.isRewinding = true;
         hourGlass.SetActive(true);
+
+        PlayerController.state = PlayerState.REWINDING;
 
 
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerRewindStart"))
@@ -175,36 +168,16 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //Rewind button function
     public void PlsRewind()
     {
-        CheckActions();
-
-        if (!isDead)
+        if (cooldownSystem.IsOnCooldown(id)) { return; }
         {
-            if (!isAttacking)
+            if (rewindsLeft > 0)
             {
-                if (!isRolling)
-                {
-                    if (!isKnockdown)
-                    {
-                        if (isGrounded)
-                        {
-                            if (cooldownSystem.IsOnCooldown(id)) { return; }
-                            {
-                                if (rewindsLeft > 0)
-                                {
-                                    Rewinding = true;
-                                }
-
-
-                                cooldownSystem.PutOnCooldown(this);
-                            }
-                        }
-                        
-                    }
-                    
-                }
+                Rewinding = true;
             }
+
+
+            cooldownSystem.PutOnCooldown(this);
         }
-        
     }
 
     //increase the amount of rewinds you have
@@ -224,16 +197,21 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //using animation event, should change to code
     public void EndRewindAnimEvent()
     {
-        PlayerController.isRewinding = false;
+        //PlayerController.isRewinding = false;
+        PlayerController.state = PlayerState.IDLE;
+        StartCoroutine(RollDelay());
     }
 
-    void CheckActions()
+    //temporary fix to a buggy interaction when the character rolls after rewinding
+    IEnumerator RollDelay()
     {
-        isRolling = PlayerController.isRolling;
-        isAttacking = PlayerController.isAttacking;
-        isDead = PlayerController.isDead;
-        isKnockdown = PlayerController.isKnockdown;
-        isGrounded = PlayerController.isGrounded;
+        GetComponent<PlayerController>().DisableRoll();
+
+        yield return new WaitForSeconds(0.3f);
+
+        GetComponent<PlayerController>().EnableRoll();
+        
+
     }
 
 }

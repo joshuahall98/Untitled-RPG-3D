@@ -14,11 +14,6 @@ public class PlayerKnockback : MonoBehaviour
     private CharacterController character;
     Animator anim;
 
-    //action checkers
-    bool isRolling;
-    bool isKnockdown;
-    bool isRewinding;
-
     // Use this for initialization
     void Start()
     {
@@ -40,27 +35,25 @@ public class PlayerKnockback : MonoBehaviour
     // call this function to add an impact force:
     public void AddImpact(Vector3 dir, Vector3 lookAtEnemy, float force)
     {
-        CheckActions();
 
-        if (!isRolling && !isKnockdown && !isRewinding)
+        if (PlayerController.state != PlayerState.REWINDING || PlayerController.state != PlayerState.ROLLING || PlayerController.state != PlayerState.KNOCKEDDOWN)
         {
+            PlayerController.state = PlayerState.KNOCKEDDOWN;
 
             anim.SetTrigger("Knockdown");
             transform.LookAt(lookAtEnemy);
-            PlayerController.isKnockdown = true;
             GetComponent<PlayerController>().DisableRewind(); //this prevents rewind bug
             dir = dir.normalized;
 
             //THIS WAS THE OLD KNOCKBACK CODE, CAUSED THE PLAYER TO GO UP TOO
             //dir.Normalize();
-            /*playerY = transform.position;
-            if (dir.y > playerY.y) dir.y = playerY.y;*/
+            playerY = transform.position;
+            if (dir.y > playerY.y) dir.y = playerY.y;
             // the line below cause the player to go upwards, could maybe be used in the future for downward slam attacks
             //if (dir.y < 0) dir.y = -dir.y; // reflect down force on the ground
             //impact += dir.normalized * force / mass;
             transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
             impact = dir * force;
-            
         }
         
     }
@@ -69,14 +62,8 @@ public class PlayerKnockback : MonoBehaviour
     public void KnockdownAnimEvent()
     {
         GetComponent<PlayerController>().EnableRewind();
-        PlayerController.isKnockdown = false;
-        PlayerController.isAttacking = false;
+
+        PlayerController.state = PlayerState.IDLE;
     }
 
-    void CheckActions()
-    {
-        isRolling = PlayerController.isRolling;
-        isRewinding = PlayerController.isRewinding;
-        isKnockdown = PlayerController.isKnockdown;
-    }
 }
