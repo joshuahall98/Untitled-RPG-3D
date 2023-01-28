@@ -199,18 +199,22 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     {
         //PlayerController.isRewinding = false;
         PlayerController.state = PlayerState.IDLE;
-        StartCoroutine(RollDelay());
+        StartCoroutine(ActionDelay());
     }
 
-    //temporary fix to a buggy interaction when the character rolls after rewinding
-    IEnumerator RollDelay()
+    //work around to prevent buggy interaction when the character uses actions after rewinding
+    IEnumerator ActionDelay()
     {
         GetComponent<PlayerController>().DisableRoll();
+        GetComponent<PlayerController>().DisableLightAttack();
+        GetComponent<PlayerController>().DisableHeavyAttackCharge();
 
         yield return new WaitForSeconds(0.3f);
 
         GetComponent<PlayerController>().EnableRoll();
-        
+        GetComponent<PlayerController>().EnableLightAttack();
+        GetComponent<PlayerController>().EnableHeavyAttackCharge();
+
 
     }
 
