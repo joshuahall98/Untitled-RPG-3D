@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]PlayerState visibleState;
 
     //these bools are helpful for animations and state control
-    bool isMoving;
+    [SerializeField]bool isMoving;
     bool isGrounded;
 
     //to check whether or not an object is within range for interaction
@@ -72,6 +72,9 @@ public class PlayerController : MonoBehaviour
 
     //sidecharachter
     GameObject sideCharacter;
+
+    //interactbale objects
+    GameObject interactableObj;
 
 
     void Awake()
@@ -193,6 +196,9 @@ public class PlayerController : MonoBehaviour
 
         controller.SimpleMove(Vector3.forward * 0); //Adds Gravity for some reason
 
+        
+
+
         if (state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
 
@@ -204,6 +210,8 @@ public class PlayerController : MonoBehaviour
             else if (isMoving == true && state != PlayerState.MOVING)
             {
                 state = PlayerState.MOVING;
+                
+                
             }
 
 
@@ -550,6 +558,11 @@ public class PlayerController : MonoBehaviour
         gameManager.GetComponent<MenuManager>().PressEsc();
     }
 
+    public void ObtainInteractableObject(GameObject obj)
+    {
+        interactableObj = obj;
+    }
+
     void Interact(InputAction.CallbackContext InteractInput)
     {
         if(inRange == true)
@@ -557,10 +570,14 @@ public class PlayerController : MonoBehaviour
             if(state == PlayerState.IDLE || state == PlayerState.MOVING) 
             {
                 state = PlayerState.INTERACTING;
+                interactableObj.gameObject.GetComponent<InteractableObject>().PressInteract();
+                // to stop running anim when interacting
+                isMoving = false; 
             }
             else if(state == PlayerState.INTERACTING)
             {
                 state = PlayerState.IDLE;
+                interactableObj.gameObject.GetComponent<InteractableObject>().PressInteract();
             }
         }
     }

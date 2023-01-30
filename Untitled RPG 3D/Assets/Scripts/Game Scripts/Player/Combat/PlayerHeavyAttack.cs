@@ -45,16 +45,6 @@ public class PlayerHeavyAttack : MonoBehaviour
     void HeavyAttackReleaseReadyAnimEvent()
     {
 
-        // CHECK KNOCKDOWN
-        /*if(isAttacking == true  && !isKnockdown)
-        {
-            releaseReady = true;
-            sparkle.SetActive(true);
-            GetComponent<SoundManager>().StopSound("Heavy Attack Charge");
-            GetComponent<SoundManager>().PlaySound("Heavy Attack Ding");
-            Debug.Log("ReadyToAttack");
-        }*/
-
         if (PlayerController.state == PlayerState.ATTACKING)
         {
             releaseReady = true;
@@ -69,39 +59,6 @@ public class PlayerHeavyAttack : MonoBehaviour
     //when you release the mouse button this code runs to check the stage of the charge up
     public void HeavyAtkRelease()
     {
-
-        //TO REMIND ME ABOUT KNOCKDOWN AND CHARGING
-        /*if (isAttacking == true && !isMoving)
-        {
-            if (releaseReady == true && !isKnockdown)
-            {
-                sparkle.SetActive(false);
-                sword.GetComponent<WeaponDamage>().HeavyAttackDamage();
-                anim.SetTrigger("HeavyAttackRelease");
-                WeaponDamage.isAttacking = true;
-                swordCollider.enabled = true;
-                releaseReady = false;
-                GetComponent<AttackAim>().Aim();
-                GetComponent<SoundManager>().PlaySound("Sword Swing");
-            }
-            else
-            {
-                sparkle.SetActive(false);
-                GetComponent<SoundManager>().StopSound("Heavy Attack Charge");
-                releaseReady = false;
-                anim.SetTrigger("HeavyAttackFail");
-                isAttacking = false;
-
-                PlayerController.state = PlayerState.IDLE;
-
-                sword.SetActive(false);
-                sheathedSword.SetActive(true);
-                PlayerController.isAttacking = false;
-                
-            }
-        }*/
-
-
         if (releaseReady == true && PlayerController.state != PlayerState.KNOCKEDDOWN)
         {
             sparkle.SetActive(false);
