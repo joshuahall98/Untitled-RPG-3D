@@ -17,10 +17,12 @@ public class WeaponColliders : MonoBehaviour
     public void colliderOn()
     {
         collider.enabled = true;
+        Debug.Log("On");
     }
 
     public void colliderOff()
     {
         collider.enabled = false;
+        Debug.Log("off");
     }
 }

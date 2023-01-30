@@ -56,11 +56,9 @@ public class PlayerLightAttack : MonoBehaviour
 
         if (atkNum == 0 || atkNum == 2)
         {
-            //GetComponent<PlayerController>().DisableLightAttack();
             sword.GetComponent<WeaponDamage>().LightAttackDamage();
             GetComponent<AttackAim>().Aim();
             WeaponDamage.isAttacking = true;
-            //PlayerController.isAttacking = true;
             sword.SetActive(true);
             sheathedSword.SetActive(false);
             atkNum++;
@@ -71,11 +69,9 @@ public class PlayerLightAttack : MonoBehaviour
         }
         else
         {
-            //GetComponent<PlayerController>().DisableLightAttack();
             sword.GetComponent<WeaponDamage>().LightAttackDamage();
             GetComponent<AttackAim>().Aim();
             WeaponDamage.isAttacking = true;
-            //PlayerController.isAttacking = true;
             sword.SetActive(true);
             sheathedSword.SetActive(false);
             atkNum++;
@@ -89,13 +85,17 @@ public class PlayerLightAttack : MonoBehaviour
     IEnumerator LightAttackEndAnimEvent()
     {
         
-        //GetComponent<PlayerController>().EnableLightAttack();
         WeaponDamage.isAttacking = false;
-        //PlayerController.isAttacking = false;
         sword.SetActive(false);
         sheathedSword.SetActive(true);
 
-        PlayerController.state = PlayerState.IDLE;
+        //If player were to be knockeddown during an attack the idle would trigger overidiing knockdown
+        if(PlayerController.state != PlayerState.KNOCKEDDOWN)
+        {
+            PlayerController.state = PlayerState.IDLE;
+        }
+        
+
         //3 hit combo cd
         if (atkNum >= 3)
         {

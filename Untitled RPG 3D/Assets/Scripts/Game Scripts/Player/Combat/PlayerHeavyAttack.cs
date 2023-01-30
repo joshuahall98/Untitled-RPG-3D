@@ -24,10 +24,14 @@ public class PlayerHeavyAttack : MonoBehaviour
         sparkle.SetActive(false);
     }
 
+    private void Update()
+    {
+        Knockeddown();
+    }
+
 
     public void HeavyAtkCharge()
     {
-
         anim.SetTrigger("HeavyAttackHold");
         anim.ResetTrigger("HeavyAttackFail");
         sword.SetActive(true);
@@ -98,7 +102,7 @@ public class PlayerHeavyAttack : MonoBehaviour
         }*/
 
 
-        if (releaseReady == true)
+        if (releaseReady == true && PlayerController.state != PlayerState.KNOCKEDDOWN)
         {
             sparkle.SetActive(false);
             sword.GetComponent<WeaponDamage>().HeavyAttackDamage();
@@ -116,11 +120,14 @@ public class PlayerHeavyAttack : MonoBehaviour
             releaseReady = false;
             anim.SetTrigger("HeavyAttackFail");
 
-            PlayerController.state = PlayerState.IDLE;
+            //If player were to be knockeddown during an attack the idle would trigger overidiing knockdown
+            if (PlayerController.state != PlayerState.KNOCKEDDOWN)
+            {
+                PlayerController.state = PlayerState.IDLE;
+            }
 
             sword.SetActive(false);
             sheathedSword.SetActive(true);
-            //PlayerController.isAttacking = false;
 
         }
     }
@@ -131,12 +138,29 @@ public class PlayerHeavyAttack : MonoBehaviour
         sheathedSword.SetActive(true);
         swordCollider.enabled = false;
         WeaponDamage.isAttacking = false;
-        //PlayerController.isAttacking = false;
 
-        PlayerController.state = PlayerState.IDLE;
+        //If player were to be knockeddown during an attack the idle would trigger overidiing knockdown
+        if (PlayerController.state != PlayerState.KNOCKEDDOWN)
+        {
+            PlayerController.state = PlayerState.IDLE;
+        }
     }
 
-    //stop charge attack bug when game paused
+    void Knockeddown()
+    {
+        if (PlayerController.state == PlayerState.KNOCKEDDOWN)
+        {
+            sparkle.SetActive(false);
+            GetComponent<SoundManager>().StopSound("Heavy Attack Charge");
+            releaseReady = false;
+            anim.SetTrigger("HeavyAttackFail");
+            sword.SetActive(false);
+            sheathedSword.SetActive(true);
+        }
+    }
+
+    //stop charge attack bug when game paused 
+    //need to test, certain it would be better to just run HeavyAtkRelease()
     public void CancelAttackOnPause()
     {
         if(releaseReady == true)

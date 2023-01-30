@@ -64,6 +64,24 @@ public class PlayerKnockback : MonoBehaviour
         GetComponent<PlayerController>().EnableRewind();
 
         PlayerController.state = PlayerState.IDLE;
+
+        StartCoroutine(ActionDelay());
+    }
+
+    //work around to prevent buggy interaction when the character uses actions after being knockdown
+    IEnumerator ActionDelay()
+    {
+        GetComponent<PlayerController>().DisableRoll();
+        GetComponent<PlayerController>().DisableLightAttack();
+        GetComponent<PlayerController>().DisableHeavyAttackCharge();
+
+        yield return new WaitForSeconds(0.3f);
+
+        GetComponent<PlayerController>().EnableRoll();
+        GetComponent<PlayerController>().EnableLightAttack();
+        GetComponent<PlayerController>().EnableHeavyAttackCharge();
+
+
     }
 
 }

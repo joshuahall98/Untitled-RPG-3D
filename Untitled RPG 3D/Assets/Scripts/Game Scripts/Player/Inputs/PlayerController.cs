@@ -535,7 +535,7 @@ public class PlayerController : MonoBehaviour
     //start Rewind
     void Rewind()
     {
-        if(state == PlayerState.IDLE || state == PlayerState.MOVING) 
+        if(state == PlayerState.IDLE || state == PlayerState.MOVING || state == PlayerState.FALLING) 
         {
 
             GetComponent<PlayerRewind>().PlsRewind();
