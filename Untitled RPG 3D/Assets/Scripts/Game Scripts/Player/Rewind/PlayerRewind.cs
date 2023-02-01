@@ -59,12 +59,19 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     // Update is called once per frame
     void FixedUpdate()
     {
-        //CheckActions();
 
         //Run rewind function if variables are met 
         if (Rewinding == true && rewindsLeft > 0)
         {
-            Rewind();
+            if (PlayerController.state == PlayerState.DEAD)
+            {
+                DeathRewind();
+            }
+            else
+            {
+                Rewind(); 
+            }
+
 
         }
         else
@@ -72,6 +79,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             Record();
 
         }
+
+
 
         void Record()
         {
@@ -130,8 +139,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     void Rewind()
     {
         anim.SetBool("isRewinding", true);
-        //use is attacking until we find a need for is rewinding
-        //PlayerController.isRewinding = true;
+
         hourGlass.SetActive(true);
 
         PlayerController.state = PlayerState.REWINDING;
@@ -162,7 +170,35 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             Rewinding = false;
             hourGlass.SetActive(false);
         }
-  
+
+
+    }
+
+    //allow player to rewind after death
+    public void DeathRewind()
+    {
+        anim.SetBool("isRewinding", true);
+
+        hourGlass.SetActive(true);
+
+        //call the UI update when you rewind
+        rewindUI.GetComponent<RewindUI>().Rewind();
+
+        //decreasing rewinds
+        rewindsLeft -= 1;
+
+        //takes point of time from array and sets player to position
+        PointInTime pointInTime = pointsInTime[pointsInTime.Count - 1];
+        transform.position = pointInTime.position;
+        transform.rotation = pointInTime.rotation;
+
+        //updating the players health that it has healed
+        playerHealth = pointInTime.hp;
+        PlayerHealth.currentHP = playerHealth;
+        rewindUI.GetComponent<RewindUI>().HealthBar();
+
+        GetComponent<PlayerHealth>().DeathRewind();
+
     }
 
     //Rewind button function
@@ -173,6 +209,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             if (rewindsLeft > 0)
             {
                 Rewinding = true;
+                
             }
 
 
@@ -194,10 +231,22 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
     }
 
-    //using animation event, should change to code
+    //using animation event
     public void EndRewindAnimEvent()
     {
-        //PlayerController.isRewinding = false;
+        if(PlayerController.state == PlayerState.DEAD) 
+        {
+            anim.SetBool("isRewinding", false);
+
+            //empty rewind array to start fresh
+            pointsInTime.Clear();
+            Rewinding = false;
+            hourGlass.SetActive(false);
+
+        }
+
+        PlayerController.immune = true;
+
         PlayerController.state = PlayerState.IDLE;
         StartCoroutine(ActionDelay());
     }

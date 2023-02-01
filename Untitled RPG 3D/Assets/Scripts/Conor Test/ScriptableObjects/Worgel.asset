@@ -18,4 +18,4 @@ MonoBehaviour:
   maxDistance: 0
   maxSightDistance: 50
   attackRadius: 2
-  damage: 5
+  damage: 50

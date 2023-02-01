@@ -36,8 +36,10 @@ public class PlayerKnockback : MonoBehaviour
     public void AddImpact(Vector3 dir, Vector3 lookAtEnemy, float force)
     {
 
-        if (PlayerController.state != PlayerState.REWINDING || PlayerController.state != PlayerState.ROLLING || PlayerController.state != PlayerState.KNOCKEDDOWN)
+        if (PlayerController.state == PlayerState.IDLE || PlayerController.state == PlayerState.MOVING || PlayerController.state == PlayerState.ATTACKING || PlayerController.state == PlayerState.DIZZY)
         {
+            GetComponent<PlayerHealth>().CheckIfDead();
+
             PlayerController.state = PlayerState.KNOCKEDDOWN;
 
             anim.SetTrigger("Knockdown");
@@ -54,6 +56,8 @@ public class PlayerKnockback : MonoBehaviour
             //impact += dir.normalized * force / mass;
             transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
             impact = dir * force;
+
+            
         }
         
     }

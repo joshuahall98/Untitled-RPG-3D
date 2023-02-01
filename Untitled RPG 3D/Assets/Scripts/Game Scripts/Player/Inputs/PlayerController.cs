@@ -40,6 +40,9 @@ public class PlayerController : MonoBehaviour
     //to check whether or not an object is within range for interaction
     public static bool inRange =  false;
 
+    //to check if player character is immune
+    public static bool immune = false;
+
     //Roll
     float rollCDTimer = 0;
     int rollUsed = 0;
@@ -132,6 +135,12 @@ public class PlayerController : MonoBehaviour
         PlayerMovement();
 
         PlayerFalling();
+
+        if(immune == true) 
+        {
+            StartCoroutine(Immunity());
+        }
+        
 
         //running sound
         //is currently broken unsure why, need to remake it
@@ -543,7 +552,7 @@ public class PlayerController : MonoBehaviour
     //start Rewind
     void Rewind()
     {
-        if(state == PlayerState.IDLE || state == PlayerState.MOVING || state == PlayerState.FALLING) 
+        if(state == PlayerState.IDLE || state == PlayerState.MOVING || state == PlayerState.FALLING || state == PlayerState.DEAD) 
         {
 
             GetComponent<PlayerRewind>().PlsRewind();
@@ -557,6 +566,17 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Pause");
         gameManager.GetComponent<MenuManager>().PressEsc();
     }
+
+    IEnumerator Immunity()
+    {
+        immune = true;
+
+        yield return new WaitForSeconds(10);
+
+        immune = false;
+    }
+
+    #region - Interacting -
 
     public void ObtainInteractableObject(GameObject obj)
     {
@@ -581,6 +601,8 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    #endregion
 
 
     #region - Inputs Enable/Disable -

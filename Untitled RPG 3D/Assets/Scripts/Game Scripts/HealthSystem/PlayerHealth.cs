@@ -7,8 +7,6 @@ public class PlayerHealth : CharacterStats
     //Animation
     Animator anim;
 
-    public static bool isDead = false;
-
     bool damageTaken = false;
     [SerializeField] float damageTakenTimer;
     public static int maxHP = 100;
@@ -36,16 +34,7 @@ public class PlayerHealth : CharacterStats
     void Update()
     {
 
-
-        currentHPVisible = currentHP;
-
-        //this used to prevent the player from being hit more than once, moved to the attack collider on enemy so that mutiple enemies can hit the player at once
-
-        /*if(damageTakenTimer > 0)
-        {
-            damageTakenTimer -= Time.deltaTime;
-            damageTaken = false;
-        }*/
+        //currentHPVisible = currentHP;
 
     }
 
@@ -56,27 +45,39 @@ public class PlayerHealth : CharacterStats
 
     public void TakeDamage(int damage)
     {
-
-        if(PlayerController.state != PlayerState.REWINDING || PlayerController.state != PlayerState.ROLLING)
+        //everything but rewinding, rolling, dead
+        if(PlayerController.state == PlayerState.IDLE || PlayerController.state == PlayerState.DIZZY || PlayerController.state == PlayerState.MOVING 
+            || PlayerController.state == PlayerState.ATTACKING || PlayerController.state == PlayerState.INTERACTING || PlayerController.state == PlayerState.KNOCKEDDOWN)
         {
-            currentHP -= damage;
+            if(PlayerController.immune == false) 
+            {
+                currentHP -= damage;
 
-            /*damageTaken = true;
-            damageTakenTimer = 1;*/
+                rewindUI.GetComponent<PlayerHPBar>().AlterHP();
 
-            rewindUI.GetComponent<PlayerHPBar>().AlterHP();
+                currentHPVisible = currentHP;
+            }
+          
         }
-        
-        
 
+        CheckIfDead();
+    }
+
+    public void CheckIfDead()
+    {
         if (currentHP == 0)
         {
-            isDead = true;
             anim.SetTrigger("Dead");
             menuUI.GetComponent<MenuUI>().EnableDeathText();
 
             PlayerController.state = PlayerState.DEAD;
         }
+    }
+
+    //remove the hud after player rewindsa from death
+    public void DeathRewind()
+    {
+        menuUI.GetComponent<MenuUI>().DisableDeathText();
     }
 
 }

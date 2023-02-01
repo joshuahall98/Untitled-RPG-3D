@@ -17,7 +17,6 @@ public class OghamStoneInteract : InteractableObject
     {
         base.FindGameObjects();
 
-        Debug.Log("game objects ");
     }
 
     public override void PressInteract()

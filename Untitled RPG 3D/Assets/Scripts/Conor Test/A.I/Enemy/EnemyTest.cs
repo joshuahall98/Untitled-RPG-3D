@@ -30,8 +30,6 @@ public class EnemyTest : MonoBehaviour, CooldownActive
     public float attackRadius;
     public float stoppingDistance;
     public float AISpace;
-    
-    bool isPlayerDead;
 
     public GameObject[] AI;
 
@@ -61,10 +59,7 @@ public class EnemyTest : MonoBehaviour, CooldownActive
     void Update()
     {
 
-
-        isPlayerDead = PlayerHealth.isDead;
-
-        if (isPlayerDead == true)
+        if (PlayerController.state == PlayerState.DEAD)
         {
             PlayerDead();
         }
