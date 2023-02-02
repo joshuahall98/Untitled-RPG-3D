@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour
         playerInput.Player.HeavyAtkCharge.performed += HeavyAtkCharge;
         playerInput.Player.HeavyAtkRelease.performed += HeavyAtkRelease;
         playerInput.Player.Pause.performed += PressEsc;
-        playerInput.Player.Interact.performed += Interact;
+        playerInput.Player.Interact.performed += interactPerformed => Interact();
 
         //assigning the inputs to variables
         move = playerInput.Player.Move;
@@ -135,11 +135,6 @@ public class PlayerController : MonoBehaviour
         PlayerMovement();
 
         PlayerFalling();
-
-        if(immune == true) 
-        {
-            StartCoroutine(Immunity());
-        }
         
 
         //running sound
@@ -567,11 +562,11 @@ public class PlayerController : MonoBehaviour
         gameManager.GetComponent<MenuManager>().PressEsc();
     }
 
-    IEnumerator Immunity()
+    public IEnumerator Immunity(float immunityTime)
     {
         immune = true;
 
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(immunityTime);
 
         immune = false;
     }
@@ -583,7 +578,7 @@ public class PlayerController : MonoBehaviour
         interactableObj = obj;
     }
 
-    void Interact(InputAction.CallbackContext InteractInput)
+    public void Interact()
     {
         if(inRange == true)
         {

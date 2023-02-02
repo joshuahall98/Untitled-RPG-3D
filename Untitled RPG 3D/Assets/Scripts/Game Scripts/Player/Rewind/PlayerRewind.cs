@@ -40,6 +40,9 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //rewind ghost
     [SerializeField]GameObject rewindGhost;
 
+    //immunity timer
+    [SerializeField] float immunityTimer;
+
     private void Awake()
     {
         rewindUI = GameObject.Find("PlayerUI");
@@ -245,7 +248,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         }
 
-        PlayerController.immune = true;
+        //prevents the player from taking damage
+        StartCoroutine(GetComponent<PlayerController>().Immunity(immunityTimer));
 
         PlayerController.state = PlayerState.IDLE;
         StartCoroutine(ActionDelay());

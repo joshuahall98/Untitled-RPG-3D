@@ -36,8 +36,15 @@ public class PlayerKnockback : MonoBehaviour
     public void AddImpact(Vector3 dir, Vector3 lookAtEnemy, float force)
     {
 
-        if (PlayerController.state == PlayerState.IDLE || PlayerController.state == PlayerState.MOVING || PlayerController.state == PlayerState.ATTACKING || PlayerController.state == PlayerState.DIZZY)
+        if (PlayerController.state == PlayerState.IDLE || PlayerController.state == PlayerState.MOVING || PlayerController.state == PlayerState.ATTACKING || PlayerController.state == PlayerState.DIZZY  || PlayerController.state == PlayerState.INTERACTING)
         {
+            //cancel interact
+            if(PlayerController.state == PlayerState.INTERACTING) 
+            {
+                GetComponent<PlayerController>().Interact();
+            }
+            
+            //run death if health = 0
             GetComponent<PlayerHealth>().CheckIfDead();
 
             PlayerController.state = PlayerState.KNOCKEDDOWN;

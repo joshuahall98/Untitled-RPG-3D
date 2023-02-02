@@ -5442,7 +5442,7 @@ Transform:
   m_Children:
   - {fileID: 1223121831110250729}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1689940224852358949
 Animator:
@@ -5495,13 +5495,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 8
-  isMovingPub: 0
-  isRollingPub: 0
-  isAttackingPub: 0
-  isDizzyPub: 0
-  isGroundedPub: 0
-  isKnockdownPub: 0
-  isRewindingPub: 0
+  isometricRotation: 45
+  visibleState: 0
+  isMoving: 0
   rollSpeed: 15
   dizzyAffect: {fileID: 1689940225372480533}
   sword: {fileID: 1995858245669972044}
@@ -5521,13 +5517,9 @@ MonoBehaviour:
   cooldownSystem: {fileID: 1689940224852358944}
   playerHealth: 0
   rewindUI: {fileID: 0}
-  isRolling: 0
-  isAttacking: 0
-  isDead: 0
-  isKnockdown: 0
-  isGrounded: 0
   hourGlass: {fileID: 1995858245425561861}
   rewindGhost: {fileID: 0}
+  immunityTimer: 2
 --- !u!114 &1689940224852358945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5540,6 +5532,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d028fabb00a0664c93218ee4166f421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  currentHealth: 0
   damageTakenTimer: 0
 --- !u!114 &1689940224852358944
 MonoBehaviour:
@@ -5580,13 +5574,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839ba8547d60e9e459cba7ede16d9214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMoving: 0
-  isRolling: 0
-  isAttacking: 0
-  isDizzy: 0
-  isGrounded: 0
-  isDead: 0
-  isKnockdown: 0
   sword: {fileID: 1995858245669972044}
   sheathedSword: {fileID: 1995858245555271080}
   swingCDTimer: 0
@@ -5603,13 +5590,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23192787990d0d14987d0f1f8172019b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMoving: 0
-  isRolling: 0
-  isAttacking: 0
-  isDizzy: 0
-  isGrounded: 0
-  isDead: 0
-  isKnockdown: 0
   sword: {fileID: 1995858245669972044}
   sheathedSword: {fileID: 1995858245555271080}
   sparkle: {fileID: 1689940224417204382}
@@ -5659,9 +5639,6 @@ MonoBehaviour:
   attackIndicatorCanvas: {fileID: 0}
   attackIndicator: {fileID: 0}
   player: {fileID: 1689940224852358950}
-  ground:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &1581127029
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class PlayerHealth : CharacterStats
     //UI
     GameObject rewindUI;
     GameObject menuUI;
+    GameObject ui;
 
     // Start is called before the first frame update
     void Start()
@@ -69,7 +70,16 @@ public class PlayerHealth : CharacterStats
         {
             anim.SetTrigger("Dead");
             menuUI.GetComponent<MenuUI>().EnableDeathText();
+            
+            //die while interacting
+            if (PlayerController.state == PlayerState.INTERACTING)
+            {
+                menuUI.GetComponent<InteractText>().InteractTextInactive();
+                GetComponent<PlayerController>().Interact();
 
+            }
+
+            
             PlayerController.state = PlayerState.DEAD;
         }
     }
