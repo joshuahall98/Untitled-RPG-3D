@@ -7,8 +7,6 @@ public class PlayerHealth : CharacterStats
     //Animation
     Animator anim;
 
-    bool damageTaken = false;
-    [SerializeField] float damageTakenTimer;
     public static int maxHP = 100;
     public static int currentHP = 0;
     int currentHPVisible = 0;
@@ -16,7 +14,6 @@ public class PlayerHealth : CharacterStats
     //UI
     GameObject rewindUI;
     GameObject menuUI;
-    GameObject ui;
 
     // Start is called before the first frame update
     void Start()
@@ -58,16 +55,20 @@ public class PlayerHealth : CharacterStats
 
                 currentHPVisible = currentHP;
             }
-          
-        }
 
-        CheckIfDead();
+            CheckIfDead();
+
+        }
+   
     }
 
     public void CheckIfDead()
     {
         if (currentHP == 0)
         {
+            Debug.Log("I am dead");
+
+
             anim.SetTrigger("Dead");
             menuUI.GetComponent<MenuUI>().EnableDeathText();
             

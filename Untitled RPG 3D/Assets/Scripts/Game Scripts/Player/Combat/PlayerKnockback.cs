@@ -38,35 +38,35 @@ public class PlayerKnockback : MonoBehaviour
 
         if (PlayerController.state == PlayerState.IDLE || PlayerController.state == PlayerState.MOVING || PlayerController.state == PlayerState.ATTACKING || PlayerController.state == PlayerState.DIZZY  || PlayerController.state == PlayerState.INTERACTING)
         {
-            //cancel interact
-            if(PlayerController.state == PlayerState.INTERACTING) 
+            if(PlayerController.immune == false)
             {
-                GetComponent<PlayerController>().Interact();
-            }
-            
-            //run death if health = 0
-            GetComponent<PlayerHealth>().CheckIfDead();
+                //cancel interact
+                if (PlayerController.state == PlayerState.INTERACTING)
+                {
+                    GetComponent<PlayerController>().Interact();
+                }
 
-            PlayerController.state = PlayerState.KNOCKEDDOWN;
+                //run death if health = 0
+                GetComponent<PlayerHealth>().CheckIfDead();
 
-            anim.SetTrigger("Knockdown");
-            transform.LookAt(lookAtEnemy);
-            GetComponent<PlayerController>().DisableRewind(); //this prevents rewind bug
-            dir = dir.normalized;
+                PlayerController.state = PlayerState.KNOCKEDDOWN;
 
-            //THIS WAS THE OLD KNOCKBACK CODE, CAUSED THE PLAYER TO GO UP TOO
-            //dir.Normalize();
-            playerY = transform.position;
-            if (dir.y > playerY.y) dir.y = playerY.y;
-            // the line below cause the player to go upwards, could maybe be used in the future for downward slam attacks
-            //if (dir.y < 0) dir.y = -dir.y; // reflect down force on the ground
-            //impact += dir.normalized * force / mass;
-            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
-            impact = dir * force;
+                anim.SetTrigger("Knockdown");
+                transform.LookAt(lookAtEnemy);
+                GetComponent<PlayerController>().DisableRewind(); //this prevents rewind bug
+                dir = dir.normalized;
 
-            
+                //THIS WAS THE OLD KNOCKBACK CODE, CAUSED THE PLAYER TO GO UP TOO
+                //dir.Normalize();
+                playerY = transform.position;
+                if (dir.y > playerY.y) dir.y = playerY.y;
+                // the line below cause the player to go upwards, could maybe be used in the future for downward slam attacks
+                //if (dir.y < 0) dir.y = -dir.y; // reflect down force on the ground
+                //impact += dir.normalized * force / mass;
+                transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
+                impact = dir * force;
+            }     
         }
-        
     }
 
     //this wouldn't run at the end of the animation, had to create an animation event

@@ -82,6 +82,9 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        //make this object appear at top of heirarchy
+        transform.SetSiblingIndex(0);
+
         //finding gameobjects and components
         gameManager = GameObject.Find("GameManager");
         camera = GameObject.Find("Camera");
