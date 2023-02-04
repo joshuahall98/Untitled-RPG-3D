@@ -45,7 +45,7 @@ public class PlayerHealth : CharacterStats
     {
         //everything but rewinding, rolling, dead
         if(PlayerController.state == PlayerState.IDLE || PlayerController.state == PlayerState.DIZZY || PlayerController.state == PlayerState.MOVING 
-            || PlayerController.state == PlayerState.ATTACKING || PlayerController.state == PlayerState.INTERACTING || PlayerController.state == PlayerState.KNOCKEDDOWN)
+            || PlayerController.state == PlayerState.ATTACKING || PlayerController.state == PlayerState.INTERACTING)
         {
             if(PlayerController.immune == false) 
             {
