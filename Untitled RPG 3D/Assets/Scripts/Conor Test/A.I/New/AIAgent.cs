@@ -14,6 +14,8 @@ public class AIAgent : MonoBehaviour
     public AIAttack aiAttack;
     public Animator animator;
 
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,12 @@ public class AIAgent : MonoBehaviour
         animator = GetComponent<Animator>();
         Player = GameObject.FindGameObjectWithTag("Player").transform;
         aiAttack = GetComponent<AIAttack>();
+
+        //Scriptable Object
+
+        //Navmesh Avoidance
+        NavMesh.avoidancePredictionTime = config.AvoidancePredictionTime;
+        NavMesh.pathfindingIterationsPerFrame = config.PathfindingIterationsPerFrame;
 
         stateMachine = new AIStateMachine(this);
         stateMachine.RegisterState(new AIIdleState());
@@ -35,4 +43,5 @@ public class AIAgent : MonoBehaviour
     {
         stateMachine.Update();
     }
+
 }
