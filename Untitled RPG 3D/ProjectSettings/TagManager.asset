@@ -15,14 +15,14 @@ TagManager:
   - Player
   - Water
   - UI
-  - Cape
+  - 
   - 
   - Enemy
   - Ground
   - NotSeeThrough
   - InspectionObj
   - CharacterColliderBlocker
-  - 
+  - AttackIndicator
   - 
   - 
   - 
