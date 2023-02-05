@@ -352,12 +352,22 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            anim.SetBool("isGrounded", false);
-            isGrounded = false;
+            
+            if(state != PlayerState.KNOCKEDDOWN)
+            {
 
-            state = PlayerState.FALLING;
+                anim.SetBool("isGrounded", false);
+                isGrounded = false;
 
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * 1f, Color.green);
+                state = PlayerState.FALLING;
+
+                Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * 1f, Color.green);
+            }
+
+            
+
+
+
 
         }
 
