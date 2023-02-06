@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour
         state = PlayerState.IDLE;
 
         //this is called so the rotation is checked so player doesn't roll on the spot
-        Rotation(isometric);
+        rollDirection = transform.rotation * Vector3.forward;
 
     }
 
@@ -253,14 +253,15 @@ public class PlayerController : MonoBehaviour
             isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
 
             //Character Rotation
-            /*Vector3 currentPos = transform.position;
+            Vector3 currentPos = transform.position;
             Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
             Vector3 posLookAt = currentPos + newPos;
-            transform.LookAt(posLookAt);*/
+            transform.LookAt(posLookAt);
 
+            //set rotation for roll
             if (isometric.magnitude >= 0.1f)
             {
-                Rotation(isometric);
+                rollDirection = transform.rotation * Vector3.forward;
             }
             
             
@@ -281,23 +282,25 @@ public class PlayerController : MonoBehaviour
             isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
 
 
-            /*//Character Rotation
+            //Character Rotation
             Vector3 currentPos = transform.position;
             Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
             posLookAt = currentPos + newPos;
-            transform.LookAt(posLookAt);*/
+            transform.LookAt(posLookAt);
 
+            //set rotation for roll
             if (actualMovement.magnitude >= 0.1f)
             {
-                Rotation(actualMovement);
+                rollDirection = transform.rotation * Vector3.forward;
             }
         }
 
 
     }
 
+    //BRACKEYS VID, REMADE BUT BETTER
     //this was created so that the rotation of the player can be called after different actions, prevents rolling the wrong way
-    public void Rotation(Vector3 vector3)
+    /*public void Rotation(Vector3 vector3)
     {
         float targetAngle = Mathf.Atan2(vector3.x, vector3.z) * Mathf.Rad2Deg;
         //this line dampens the rotation
@@ -305,13 +308,7 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
 
         rollDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-    }
-
-    //couldn't figure out best way to call above function, so this one takes in a rotation instead
-    public void RewindRotation(Quaternion quaternion)
-    {
-        rollDirection = quaternion * Vector3.forward;
-    }
+    }*/
 
     #endregion
 
@@ -420,6 +417,12 @@ public class PlayerController : MonoBehaviour
 
             anim.SetTrigger("Roll");
         }
+    }
+
+    //better system to check character rotation for roll
+    public void Rotation(Quaternion quaternion)
+    {
+        rollDirection = quaternion * Vector3.forward;
     }
 
     //running the below function on the first frame of the animation to prevent the character from dashing before rolling

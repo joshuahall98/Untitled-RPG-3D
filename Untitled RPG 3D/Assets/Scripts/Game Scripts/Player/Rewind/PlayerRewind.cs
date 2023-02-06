@@ -255,8 +255,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         //prevents the player from taking damage
         StartCoroutine(GetComponent<PlayerController>().Immunity(immunityTimer));
 
-        //important so the next roll knows what direction to go
-        GetComponent<PlayerController>().RewindRotation(transform.rotation);
+        //so character controller knows player rotation
+        GetComponent<PlayerController>().Rotation(transform.rotation);
 
         PlayerController.state = PlayerState.IDLE;
 

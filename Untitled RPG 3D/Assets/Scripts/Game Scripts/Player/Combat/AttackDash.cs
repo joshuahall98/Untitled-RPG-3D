@@ -65,7 +65,7 @@ public class AttackDash : MonoBehaviour
                     controller.Move(offset2 * Time.deltaTime);
 
                     //need to call this so the character controller knows the rotation after you attack
-                    GetComponent<PlayerController>().Rotation(offset2);
+                    GetComponent<PlayerController>().Rotation(transform.rotation);
 
                 }
             }
