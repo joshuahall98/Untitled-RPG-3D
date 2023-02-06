@@ -76,11 +76,11 @@ public class PlayerKnockback : MonoBehaviour
 
         PlayerController.state = PlayerState.IDLE;
 
-        StartCoroutine(ActionDelay());
+        //StartCoroutine(ActionDelay());
     }
 
     //work around to prevent buggy interaction when the character uses actions after being knockdown
-    IEnumerator ActionDelay()
+    /*IEnumerator ActionDelay()
     {
         GetComponent<PlayerController>().DisableRoll();
         GetComponent<PlayerController>().DisableLightAttack();
@@ -93,6 +93,6 @@ public class PlayerKnockback : MonoBehaviour
         GetComponent<PlayerController>().EnableHeavyAttackCharge();
 
 
-    }
+    }*/
 
 }

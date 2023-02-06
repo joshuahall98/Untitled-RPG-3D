@@ -18,6 +18,6 @@ MonoBehaviour:
   maxDistance: 0
   maxSightDistance: 30
   attackRadius: 2
-  damage: 5
+  damage: 50
   AvoidancePredictionTime: 2
   PathfindingIterationsPerFrame: 5000

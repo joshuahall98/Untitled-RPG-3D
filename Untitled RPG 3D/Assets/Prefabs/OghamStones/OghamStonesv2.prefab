@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 5084726021259453852}
   - component: {fileID: 5084726021259453853}
   - component: {fileID: 5084726021259453855}
+  - component: {fileID: 840333924}
   m_Layer: 0
   m_Name: Interact
   m_TagString: Untagged
@@ -135,7 +136,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845bf3a8656028246ba4fad8525c8d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inRange: 0
+  ui: {fileID: 0}
+  mouse: {fileID: 0}
   inspectionObj: {fileID: 0}
+--- !u!114 &840333924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5084726021259453843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c99841facdd91545af2a3ecad72c5bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inRange: 0
+  ui: {fileID: 0}
+  mouse: {fileID: 0}
 --- !u!1 &6936528740429246686
 GameObject:
   m_ObjectHideFlags: 0
@@ -5084,13 +5103,9 @@ MonoBehaviour:
   currentPosY: 0
   newPosY: 0
   height: 0
-  rotated: 0
-  startFloating: 0
-  inRange: 0
   rotation: {x: 0, y: 0, z: 0}
   vecCounter: 0
   vecCounterCompare: 0
-  distance: 0
 --- !u!4 &643794356855980041 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c859f8dc813f90b4cb17f01684627a9a, type: 3}
@@ -5208,13 +5223,9 @@ MonoBehaviour:
   currentPosY: 0
   newPosY: 0
   height: 0
-  rotated: 0
-  startFloating: 0
-  inRange: 0
   rotation: {x: 0, y: 0, z: 0}
   vecCounter: 0
   vecCounterCompare: 0
-  distance: 0
 --- !u!4 &643794356845168939 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c859f8dc813f90b4cb17f01684627a9a, type: 3}
@@ -5332,13 +5343,9 @@ MonoBehaviour:
   currentPosY: 0
   newPosY: 0
   height: 0
-  rotated: 0
-  startFloating: 0
-  inRange: 0
   rotation: {x: 0, y: 0, z: 0}
   vecCounter: 0
   vecCounterCompare: 0
-  distance: 0
 --- !u!4 &643794356651644469 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c859f8dc813f90b4cb17f01684627a9a, type: 3}
@@ -5456,13 +5463,9 @@ MonoBehaviour:
   currentPosY: 0
   newPosY: 0
   height: 0
-  rotated: 0
-  startFloating: 0
-  inRange: 0
   rotation: {x: 0, y: 0, z: 0}
   vecCounter: 0
   vecCounterCompare: 0
-  distance: 0
 --- !u!4 &643794356363499780 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c859f8dc813f90b4cb17f01684627a9a, type: 3}
@@ -5580,13 +5583,9 @@ MonoBehaviour:
   currentPosY: 0
   newPosY: 0
   height: 0
-  rotated: 0
-  startFloating: 0
-  inRange: 0
   rotation: {x: 0, y: 0, z: 0}
   vecCounter: 0
   vecCounterCompare: 0
-  distance: 0
 --- !u!4 &643794355932966958 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c859f8dc813f90b4cb17f01684627a9a, type: 3}
@@ -5704,13 +5703,9 @@ MonoBehaviour:
   currentPosY: 0
   newPosY: 0
   height: 0
-  rotated: 0
-  startFloating: 0
-  inRange: 0
   rotation: {x: 0, y: 0, z: 0}
   vecCounter: 0
   vecCounterCompare: 0
-  distance: 0
 --- !u!4 &643794355529026234 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c859f8dc813f90b4cb17f01684627a9a, type: 3}

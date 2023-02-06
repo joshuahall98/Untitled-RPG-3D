@@ -20,8 +20,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed = 8;
     Vector2 currentMoveInput;
     Vector3 actualMovement;
-    Vector3 isometric;
+    [SerializeField]Vector3 isometric;
+    Vector3 posLookAt;
     public PlayerInputActions playerInput;
+
+    float turnSmoothTime = 0.1f;
+    float turnSmoothVelocity;
 
     //used for turning camera, need to move this off the player controller
     [SerializeField]int isometricRotation = 45;
@@ -47,8 +51,9 @@ public class PlayerController : MonoBehaviour
     float rollCDTimer = 0;
     int rollUsed = 0;
     [SerializeField]float rollSpeed = 10;
-    float rollTime = 0.5f;
+    [SerializeField]float rollTime = 0.5f;
     public GameObject dizzyAffect;
+    Vector3 rollDirection;
     
 
     //input actions
@@ -122,6 +127,9 @@ public class PlayerController : MonoBehaviour
 
         state = PlayerState.IDLE;
 
+        //this is called so the rotation is checked so player doesn't roll on the spot
+        Rotation(isometric);
+
     }
 
     //what does this code do?
@@ -138,7 +146,12 @@ public class PlayerController : MonoBehaviour
         PlayerMovement();
 
         PlayerFalling();
-        
+
+        /*if (state == PlayerState.ROLLING)
+        {
+            StartCoroutine(RollMovement());
+        }*/
+
 
         //running sound
         //is currently broken unsure why, need to remake it
@@ -203,9 +216,6 @@ public class PlayerController : MonoBehaviour
 
         controller.SimpleMove(Vector3.forward * 0); //Adds Gravity for some reason
 
-        
-
-
         if (state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
 
@@ -217,8 +227,6 @@ public class PlayerController : MonoBehaviour
             else if (isMoving == true && state != PlayerState.MOVING)
             {
                 state = PlayerState.MOVING;
-                
-                
             }
 
 
@@ -245,10 +253,18 @@ public class PlayerController : MonoBehaviour
             isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
 
             //Character Rotation
-            Vector3 currentPos = transform.position;
+            /*Vector3 currentPos = transform.position;
             Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
             Vector3 posLookAt = currentPos + newPos;
-            transform.LookAt(posLookAt);   
+            transform.LookAt(posLookAt);*/
+
+            if (isometric.magnitude >= 0.1f)
+            {
+                Rotation(isometric);
+            }
+            
+            
+
 
         }
 
@@ -265,13 +281,36 @@ public class PlayerController : MonoBehaviour
             isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
 
 
-            //Character Rotation
+            /*//Character Rotation
             Vector3 currentPos = transform.position;
             Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
-            Vector3 posLookAt = currentPos + newPos;
-            transform.LookAt(posLookAt);
+            posLookAt = currentPos + newPos;
+            transform.LookAt(posLookAt);*/
+
+            if (actualMovement.magnitude >= 0.1f)
+            {
+                Rotation(actualMovement);
+            }
         }
 
+
+    }
+
+    //this was created so that the rotation of the player can be called after different actions, prevents rolling the wrong way
+    public void Rotation(Vector3 vector3)
+    {
+        float targetAngle = Mathf.Atan2(vector3.x, vector3.z) * Mathf.Rad2Deg;
+        //this line dampens the rotation
+        //float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+        transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+
+        rollDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+    }
+
+    //couldn't figure out best way to call above function, so this one takes in a rotation instead
+    public void RewindRotation(Quaternion quaternion)
+    {
+        rollDirection = quaternion * Vector3.forward;
     }
 
     #endregion
@@ -353,6 +392,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             
+            //this if statement exist to stop the player from being knocked up and entering another state while in knockdown anim
             if(state != PlayerState.KNOCKEDDOWN)
             {
 
@@ -364,11 +404,6 @@ public class PlayerController : MonoBehaviour
                 Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * 1f, Color.green);
             }
 
-            
-
-
-
-
         }
 
         
@@ -379,36 +414,36 @@ public class PlayerController : MonoBehaviour
     //rolling animation, CREATED IENUMERAOTR TO STOP bug?
     void RollAnimation()
     {
-        if(state == PlayerState.MOVING  && isMoving == true)
-        {
-            state = PlayerState.ROLLING;
-            //isRolling = true;
-            anim.SetTrigger("Roll");
-        }
+        //if(state == PlayerState.MOVING  && isMoving == true)
+        //{
+        state = PlayerState.ROLLING;
+
+        anim.SetTrigger("Roll");
+        //}
     }
 
     //running the below function on the first frame of the animation to prevent the character from dashing before rolling
     IEnumerator RollAnimEvent()
     {
+
         rewind.Disable();
         float startTime = Time.time;
-                
+
         //these variables are used for the roll timer if you roll too much
         rollUsed++;
         rollCDTimer = 2;
-                
+
         controller.center = new Vector3(0, -0.5f, 0);
         controller.height = 1f;
         while (Time.time < startTime + rollTime)
         {
-                    
-            controller.Move(isometric * rollSpeed * Time.deltaTime);
+
+            controller.Move(rollDirection * rollSpeed * Time.deltaTime);
             yield return null;
 
         }
         controller.center = new Vector3(0, 0, 0);
         controller.height = 2;
-
     }
 
     void RollEndAnim()

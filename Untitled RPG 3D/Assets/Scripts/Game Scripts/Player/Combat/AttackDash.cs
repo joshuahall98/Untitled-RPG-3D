@@ -64,6 +64,9 @@ public class AttackDash : MonoBehaviour
 
                     controller.Move(offset2 * Time.deltaTime);
 
+                    //need to call this so the character controller knows the rotation after you attack
+                    GetComponent<PlayerController>().Rotation(offset2);
+
                 }
             }
             
@@ -72,6 +75,8 @@ public class AttackDash : MonoBehaviour
             if (controller.velocity.magnitude < 2f)
             {
                 hitReg = false;
+
+                
             }
 
         }

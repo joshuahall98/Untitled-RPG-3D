@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,6 +43,9 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
     //immunity timer
     [SerializeField] float immunityTimer;
+
+    //rotation
+    Vector3 rotation;
 
     private void Awake()
     {
@@ -177,7 +181,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
     }
 
-    //allow player to rewind after death
+    //allow player to rewind after death, as of rn it takes away the neccesary capsules, I don't know if it work if we have more capsules
     public void DeathRewind()
     {
         anim.SetBool("isRewinding", true);
@@ -251,12 +255,16 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         //prevents the player from taking damage
         StartCoroutine(GetComponent<PlayerController>().Immunity(immunityTimer));
 
+        //important so the next roll knows what direction to go
+        GetComponent<PlayerController>().RewindRotation(transform.rotation);
+
         PlayerController.state = PlayerState.IDLE;
-        StartCoroutine(ActionDelay());
+
+        //StartCoroutine(ActionDelay());
     }
 
     //work around to prevent buggy interaction when the character uses actions after rewinding
-    IEnumerator ActionDelay()
+    /*IEnumerator ActionDelay()
     {
         GetComponent<PlayerController>().DisableRoll();
         GetComponent<PlayerController>().DisableLightAttack();
@@ -269,7 +277,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         GetComponent<PlayerController>().EnableHeavyAttackCharge();
 
 
-    }
+    }*/
 
 }
 
