@@ -414,12 +414,12 @@ public class PlayerController : MonoBehaviour
     //rolling animation, CREATED IENUMERAOTR TO STOP bug?
     void RollAnimation()
     {
-        //if(state == PlayerState.MOVING  && isMoving == true)
-        //{
-        state = PlayerState.ROLLING;
+        if(state == PlayerState.MOVING  || state == PlayerState.IDLE)
+        {
+            state = PlayerState.ROLLING;
 
-        anim.SetTrigger("Roll");
-        //}
+            anim.SetTrigger("Roll");
+        }
     }
 
     //running the below function on the first frame of the animation to prevent the character from dashing before rolling
