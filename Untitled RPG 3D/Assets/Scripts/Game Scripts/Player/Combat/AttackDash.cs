@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AttackDash : MonoBehaviour
 {
@@ -11,10 +12,13 @@ public class AttackDash : MonoBehaviour
 
     private CharacterController controller;
 
-    public bool hitReg = false;
-    public bool canDash = false;
+    bool hitReg = false;
+    bool canDash = false;
     public static float dashDistance;
     public static float speed;
+
+    [SerializeField]float dashTime = 0.5f;
+    Vector3 dashDirection;
 
     Vector3 startingPoint;
     float distTravelled;
@@ -37,7 +41,10 @@ public class AttackDash : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (hitReg == true)
+
+        
+
+        /*if (hitReg == true)
         {
 
             //this decides max dash
@@ -57,6 +64,7 @@ public class AttackDash : MonoBehaviour
             //this move character to location
             if (canDash == true)
             {
+                  
                 var offset = hit.point - transform.position;
                 if (offset.magnitude > 0.1f)
                 {
@@ -68,6 +76,7 @@ public class AttackDash : MonoBehaviour
                     GetComponent<PlayerController>().Rotation(transform.rotation);
 
                 }
+                
             }
             
 
@@ -79,12 +88,16 @@ public class AttackDash : MonoBehaviour
                 
             }
 
-        }
+        }*/
     }
 
-
+    //this has no calls, I assume it's an anim event
     public void Dash()
     {
+
+        StartCoroutine(DashAction());
+
+        /*Debug.Log("controller disconnected");
 
         ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
@@ -95,6 +108,25 @@ public class AttackDash : MonoBehaviour
 
             hitReg = true;
             canDash = true;
+
+        }*/
+        
+        
+    }
+
+    public IEnumerator DashAction()
+    {
+        dashDirection = transform.rotation * Vector3.forward;
+
+        Debug.Log("attack");
+
+        float startTime = Time.time;
+
+        while (Time.time < startTime + dashTime)
+        {
+
+            controller.Move(dashDirection * speed * Time.deltaTime);
+            yield return null;
 
         }
     }

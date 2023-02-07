@@ -419,7 +419,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //better system to check character rotation for roll
+    //call this from other classes to make sure character knows rotation for rolling
     public void Rotation(Quaternion quaternion)
     {
         rollDirection = quaternion * Vector3.forward;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AttackAim : MonoBehaviour
 {
@@ -16,20 +17,24 @@ public class AttackAim : MonoBehaviour
 
     public void Aim()
     {
-        var (success, position) = GetMousePosition();
-        if (success)
+        if(Gamepad.all.Count <= 0)
         {
-            // Calculate the direction
-            var direction = position - transform.position;
+            var (success, position) = GetMousePosition();
+            if (success)
+            {
+                // Calculate the direction
+                var direction = position - transform.position;
 
-            // You might want to delete this line.
-            // Ignore the height difference.
-            direction.y = 0;
+                // You might want to delete this line.
+                // Ignore the height difference.
+                direction.y = 0;
 
-            // Make the transform look in the direction.
-            transform.forward = direction;
+                // Make the transform look in the direction.
+                transform.forward = direction;
 
+            }
         }
+        
 
     }
 
