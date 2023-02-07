@@ -9,7 +9,9 @@ public class WeaponDashStats : MonoBehaviour
     float dashSpeed;
     float dashDistance;
 
-    public void WeaponDashSpeed()
+    //THIS SCRIPT IS IF WE WANT DIFFERENT DASH DISTANCE PER WEAPON
+
+    /*public void WeaponDashSpeed()
     {
         dashSpeed = Weapon.dashSpeed;
         AttackDash.speed = dashSpeed;
@@ -19,5 +21,5 @@ public class WeaponDashStats : MonoBehaviour
     {
         dashDistance = Weapon.dashDistance;
         AttackDash.dashDistance = dashDistance;
-    }
+    }*/
 }
