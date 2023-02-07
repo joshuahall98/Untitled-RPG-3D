@@ -22,6 +22,7 @@ public class AttackDash : MonoBehaviour
 
     }
 
+    //called by anim event on attack
     public IEnumerator DashAction()
     {
         dashDirection = transform.rotation * Vector3.forward;

@@ -84,6 +84,8 @@ public class PlayerController : MonoBehaviour
     //interactbale objects
     GameObject interactableObj;
 
+    public static InputControl lastDevice;
+
 
     void Awake()
     {
@@ -132,6 +134,24 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    //to find out the last device used
+    void LastDevice()
+    {
+        InputSystem.onActionChange += (obj, change) =>
+        {
+            if (change == InputActionChange.ActionPerformed)
+            {
+                var inputAction = (InputAction)obj;
+                var lastControl = inputAction.activeControl;
+                lastDevice = lastControl.device;
+
+                Debug.Log($"device: {lastDevice.displayName}");
+
+            
+            }
+        };
+    }
+
     //what does this code do?
     private void CameraRight_performed(InputAction.CallbackContext obj)
     {
@@ -146,6 +166,8 @@ public class PlayerController : MonoBehaviour
         PlayerMovement();
 
         PlayerFalling();
+
+        LastDevice();
 
         /*if (state == PlayerState.ROLLING)
         {

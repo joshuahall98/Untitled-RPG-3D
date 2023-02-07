@@ -10,6 +10,7 @@ public class AttackAim : MonoBehaviour
     private Camera mainCamera;
     [SerializeField] private LayerMask groundMask;
 
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -17,7 +18,9 @@ public class AttackAim : MonoBehaviour
 
     public void Aim()
     {
-        if(Gamepad.all.Count <= 0)
+        
+        //checking to make sure mouse is being used
+        if(PlayerController.lastDevice.displayName == "Mouse")
         {
             var (success, position) = GetMousePosition();
             if (success)
@@ -31,6 +34,8 @@ public class AttackAim : MonoBehaviour
 
                 // Make the transform look in the direction.
                 transform.forward = direction;
+
+
 
             }
         }

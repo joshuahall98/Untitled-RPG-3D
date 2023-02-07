@@ -5442,7 +5442,7 @@ Transform:
   m_Children:
   - {fileID: 1223121831110250729}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1689940224852358949
 Animator:
@@ -5495,10 +5495,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 8
+  isometric: {x: 0, y: 0, z: 0}
   isometricRotation: 45
   visibleState: 0
   isMoving: 0
   rollSpeed: 15
+  rollTime: 0.5
   dizzyAffect: {fileID: 1689940225372480533}
   sword: {fileID: 1995858245669972044}
   sheathedSword: {fileID: 1995858245555271080}
@@ -5534,7 +5536,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 0
   currentHealth: 0
-  damageTakenTimer: 0
 --- !u!114 &1689940224852358944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5606,11 +5607,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1097e68fab4b522478c8923801d8729e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 512
-  hitReg: 0
-  canDash: 0
+  speed: 5
+  dashTime: 0.25
   sword: {fileID: 1995858245669972044}
 --- !u!114 &3556720918372886034
 MonoBehaviour:
