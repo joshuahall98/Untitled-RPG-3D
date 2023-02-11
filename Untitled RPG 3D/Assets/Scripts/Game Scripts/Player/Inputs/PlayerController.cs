@@ -84,6 +84,7 @@ public class PlayerController : MonoBehaviour
     //interactbale objects
     GameObject interactableObj;
 
+    //last device used variable
     public static InputControl lastDevice;
 
 
@@ -134,7 +135,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    //to find out the last device used
+    //to find out the last input device used
     void LastDevice()
     {
         InputSystem.onActionChange += (obj, change) =>
@@ -145,7 +146,7 @@ public class PlayerController : MonoBehaviour
                 var lastControl = inputAction.activeControl;
                 lastDevice = lastControl.device;
 
-                Debug.Log($"device: {lastDevice.displayName}");
+                //Debug.Log($"device: {lastDevice.displayName}");
 
             
             }
@@ -168,6 +169,7 @@ public class PlayerController : MonoBehaviour
         PlayerFalling();
 
         LastDevice();
+
 
         /*if (state == PlayerState.ROLLING)
         {
@@ -235,8 +237,6 @@ public class PlayerController : MonoBehaviour
 
         //walking animation
         anim.SetBool("isMoving", isMoving);
-
-        controller.SimpleMove(Vector3.forward * 0); //Adds Gravity for some reason
 
         if (state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
@@ -344,6 +344,8 @@ public class PlayerController : MonoBehaviour
         {
             state = PlayerState.IDLE;
         }
+
+        controller.SimpleMove(Vector3.forward * 0); //Adds Gravity for some reason
 
         float touchGround = 2f;
         float distanceFromPlayerFar = 1.3f;
