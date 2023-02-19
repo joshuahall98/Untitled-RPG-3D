@@ -40,7 +40,7 @@ public class PlayerHeavyAttack : MonoBehaviour
         swordCollider.enabled = false;
         releaseReady = false;
         //GetComponent<SoundManager>().PlaySound("Heavy Attack Charge");
-        FindObjectOfType<SoundManager>().SelectAudio("Player");
+        FindObjectOfType<SoundManager>().SelectAudioClass("Player");
         FindObjectOfType<SoundManager>().PlaySound("Heavy Attack Charge");
 
     }
@@ -54,7 +54,7 @@ public class PlayerHeavyAttack : MonoBehaviour
             releaseReady = true;
             sparkle.SetActive(true);
             //audio
-            FindObjectOfType<SoundManager>().SelectAudio("Player");
+            FindObjectOfType<SoundManager>().SelectAudioClass("Player");
             FindObjectOfType<SoundManager>().StopSound("Heavy Attack Charge");
             FindObjectOfType<SoundManager>().PlaySound("Heavy Attack Ding");
 
@@ -74,13 +74,13 @@ public class PlayerHeavyAttack : MonoBehaviour
             swordCollider.enabled = true;
             releaseReady = false;
             GetComponent<AttackAim>().Aim();
-            FindObjectOfType<SoundManager>().SelectAudio("Wurgle");
+            FindObjectOfType<SoundManager>().SelectAudioClass("Wurgle");
             FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
         }
         else
         {
             sparkle.SetActive(false);
-            FindObjectOfType<SoundManager>().SelectAudio("Player");
+            FindObjectOfType<SoundManager>().SelectAudioClass("Player");
             FindObjectOfType<SoundManager>().StopSound("Heavy Attack Charge");
             releaseReady = false;
             anim.SetTrigger("HeavyAttackFail");
@@ -116,7 +116,7 @@ public class PlayerHeavyAttack : MonoBehaviour
         if (PlayerController.state == PlayerState.KNOCKEDDOWN)
         {
             sparkle.SetActive(false);
-            FindObjectOfType<SoundManager>().SelectAudio("Player");
+            FindObjectOfType<SoundManager>().SelectAudioClass("Player");
             FindObjectOfType<SoundManager>().StopSound("Heavy Attack Charge");
             releaseReady = false;
             anim.SetTrigger("HeavyAttackFail");

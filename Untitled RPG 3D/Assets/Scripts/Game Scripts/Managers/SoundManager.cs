@@ -16,23 +16,23 @@ public class SoundManager : MonoBehaviour
     [Space]
     [Header("AI")]
     [SerializeField] Sound[] wurgle;
-    [SerializeField] Sound[] wurl;
 
     
     [Space]
     [Header("EMPTY FIELD")]
     [SerializeField] Sound[] sounds;
 
+    List<Sound[]> arrayStorage = new List<Sound[]>();
 
-    //decide on scriptable
-    [SerializeField]List<AudioScriptableObject> scriptObj = new List<AudioScriptableObject>();
 
-    //store all the arrays in an array at start, traverse array and run the for each with each list.
+    //decide on scriptable, will look at later
+    //[SerializeField]List<AudioScriptableObject> scriptObj = new List<AudioScriptableObject>();
 
-    // Start is called before the first frame update
     void Awake()
     {
-        TheAudioList();
+        AddArrayToList();
+        TheAudioComponentList();
+        
     }
 
     public void PlaySound(string name)
@@ -52,7 +52,28 @@ public class SoundManager : MonoBehaviour
         s.source.Stop();
     }
 
-    public void SelectAudio(string name)
+    //this creates all the audio components on the game manager
+    void TheAudioComponentList()
+    {
+        for (int i = 0; i < arrayStorage.Count; i++)
+        {
+            foreach (Sound s in arrayStorage[i])
+            {
+                s.source = gameObject.AddComponent<AudioSource>();
+                s.source.clip = s.clip;
+
+                s.source.outputAudioMixerGroup = s.group;
+                s.source.volume = s.volume;
+                s.source.pitch = s.pitch;
+                s.source.loop = s.loop;
+                s.source.panStereo = s.pan;
+            }
+        }
+
+    }
+
+    //Call this function to select which class
+    public void SelectAudioClass(string name)
     {
         if(name == "Player")
         {
@@ -65,42 +86,15 @@ public class SoundManager : MonoBehaviour
         
     }
 
-    void TheAudioList()
+    //This stores all the audio arrays in a list so that the components can be added
+    void AddArrayToList()
     {
-        foreach (Sound s in wurgle)
-        {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
+        //Player
+        arrayStorage.Add(player);
 
-            s.source.outputAudioMixerGroup = s.group;
-            s.source.volume = s.volume;
-            s.source.pitch = s.pitch;
-            s.source.loop = s.loop;
-            s.source.panStereo = s.pan;
-        }
-
-        foreach (Sound s in player)
-        {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
-
-            s.source.outputAudioMixerGroup = s.group;
-            s.source.volume = s.volume;
-            s.source.pitch = s.pitch;
-            s.source.loop = s.loop;
-            s.source.panStereo = s.pan;
-        }
-
-        foreach (Sound s in sounds)
-        {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
-
-            s.source.outputAudioMixerGroup = s.group;
-            s.source.volume = s.volume;
-            s.source.pitch = s.pitch;
-            s.source.loop = s.loop;
-            s.source.panStereo = s.pan;
-        }
+        //AI
+        arrayStorage.Add(wurgle);
     }
+
+    
 }
