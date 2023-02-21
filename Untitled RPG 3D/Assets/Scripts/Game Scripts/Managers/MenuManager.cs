@@ -42,14 +42,14 @@ public class MenuManager : MonoBehaviour
     public void MenuUIPauseUnpause()
     {
 
-        if (GameManager.state == GameState.PAUSE)
+        if (GameManager.gameState == GameState.PAUSE)
         {
             EnableMenuActionMap();
             player.GetComponent<PlayerController>().DisablePlayerActionMap();
             menuUI.GetComponent<MenuUI>().EnablePauseText();
             Cursor.lockState = CursorLockMode.None;
         }
-        else if(GameManager.state == GameState.PLAY)
+        else if(GameManager.gameState == GameState.PLAY)
         {
             DisableMenuActionMap();
             player.GetComponent<PlayerController>().EnablePlayerActionMap();

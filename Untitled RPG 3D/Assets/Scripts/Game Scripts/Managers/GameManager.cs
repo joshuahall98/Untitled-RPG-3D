@@ -4,11 +4,15 @@ using UnityEngine;
 
 
 public enum GameState {PAUSE, PLAY, CUTSCENE}
+public enum CurrentLevel { }
 public class GameManager : MonoBehaviour
 {
 
-    public static GameState state;
-    [SerializeField] GameState visibleState;
+    public static GameState gameState;
+    [SerializeField] GameState visibleGameState;
+
+    public static CurrentLevel currentLevelState;
+    [SerializeField] CurrentLevel visibleCurrentLevelState;
 
     public static GameManager instance;
 
@@ -29,25 +33,26 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
-        state = GameState.PLAY;
+        gameState = GameState.PLAY;
     }
 
     // Update is called once per frame
     void Update()
     {
-        visibleState = state;
+        visibleGameState = gameState;
+        visibleCurrentLevelState = currentLevelState;
     }
 
     public void PauseAndUnpause()
     {
-        if(state == GameState.PAUSE) 
+        if(gameState == GameState.PAUSE) 
         { 
-            state = GameState.PLAY;
+            gameState = GameState.PLAY;
             Time.timeScale = 1;
         }
-        else if(state == GameState.PLAY)
+        else if(gameState == GameState.PLAY)
         {
-            state = GameState.PAUSE;
+            gameState = GameState.PAUSE;
             Time.timeScale = 0;
         }
     }

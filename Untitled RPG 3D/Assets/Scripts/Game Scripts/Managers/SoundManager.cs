@@ -17,10 +17,10 @@ public class SoundManager : MonoBehaviour
     [Header("AI")]
     [SerializeField] Sound[] wurgle;
 
-    
-    [Space]
-    [Header("EMPTY FIELD")]
-    [SerializeField] Sound[] sounds;
+    //for storing currently used sounds
+    //[Space]
+    //[Header("EMPTY FIELD")]
+    Sound[] sounds;
 
     List<Sound[]> arrayStorage = new List<Sound[]>();
 
