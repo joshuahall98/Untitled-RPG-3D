@@ -14,12 +14,12 @@ public class GameManager : MonoBehaviour
     public static CurrentLevel currentLevelState;
     [SerializeField] CurrentLevel visibleCurrentLevelState;
 
-    public static GameManager instance;
+    public static GameManager GameManagerInstance;
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
+        if (GameManagerInstance == null)
+            GameManagerInstance = this;
         else
         {
             Destroy(this.gameObject);

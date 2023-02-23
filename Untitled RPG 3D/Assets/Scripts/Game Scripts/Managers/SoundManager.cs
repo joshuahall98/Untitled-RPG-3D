@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class SoundManager : MonoBehaviour
 {
 
-    public static SoundManager instance;
+    public static SoundManager SoundManagerInstance;
 
     [Header("PLAYER")]
     [SerializeField] Sound[] player;
@@ -30,6 +30,8 @@ public class SoundManager : MonoBehaviour
 
     void Awake()
     {
+        SoundManagerInstance = this;
+
         AddArrayToList();
         TheAudioComponentList();
         
