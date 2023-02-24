@@ -234,7 +234,16 @@ public class PlayerController : MonoBehaviour
     void PlayerMovement()
     {
         //walking animation
-        anim.SetBool("isMoving", isMoving);
+        //anim.SetBool("isMoving", isMoving);
+
+        if(state == PlayerState.MOVING || state == PlayerState.DIZZY)
+        {
+            anim.SetBool("isMoving", true);
+        }
+        else
+        {
+            anim.SetBool("isMoving", false);
+        }
 
         if (state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
@@ -538,7 +547,7 @@ public class PlayerController : MonoBehaviour
             state = PlayerState.ATTACKING;
             GetComponent<PlayerLightAttack>().LightAtk();
             // to stop running anim 
-            isMoving = false;
+           // isMoving = false;
         }
         
     }
@@ -551,7 +560,7 @@ public class PlayerController : MonoBehaviour
             state = PlayerState.ATTACKING;
             GetComponent<PlayerHeavyAttack>().HeavyAtkCharge();
             // to stop running anim 
-            isMoving = false;
+           // isMoving = false;
         }
     }
 
@@ -673,7 +682,7 @@ public class PlayerController : MonoBehaviour
                 state = PlayerState.INTERACTING;
                 interactableObj.gameObject.GetComponent<InteractableObject>().PressInteract();
                 // to stop running anim when interacting
-                isMoving = false; 
+               // isMoving = false; 
             }
             else if(state == PlayerState.INTERACTING)
             {
