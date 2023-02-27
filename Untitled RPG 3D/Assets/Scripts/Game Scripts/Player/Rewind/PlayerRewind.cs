@@ -188,6 +188,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         hourGlass.SetActive(true);
 
+        PlayerController.state = PlayerState.REWINDING;
+
         //call the UI update when you rewind
         rewindUI.GetComponent<RewindUI>().Rewind();
 
@@ -218,10 +220,15 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
                 Rewinding = true;
                 
             }
+            else
+            {
+                PlayerController.state = PlayerState.IDLE;
+            }
 
 
             cooldownSystem.PutOnCooldown(this);
         }
+
     }
 
     //increase the amount of rewinds you have

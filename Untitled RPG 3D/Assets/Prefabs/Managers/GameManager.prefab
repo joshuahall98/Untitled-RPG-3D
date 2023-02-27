@@ -9,7 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 283530613241129080}
+  - component: {fileID: 681578067}
   - component: {fileID: 283530613241129081}
+  - component: {fileID: 3449360487711987382}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -27,10 +29,24 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &681578067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 283530613241129062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e75b1097492b84d9dbdac8cdfe61a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visibleState: 0
 --- !u!114 &283530613241129081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43,4 +59,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e5ef5800609d248ad7406095c4c321, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paused: 0
+--- !u!114 &3449360487711987382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 283530613241129062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfeb61f9e865b0d4e8e32a31e4c39416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player:
+  - name: Sword Swing
+    clip: {fileID: 8300000, guid: 8b2cb9b1ef855d345b6b19313db3a8ef, type: 3}
+    group: {fileID: 6017482611226594319, guid: 8d1a2a42e38ffe7478fea62c6e2434b7, type: 2}
+    volume: 0.8
+    pitch: 0.5
+    pan: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Heavy Attack Ding
+    clip: {fileID: 8300000, guid: 021dd3d34fc287745b4ce0adcbe11ae2, type: 3}
+    group: {fileID: 6017482611226594319, guid: 8d1a2a42e38ffe7478fea62c6e2434b7, type: 2}
+    volume: 0.4
+    pitch: 1.5
+    pan: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Heavy Attack Charge
+    clip: {fileID: 8300000, guid: 4db529701c0df04478ffedb360ab1962, type: 3}
+    group: {fileID: 6017482611226594319, guid: 8d1a2a42e38ffe7478fea62c6e2434b7, type: 2}
+    volume: 0.3
+    pitch: 1.5
+    pan: 0
+    loop: 0
+    source: {fileID: 0}
+  wurgle:
+  - name: Sword Swing
+    clip: {fileID: 8300000, guid: 8b2cb9b1ef855d345b6b19313db3a8ef, type: 3}
+    group: {fileID: 6017482611226594319, guid: 8d1a2a42e38ffe7478fea62c6e2434b7, type: 2}
+    volume: 0.8
+    pitch: 0.5
+    pan: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Heavy Attack Ding
+    clip: {fileID: 8300000, guid: 021dd3d34fc287745b4ce0adcbe11ae2, type: 3}
+    group: {fileID: 6017482611226594319, guid: 8d1a2a42e38ffe7478fea62c6e2434b7, type: 2}
+    volume: 0.4
+    pitch: 1.5
+    pan: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Heavy Attack Charge
+    clip: {fileID: 8300000, guid: 4db529701c0df04478ffedb360ab1962, type: 3}
+    group: {fileID: 6017482611226594319, guid: 8d1a2a42e38ffe7478fea62c6e2434b7, type: 2}
+    volume: 0.3
+    pitch: 1.5
+    pan: 0
+    loop: 0
+    source: {fileID: 0}
+  sounds: []

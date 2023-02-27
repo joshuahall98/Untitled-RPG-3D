@@ -63,7 +63,8 @@ public class PlayerLightAttack : MonoBehaviour
             sheathedSword.SetActive(false);
             atkNum++;
             swingCDTimer = 1;
-            GetComponent<SoundManager>().PlaySound("Sword Swing");
+            SoundManager.SoundManagerInstance.SelectAudioClass("Player");
+            SoundManager.SoundManagerInstance.PlaySound("Sword Swing");
             anim.SetTrigger("LightAttack1");
 
         }
@@ -76,7 +77,8 @@ public class PlayerLightAttack : MonoBehaviour
             sheathedSword.SetActive(false);
             atkNum++;
             swingCDTimer = 1;
-            GetComponent<SoundManager>().PlaySound("Sword Swing");
+            SoundManager.SoundManagerInstance.SelectAudioClass("Player");
+            SoundManager.SoundManagerInstance.PlaySound("Sword Swing");
             anim.SetTrigger("LightAttack2");
         }
     }

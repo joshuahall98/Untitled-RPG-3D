@@ -8,9 +8,11 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.SceneManagement;
 using ClipperLib;
+using Unity.Mathematics;
+using Random = UnityEngine.Random;
 
 
-//THIS SCRIPT CONTROLS THE BASE PLAYER MOVEMENT, IT ALSO CONTROLS THE PLAYERS ROLL MECHANIC, THE DIZZY AFFECT, AND WHETHER OR NOT THE PLAYER IS GROUNDED
+//THIS SCRIPT CONTROLS THE PLAYER STATES AND ALL PLAYER CONTROLS
 public enum PlayerState { IDLE, MOVING, ROLLING, ATTACKING, DEAD, REWINDING, DIZZY, KNOCKEDDOWN, FALLING, INTERACTING}
 public class PlayerController : MonoBehaviour
 {
@@ -69,7 +71,7 @@ public class PlayerController : MonoBehaviour
     public GameObject sheathedSword;
     Collider swordCollider;
 
-    //menu script
+    //Game Manager
     GameObject gameManager;
 
     //audio
@@ -86,6 +88,9 @@ public class PlayerController : MonoBehaviour
 
     //last device used variable
     public static InputControl lastDevice;
+
+    //random variable 
+    int r;
 
 
     void Awake()
@@ -112,7 +117,7 @@ public class PlayerController : MonoBehaviour
         playerInput.Player.Attack.performed += LightAtk;
         playerInput.Player.HeavyAtkCharge.performed += HeavyAtkCharge;
         playerInput.Player.HeavyAtkRelease.performed += HeavyAtkRelease;
-        playerInput.Player.Pause.performed += PressEsc;
+        playerInput.Player.Pause.performed += PressPause;
         playerInput.Player.Interact.performed += interactPerformed => Interact();
 
         //assigning the inputs to variables
@@ -223,20 +228,22 @@ public class PlayerController : MonoBehaviour
         {
             RollEndAnim();
         }
-
-        /*if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerKnockdown"))
-        {
-            Debug.Log("FINISHED");
-        }*/
-
     }
 
     #region - MOVEMENT -
     void PlayerMovement()
     {
-
         //walking animation
-        anim.SetBool("isMoving", isMoving);
+        //anim.SetBool("isMoving", isMoving);
+
+        if(state == PlayerState.MOVING || state == PlayerState.DIZZY)
+        {
+            anim.SetBool("isMoving", true);
+        }
+        else
+        {
+            anim.SetBool("isMoving", false);
+        }
 
         if (state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
@@ -245,19 +252,13 @@ public class PlayerController : MonoBehaviour
             if (isMoving == false && state == PlayerState.MOVING)
             {
                 state = PlayerState.IDLE;
+
             }
             else if (isMoving == true && state != PlayerState.MOVING)
             {
                 state = PlayerState.MOVING;
+                
             }
-
-
-            //this old code unsure what it does
-            /*Vector2 readVector = move.ReadValue<Vector2>();
-            Vector3 toConvert = new Vector3(readVector.x, 0, readVector.y);
-            currentMoveInput = IsoVectorConvert(toConvert);
-
-            controller.Move(currentMoveInput * speed * Time.deltaTime);*/
 
             currentMoveInput = move.ReadValue<Vector2>();
             actualMovement = new Vector3();
@@ -273,7 +274,7 @@ public class PlayerController : MonoBehaviour
             //move the character controller
             controller.Move(isometric * speed * Time.deltaTime);
             isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
-
+            
             //Character Rotation
             Vector3 currentPos = transform.position;
             Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
@@ -285,52 +286,63 @@ public class PlayerController : MonoBehaviour
             {
                 rollDirection = transform.rotation * Vector3.forward;
             }
-            
-            
-
 
         }
 
         if(state == PlayerState.DIZZY) 
         {
+            
             currentMoveInput = move.ReadValue<Vector2>();
             actualMovement = new Vector3();
             //Condensed movement -- Converted y to z axis
             actualMovement.z = currentMoveInput.x;
             actualMovement.x = currentMoveInput.y;
 
-            //move charachter controller
-            controller.Move(actualMovement * speed * Time.deltaTime);
-            isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
-
-
-            //Character Rotation
-            Vector3 currentPos = transform.position;
-            Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
-            posLookAt = currentPos + newPos;
-            transform.LookAt(posLookAt);
-
-            //set rotation for roll
-            if (actualMovement.magnitude >= 0.1f)
+            if (r > 50)
             {
-                rollDirection = transform.rotation * Vector3.forward;
+                
+                //move charachter controller
+                controller.Move(actualMovement * speed * Time.deltaTime);
+                isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+
+                //Character Rotation
+                Vector3 currentPos = transform.position;
+                Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
+                posLookAt = currentPos + newPos;
+                transform.LookAt(posLookAt);
+
+                //set rotation for roll
+                if (actualMovement.magnitude >= 0.1f)
+                {
+                    rollDirection = transform.rotation * Vector3.forward;
+                }
             }
+            else
+            { 
+
+                //magic code that converts the basic player movement into isometric
+                isometric = new Vector3();
+                var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, isometricRotation, 0));
+                isometric = matrix.MultiplyPoint3x4(actualMovement);
+
+                //move the character controller
+                controller.Move(isometric * speed * Time.deltaTime);
+                isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+
+                //Character Rotation
+                Vector3 currentPos = transform.position;
+                Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
+                Vector3 posLookAt = currentPos + newPos;
+                transform.LookAt(posLookAt);
+
+                //set rotation for roll
+                if (isometric.magnitude >= 0.1f)
+                {
+                    rollDirection = transform.rotation * Vector3.forward;
+                }
+            }  
         }
-
-
     }
-
-    //BRACKEYS VID, REMADE BUT BETTER
-    //this was created so that the rotation of the player can be called after different actions, prevents rolling the wrong way
-    /*public void Rotation(Vector3 vector3)
-    {
-        float targetAngle = Mathf.Atan2(vector3.x, vector3.z) * Mathf.Rad2Deg;
-        //this line dampens the rotation
-        //float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-        transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
-
-        rollDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-    }*/
 
     #endregion
 
@@ -508,6 +520,9 @@ public class PlayerController : MonoBehaviour
         //isDizzy = true;
         dizzyAffect.SetActive(true);
 
+        //dizzy direction changes so it's harder to learn lmao
+        r = Random.Range(0, 101);
+
         state = PlayerState.DIZZY;
 
         yield return new WaitForSeconds(3);
@@ -529,8 +544,10 @@ public class PlayerController : MonoBehaviour
     {
         if(state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
-            GetComponent<PlayerLightAttack>().LightAtk();
             state = PlayerState.ATTACKING;
+            GetComponent<PlayerLightAttack>().LightAtk();
+            // to stop running anim 
+           // isMoving = false;
         }
         
     }
@@ -540,8 +557,10 @@ public class PlayerController : MonoBehaviour
     {
         if (state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
-            GetComponent<PlayerHeavyAttack>().HeavyAtkCharge();
             state = PlayerState.ATTACKING;
+            GetComponent<PlayerHeavyAttack>().HeavyAtkCharge();
+            // to stop running anim 
+           // isMoving = false;
         }
     }
 
@@ -623,18 +642,19 @@ public class PlayerController : MonoBehaviour
     void Rewind()
     {
         if(state == PlayerState.IDLE || state == PlayerState.MOVING || state == PlayerState.FALLING || state == PlayerState.DEAD) 
-        {
-
+        { 
             GetComponent<PlayerRewind>().PlsRewind();
-
         }  
     }
 
     //Pause game 
-    void PressEsc(InputAction.CallbackContext PauseInput)
+    void PressPause(InputAction.CallbackContext PauseInput)
     {
-        Debug.Log("Pause");
-        gameManager.GetComponent<MenuManager>().PressEsc();
+        //this code to call game manager is bettert
+        //GameManager.instance.PauseAndUnpause();
+        gameManager.GetComponent<GameManager>().PauseAndUnpause();
+        gameManager.GetComponent<MenuManager>().MenuUIPauseUnpause();
+        
     }
 
     public IEnumerator Immunity(float immunityTime)
@@ -662,7 +682,7 @@ public class PlayerController : MonoBehaviour
                 state = PlayerState.INTERACTING;
                 interactableObj.gameObject.GetComponent<InteractableObject>().PressInteract();
                 // to stop running anim when interacting
-                isMoving = false; 
+               // isMoving = false; 
             }
             else if(state == PlayerState.INTERACTING)
             {

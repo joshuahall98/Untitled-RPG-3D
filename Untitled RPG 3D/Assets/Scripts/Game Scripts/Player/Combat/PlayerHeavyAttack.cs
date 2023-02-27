@@ -32,13 +32,16 @@ public class PlayerHeavyAttack : MonoBehaviour
 
     public void HeavyAtkCharge()
     {
+        
         anim.SetTrigger("HeavyAttackHold");
         anim.ResetTrigger("HeavyAttackFail");
         sword.SetActive(true);
         sheathedSword.SetActive(false);
         swordCollider.enabled = false;
         releaseReady = false;
-        GetComponent<SoundManager>().PlaySound("Heavy Attack Charge");
+        SoundManager.SoundManagerInstance.PlaySound("Player");
+        SoundManager.SoundManagerInstance.PlaySound("Heavy Attack Charge");
+
     }
 
     //this line of code checks to see if the animation has reached full charge before allowing the swing to commence
@@ -49,9 +52,11 @@ public class PlayerHeavyAttack : MonoBehaviour
         {
             releaseReady = true;
             sparkle.SetActive(true);
-            GetComponent<SoundManager>().StopSound("Heavy Attack Charge");
-            GetComponent<SoundManager>().PlaySound("Heavy Attack Ding");
-            Debug.Log("ReadyToAttack");
+            //audio
+            SoundManager.SoundManagerInstance.SelectAudioClass("Player");
+            SoundManager.SoundManagerInstance.StopSound("Heavy Attack Charge");
+            SoundManager.SoundManagerInstance.PlaySound("Heavy Attack Ding");
+
         }
 
     }
@@ -68,12 +73,14 @@ public class PlayerHeavyAttack : MonoBehaviour
             swordCollider.enabled = true;
             releaseReady = false;
             GetComponent<AttackAim>().Aim();
-            GetComponent<SoundManager>().PlaySound("Sword Swing");
+            FindObjectOfType<SoundManager>().SelectAudioClass("Wurgle");
+            FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
         }
         else
         {
             sparkle.SetActive(false);
-            GetComponent<SoundManager>().StopSound("Heavy Attack Charge");
+            SoundManager.SoundManagerInstance.SelectAudioClass("Player");
+            SoundManager.SoundManagerInstance.StopSound("Heavy Attack Charge");
             releaseReady = false;
             anim.SetTrigger("HeavyAttackFail");
 
@@ -108,7 +115,8 @@ public class PlayerHeavyAttack : MonoBehaviour
         if (PlayerController.state == PlayerState.KNOCKEDDOWN)
         {
             sparkle.SetActive(false);
-            GetComponent<SoundManager>().StopSound("Heavy Attack Charge");
+            SoundManager.SoundManagerInstance.SelectAudioClass("Player");
+            SoundManager.SoundManagerInstance.StopSound("Heavy Attack Charge");
             releaseReady = false;
             anim.SetTrigger("HeavyAttackFail");
             sword.SetActive(false);
@@ -118,7 +126,7 @@ public class PlayerHeavyAttack : MonoBehaviour
 
     //stop charge attack bug when game paused 
     //need to test, certain it would be better to just run HeavyAtkRelease()
-    public void CancelAttackOnPause()
+    /*public void CancelAttackOnPause()
     {
         if(releaseReady == true)
         {
@@ -132,7 +140,7 @@ public class PlayerHeavyAttack : MonoBehaviour
             PlayerController.state = PlayerState.IDLE;
         }
         
-    }
+    }*/
 
     void HeavyAttackSwordColliderOn()
     {

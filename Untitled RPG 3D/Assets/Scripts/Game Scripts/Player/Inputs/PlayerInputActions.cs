@@ -165,7 +165,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""45aab0f6-d03b-4692-b826-f2ee4f77cc84"",
                     ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap(pressPoint=1)"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Attack"",
@@ -448,7 +448,18 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""484ed4db-89b2-4a24-bfb8-d04580b3223a"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
