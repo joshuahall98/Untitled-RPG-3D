@@ -23,7 +23,7 @@ TagManager:
   - InspectionObj
   - CharacterColliderBlocker
   - AttackIndicator
-  - 
+  - Pointer
   - 
   - 
   - 
@@ -44,4 +44,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Pointer
+    uniqueID: 2349406045
     locked: 0

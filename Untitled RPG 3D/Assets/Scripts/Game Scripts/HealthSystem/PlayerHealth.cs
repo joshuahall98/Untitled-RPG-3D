@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : CharacterStats
+public class PlayerHealth : MonoBehaviour
 {
     //Animation
     Animator anim;
