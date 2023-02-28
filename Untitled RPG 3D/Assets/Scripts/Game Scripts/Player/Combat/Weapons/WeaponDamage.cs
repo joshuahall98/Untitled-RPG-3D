@@ -31,7 +31,7 @@ public class WeaponDamage : MonoBehaviour
         {
             if (collision.gameObject.tag == "Enemy")
             {
-                collision.gameObject.GetComponentInParent<EnemyHealth>().TakeDamage(damage);
+                collision.gameObject.GetComponentInParent<AIHealth>().TakeDamage(damage);
             }
         }
     }

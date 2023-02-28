@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Conor
 public class AIStateMachine 
 {
     public AiState[] states;
