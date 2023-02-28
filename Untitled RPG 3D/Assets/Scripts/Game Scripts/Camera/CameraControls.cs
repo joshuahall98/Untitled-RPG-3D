@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
+//Joshua
+
 public class CameraControls : MonoBehaviour
 {
     public CinemachineVirtualCamera camera;

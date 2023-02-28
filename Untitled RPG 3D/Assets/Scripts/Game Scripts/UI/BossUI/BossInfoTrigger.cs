@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Joshua
+
 public class BossInfoTrigger : MonoBehaviour
 {
     public string bossName;

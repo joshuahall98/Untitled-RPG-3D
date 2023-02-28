@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Joshua
+
 public class PlayerHPBar : MonoBehaviour
 {
     //THIS SCRIPT IS FOR THE UI AND CONTROLS THE PLAYERS HP

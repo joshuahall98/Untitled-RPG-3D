@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Joshua
+
 public class OghamStoneFloat : MonoBehaviour
 {
     [SerializeField]float turnSpeed = 2;

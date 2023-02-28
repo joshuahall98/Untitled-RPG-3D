@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
+//Joshua
 public class SoundOptions : MonoBehaviour
 {
     [SerializeField] Slider volumeSlider;

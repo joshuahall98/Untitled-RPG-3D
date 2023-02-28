@@ -233,9 +233,8 @@ public class PlayerController : MonoBehaviour
     #region - MOVEMENT -
     void PlayerMovement()
     {
-        //walking animation
-        //anim.SetBool("isMoving", isMoving);
 
+        //walking animation
         if(state == PlayerState.MOVING || state == PlayerState.DIZZY)
         {
             anim.SetBool("isMoving", true);
@@ -517,7 +516,6 @@ public class PlayerController : MonoBehaviour
     IEnumerator Dizzy()
     {
         anim.SetTrigger("Dizzy");
-        //isDizzy = true;
         dizzyAffect.SetActive(true);
 
         //dizzy direction changes so it's harder to learn lmao
@@ -528,7 +526,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(3);
 
         dizzyAffect.SetActive(false);
-        //isDizzy = false;
 
         rewind.Enable();
         anim.ResetTrigger("Roll");
@@ -546,8 +543,6 @@ public class PlayerController : MonoBehaviour
         {
             state = PlayerState.ATTACKING;
             GetComponent<PlayerLightAttack>().LightAtk();
-            // to stop running anim 
-           // isMoving = false;
         }
         
     }
@@ -559,8 +554,6 @@ public class PlayerController : MonoBehaviour
         {
             state = PlayerState.ATTACKING;
             GetComponent<PlayerHeavyAttack>().HeavyAtkCharge();
-            // to stop running anim 
-           // isMoving = false;
         }
     }
 
@@ -650,8 +643,6 @@ public class PlayerController : MonoBehaviour
     //Pause game 
     void PressPause(InputAction.CallbackContext PauseInput)
     {
-        //this code to call game manager is bettert
-        //GameManager.instance.PauseAndUnpause();
         gameManager.GetComponent<GameManager>().PauseAndUnpause();
         gameManager.GetComponent<MenuManager>().MenuUIPauseUnpause();
         
@@ -680,9 +671,7 @@ public class PlayerController : MonoBehaviour
             if(state == PlayerState.IDLE || state == PlayerState.MOVING) 
             {
                 state = PlayerState.INTERACTING;
-                interactableObj.gameObject.GetComponent<InteractableObject>().PressInteract();
-                // to stop running anim when interacting
-               // isMoving = false; 
+                interactableObj.gameObject.GetComponent<InteractableObject>().PressInteract(); 
             }
             else if(state == PlayerState.INTERACTING)
             {

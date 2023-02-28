@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+//Joshua
+
 public class SideCharacterController : MonoBehaviour
 {
     //inputs and movement

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
+//Joshua
+
 public class SettingsMenu : MonoBehaviour
 {
     //this system for changing things may be bugged, recheck video comments if so

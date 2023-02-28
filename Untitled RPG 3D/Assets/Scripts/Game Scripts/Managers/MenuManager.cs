@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+//Joshua
+
 public class MenuManager : MonoBehaviour
 {
     //AS OF RIGHT NOW THIS PAUSES THE GAME BUT NOT ALL THE INPUTS, MAKE SURE TO SET UP A MENU INPUT SYSTEM

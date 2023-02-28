@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+//Joshua
+
 public enum GameState {PAUSE, PLAY, CUTSCENE}
 public enum CurrentLevel { }
 public class GameManager : MonoBehaviour

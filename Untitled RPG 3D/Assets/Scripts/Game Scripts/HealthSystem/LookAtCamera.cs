@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Joshua
+
+//this script rotates world space UI hp bars
+
 public class LookAtCamera : MonoBehaviour
 {
 

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+//Joshua
+
 public class InteractText : MonoBehaviour
 {
     public TextMeshProUGUI interact;
