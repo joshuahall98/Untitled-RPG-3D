@@ -27,11 +27,12 @@ public class WeaponDamage : MonoBehaviour
 
     public void OnTriggerEnter(Collider collision)
     {
-        if (isAttacking == true)
+        if (PlayerController.state == PlayerState.ATTACKING)
         {
             if (collision.gameObject.tag == "Enemy")
-            {
-                collision.gameObject.GetComponentInParent<AIHealth>().TakeDamage(damage);
+           {
+                collision.gameObject.GetComponent<AIHealth>().TakeDamage(damage);
+               
             }
         }
     }

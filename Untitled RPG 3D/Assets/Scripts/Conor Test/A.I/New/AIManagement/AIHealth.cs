@@ -17,7 +17,7 @@ public class AIHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       maxHealth =  agent.config.maxHP;
+        maxHealth = agent.config.maxHP;
 
       //  healthBar.maxValue = maxHealth;
       //  healthBar.value = maxHealth;

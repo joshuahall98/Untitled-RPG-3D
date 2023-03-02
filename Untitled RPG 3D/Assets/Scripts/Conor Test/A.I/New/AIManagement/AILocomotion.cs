@@ -4,6 +4,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
+// Conor
 public class AILocomotion : MonoBehaviour
 {
 

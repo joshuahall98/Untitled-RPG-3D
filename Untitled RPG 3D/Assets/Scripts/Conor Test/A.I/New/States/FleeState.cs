@@ -6,17 +6,20 @@ using UnityEngine.AI;
 
 public class FleeState : AiState
 {
+    
     public AIStateID GetID()
     {
         return AIStateID.Flee;
     }
     public void Enter(AIAgent agent)
     {
-        Debug.Log("FLEEEEE");
+       
     }
 
     public void Update(AIAgent agent)
     {
+        agent.animator.SetBool("isFleeing", true);
+
         //Opposite direction to Player
         Vector3 playerDirection =  agent.transform.position - agent.Player.position;
 
