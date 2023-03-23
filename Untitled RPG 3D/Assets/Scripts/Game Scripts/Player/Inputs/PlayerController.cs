@@ -12,6 +12,7 @@ using Unity.Mathematics;
 using Random = UnityEngine.Random;
 
 
+
 //THIS SCRIPT CONTROLS THE PLAYER STATES AND ALL PLAYER CONTROLS
 public enum PlayerState { IDLE, MOVING, ROLLING, ATTACKING, DEAD, REWINDING, DIZZY, KNOCKEDDOWN, FALLING, INTERACTING}
 public class PlayerController : MonoBehaviour
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]Vector3 isometric;
     Vector3 posLookAt;
     public PlayerInputActions playerInput;
+    float gravity;
 
     float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
@@ -175,7 +177,7 @@ public class PlayerController : MonoBehaviour
 
         LastDevice();
 
-
+        //DONT THINK ANY OF THIS OLD CODE IS NEEDED BUT UNSURE YET
         /*if (state == PlayerState.ROLLING)
         {
             StartCoroutine(RollMovement());
@@ -237,7 +239,16 @@ public class PlayerController : MonoBehaviour
         //walking animation
         if(state == PlayerState.MOVING || state == PlayerState.DIZZY)
         {
-            anim.SetBool("isMoving", true);
+            //stop moving animation while dizzy
+            if(isMoving == true)
+            {
+                anim.SetBool("isMoving", true);
+            }
+            else
+            {
+                anim.SetBool("isMoving", false);
+            }
+            
         }
         else
         {
@@ -356,7 +367,21 @@ public class PlayerController : MonoBehaviour
             state = PlayerState.IDLE;
         }
 
-        controller.SimpleMove(Vector3.forward * 0); //Adds Gravity for some reason
+        //This is the gravity, it increases over time and is faster than simple move
+        float weight;
+        if(state == PlayerState.ROLLING)
+        {
+            weight = 10f;
+        }
+        else
+        {
+            weight = 0.4f;
+        }
+        gravity -= weight * Time.deltaTime;
+        controller.Move(new Vector3(0, gravity, 0));
+        if (isGrounded == true) { gravity = 0; }
+
+        controller.SimpleMove(Vector3.forward * 0); //Adds Gravity because of simple move, this is needed because the above gravity is fast but doesn't finish
 
         float touchGround = 2f;
         float distanceFromPlayerFar = 1.3f;
@@ -425,7 +450,7 @@ public class PlayerController : MonoBehaviour
         {
             
             //this if statement exist to stop the player from being knocked up and entering another state while in knockdown anim
-            if(state != PlayerState.KNOCKEDDOWN)
+            if(state != PlayerState.KNOCKEDDOWN && state != PlayerState.ROLLING)
             {
 
                 anim.SetBool("isGrounded", false);
@@ -440,6 +465,7 @@ public class PlayerController : MonoBehaviour
 
         
     }
+
     #endregion
 
     #region - ROLL -
@@ -498,6 +524,7 @@ public class PlayerController : MonoBehaviour
             rewind.Enable();
             anim.ResetTrigger("Roll");
             state = PlayerState.IDLE;
+            StartCoroutine(EndRollWait());
         }
 
         //this prevents issue where attack after roll are clunky, this line prevents users from being able to instantly attack after rolling
@@ -507,6 +534,16 @@ public class PlayerController : MonoBehaviour
         //EnableLightAttack();
         //EnableHeavyAttackCharge();
 
+    }
+
+    //temporary fix for the animation stutter when you try to roll instantly after rolling, funnily enough you don't even notice the coroutine delay
+    IEnumerator EndRollWait()
+    {
+        DisableRoll();
+
+        yield return new WaitForSeconds(0.3f);
+
+        EnableRoll();
     }
 
     #endregion
@@ -643,11 +680,13 @@ public class PlayerController : MonoBehaviour
     //Pause game 
     void PressPause(InputAction.CallbackContext PauseInput)
     {
-        gameManager.GetComponent<GameManager>().PauseAndUnpause();
-        gameManager.GetComponent<MenuManager>().MenuUIPauseUnpause();
+        Debug.Log("pause");
+        //gameManager.GetComponent<GameManager>().PauseAndUnpause();
+       // gameManager.GetComponent<MenuManager>().MenuUIPauseUnpause();
         
     }
 
+    //currently being used by the rewind
     public IEnumerator Immunity(float immunityTime)
     {
         immune = true;
