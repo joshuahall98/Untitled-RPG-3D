@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager GameManagerInstance;
 
+    public GameObject player;
+
     private void Awake()
     {
         if (GameManagerInstance == null)
@@ -36,6 +38,8 @@ public class GameManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Confined;
         gameState = GameState.PLAY;
+
+        player = GameObject.Find("Player");
     }
 
     // Update is called once per frame
@@ -48,14 +52,22 @@ public class GameManager : MonoBehaviour
     public void PauseAndUnpause()
     {
         if(gameState == GameState.PAUSE) 
-        { 
+        {
             gameState = GameState.PLAY;
             Time.timeScale = 1;
+            player.GetComponent<PlayerController>().EnablePlayerActionMap();
+            this.GetComponent<MenuManager>().MenuUIPauseUnpause();
+            
+
         }
         else if(gameState == GameState.PLAY)
         {
+            this.GetComponent<SoundManager>().StopAllAudio();
             gameState = GameState.PAUSE;
             Time.timeScale = 0;
+            player.GetComponent<PlayerController>().DisablePlayerActionMap();
+            this.GetComponent<MenuManager>().MenuUIPauseUnpause();
+            
         }
     }
 }

@@ -11,7 +11,7 @@ using ClipperLib;
 using Unity.Mathematics;
 using Random = UnityEngine.Random;
 
-
+//Joshua
 
 //THIS SCRIPT CONTROLS THE PLAYER STATES AND ALL PLAYER CONTROLS
 public enum PlayerState { IDLE, MOVING, ROLLING, ATTACKING, DEAD, REWINDING, DIZZY, KNOCKEDDOWN, FALLING, INTERACTING}
@@ -53,8 +53,8 @@ public class PlayerController : MonoBehaviour
 
     //Roll
     float rollCDTimer = 0;
-    int rollUsed = 0;
-    [SerializeField]float rollSpeed = 10;
+    [SerializeField]int rollUsed = 0;
+    [SerializeField]float rollSpeed = 2;
     [SerializeField]float rollTime = 0.5f;
     public GameObject dizzyAffect;
     Vector3 rollDirection;
@@ -164,6 +164,11 @@ public class PlayerController : MonoBehaviour
     private void CameraRight_performed(InputAction.CallbackContext obj)
     {
         throw new NotImplementedException();
+    }
+
+    private void FixedUpdate()
+    {
+        
     }
 
     void Update()
@@ -472,7 +477,7 @@ public class PlayerController : MonoBehaviour
     //rolling animation, CREATED IENUMERAOTR TO STOP bug?
     void RollAnimation()
     {
-        if(state == PlayerState.MOVING  || state == PlayerState.IDLE)
+        if (state == PlayerState.MOVING || state == PlayerState.IDLE)
         {
             state = PlayerState.ROLLING;
 
@@ -486,14 +491,14 @@ public class PlayerController : MonoBehaviour
         rollDirection = quaternion * Vector3.forward;
     }
 
-    //running the below function on the first frame of the animation to prevent the character from dashing before rolling
+    //running the below function on the second frame of the animation to prevent the character from dashing before rolling, running it on the second instead of the first frame seems to prevent the bug where the roll happens twice
     IEnumerator RollAnimEvent()
     {
 
         rewind.Disable();
         float startTime = Time.time;
 
-        //these variables are used for the roll timer if you roll too much
+        //these variables are used for the roll timer if you roll too much you get dizzy
         rollUsed++;
         rollCDTimer = 2;
 
@@ -681,7 +686,7 @@ public class PlayerController : MonoBehaviour
     void PressPause(InputAction.CallbackContext PauseInput)
     {
         Debug.Log("pause");
-        //gameManager.GetComponent<GameManager>().PauseAndUnpause();
+        gameManager.GetComponent<GameManager>().PauseAndUnpause();
        // gameManager.GetComponent<MenuManager>().MenuUIPauseUnpause();
         
     }

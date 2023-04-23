@@ -26,6 +26,8 @@ public class SoundManager : MonoBehaviour
 
     List<Sound[]> arrayStorage = new List<Sound[]>();
 
+    private AudioSource[] allAudio;
+
 
     //decide on scriptable, will look at later
     //[SerializeField]List<AudioScriptableObject> scriptObj = new List<AudioScriptableObject>();
@@ -35,8 +37,20 @@ public class SoundManager : MonoBehaviour
         SoundManagerInstance = this;
 
         AddArrayToList();
-        TheAudioComponentList();
+        TheAudioComponentList();   
         
+    }
+
+    //stops all audio when called
+    public void StopAllAudio()
+    {
+        Debug.Log("stop please");
+        allAudio = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
+        foreach (AudioSource audioSource in allAudio)
+        {
+            audioSource.Stop();
+        }
+
     }
 
     public void PlaySound(string name)

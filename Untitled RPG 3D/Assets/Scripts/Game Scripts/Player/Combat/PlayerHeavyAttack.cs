@@ -39,7 +39,7 @@ public class PlayerHeavyAttack : MonoBehaviour
         sheathedSword.SetActive(false);
         swordCollider.enabled = false;
         releaseReady = false;
-        SoundManager.SoundManagerInstance.PlaySound("Player");
+        SoundManager.SoundManagerInstance.SelectAudioClass("Player");
         SoundManager.SoundManagerInstance.PlaySound("Heavy Attack Charge");
 
     }
