@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
     public static InputControl lastDevice;
 
     //random variable 
-    int r;
+    int rollRandomGen;
 
 
     void Awake()
@@ -296,11 +296,8 @@ public class PlayerController : MonoBehaviour
             Vector3 posLookAt = currentPos + newPos;
             transform.LookAt(posLookAt);
 
-            //set rotation for roll
-            if (isometric.magnitude >= 0.1f)
-            {
-                rollDirection = transform.rotation * Vector3.forward;
-            }
+
+            RollDirection();
 
         }
 
@@ -313,7 +310,7 @@ public class PlayerController : MonoBehaviour
             actualMovement.z = currentMoveInput.x;
             actualMovement.x = currentMoveInput.y;
 
-            if (r > 50)
+            if (rollRandomGen > 50)
             {
                 
                 //move charachter controller
@@ -326,11 +323,8 @@ public class PlayerController : MonoBehaviour
                 posLookAt = currentPos + newPos;
                 transform.LookAt(posLookAt);
 
-                //set rotation for roll
-                if (actualMovement.magnitude >= 0.1f)
-                {
-                    rollDirection = transform.rotation * Vector3.forward;
-                }
+
+                RollDirection();
             }
             else
             { 
@@ -350,11 +344,7 @@ public class PlayerController : MonoBehaviour
                 Vector3 posLookAt = currentPos + newPos;
                 transform.LookAt(posLookAt);
 
-                //set rotation for roll
-                if (isometric.magnitude >= 0.1f)
-                {
-                    rollDirection = transform.rotation * Vector3.forward;
-                }
+                RollDirection();
             }  
         }
     }
@@ -551,6 +541,15 @@ public class PlayerController : MonoBehaviour
         EnableRoll();
     }
 
+    public void RollDirection()
+    {
+        //set rotation for roll
+       // if (isometric.magnitude >= 0.1f)
+        //{
+            rollDirection = transform.rotation * Vector3.forward;
+        //}
+    }
+
     #endregion
 
     #region - DIZZY -
@@ -561,7 +560,7 @@ public class PlayerController : MonoBehaviour
         dizzyAffect.SetActive(true);
 
         //dizzy direction changes so it's harder to learn lmao
-        r = Random.Range(0, 101);
+        rollRandomGen = Random.Range(0, 101);
 
         state = PlayerState.DIZZY;
 

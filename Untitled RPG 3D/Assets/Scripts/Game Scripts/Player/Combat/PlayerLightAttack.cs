@@ -96,7 +96,10 @@ public class PlayerLightAttack : MonoBehaviour
         {
             PlayerController.state = PlayerState.IDLE;
         }
-        
+
+        //make sure player has position for roll
+        this.GetComponent<PlayerController>().RollDirection();
+
 
         //3 hit combo cd
         if (atkNum >= 3)

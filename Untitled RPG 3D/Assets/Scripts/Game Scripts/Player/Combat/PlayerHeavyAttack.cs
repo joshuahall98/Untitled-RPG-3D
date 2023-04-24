@@ -108,6 +108,9 @@ public class PlayerHeavyAttack : MonoBehaviour
         {
             PlayerController.state = PlayerState.IDLE;
         }
+
+        //to check player rotation for roll
+        this.GetComponent<PlayerController>().RollDirection();
     }
 
     void Knockeddown()
