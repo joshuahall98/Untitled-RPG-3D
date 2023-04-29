@@ -17,7 +17,7 @@ using Random = UnityEngine.Random;
 public enum PlayerState { IDLE, MOVING, ROLLING, ATTACKING, DEAD, REWINDING, DIZZY, KNOCKEDDOWN, FALLING, INTERACTING}
 public class PlayerController : MonoBehaviour
 {
-    
+    #region - VARIABLES -
     //inputs and movement
     private CharacterController controller;
     [SerializeField] private float speed = 8;
@@ -27,6 +27,9 @@ public class PlayerController : MonoBehaviour
     Vector3 posLookAt;
     public PlayerInputActions playerInput;
     float gravity;
+    private CapsuleCollider capsuleCollider;
+    private float colliderRadius;
+    [SerializeField]private LayerMask groundMask;
 
     float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
@@ -93,8 +96,9 @@ public class PlayerController : MonoBehaviour
 
     //random variable 
     int rollRandomGen;
+    #endregion
 
-
+    #region - AWAKE - 
     void Awake()
     {
         //make this object appear at top of heirarchy
@@ -109,6 +113,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         dizzyAffect = GameObject.Find("DizzyAffect");
         dizzyAffect.SetActive(false);
+        capsuleCollider = GetComponent<CapsuleCollider>();
 
         //calling all the inputs
         playerInput.Player.Roll.performed += rollPerformed => RollAnimation();
@@ -140,8 +145,13 @@ public class PlayerController : MonoBehaviour
         //this is called so the rotation is checked so player doesn't roll on the spot
         rollDirection = transform.rotation * Vector3.forward;
 
-    }
+        //setting radius for fall detection
+        colliderRadius = capsuleCollider.radius -= 0.1f;
 
+    }
+    #endregion
+
+    #region - CHECK LAST INPUT DEVICE -
     //to find out the last input device used
     void LastDevice()
     {
@@ -159,6 +169,7 @@ public class PlayerController : MonoBehaviour
             }
         };
     }
+    #endregion
 
     //what does this code do?
     private void CameraRight_performed(InputAction.CallbackContext obj)
@@ -166,11 +177,7 @@ public class PlayerController : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    private void FixedUpdate()
-    {
-        
-    }
-
+    #region - UPDATE - 
     void Update()
     {
         //to see state in inspector
@@ -236,6 +243,8 @@ public class PlayerController : MonoBehaviour
             RollEndAnim();
         }
     }
+
+    #endregion
 
     #region - MOVEMENT -
     void PlayerMovement()
@@ -351,7 +360,7 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    #region - Falling -
+    #region - FALLING -
     //falling animation and detection, currently there are two sets of detection so the player can check if they're falling mutiple times
     void PlayerFalling()
     {
@@ -362,29 +371,34 @@ public class PlayerController : MonoBehaviour
             state = PlayerState.IDLE;
         }
 
-        //This is the gravity, it increases over time and is faster than simple move
-        float weight;
-        if(state == PlayerState.ROLLING)
+        //This is the gravity, it increases over time and has more control than simple move
+        if(state != PlayerState.FALLING)
         {
-            weight = 10f;
+            float weight = 0.4f;
+            
+            gravity -= weight * Time.deltaTime;
+            controller.Move(new Vector3(0, gravity, 0));
+            if (isGrounded == true) { gravity = 0; }
+            
         }
-        else
+        else if (state == PlayerState.FALLING) 
         {
-            weight = 0.4f;
+            float weight = 0.1f;
+
+            gravity -= weight * Time.deltaTime;
+            controller.Move(new Vector3(0, gravity, 0));
+            if (isGrounded == true) { gravity = 0; }
         }
-        gravity -= weight * Time.deltaTime;
-        controller.Move(new Vector3(0, gravity, 0));
-        if (isGrounded == true) { gravity = 0; }
 
-        controller.SimpleMove(Vector3.forward * 0); //Adds Gravity because of simple move, this is needed because the above gravity is fast but doesn't finish
+        //controller.SimpleMove(Vector3.forward * 0); //Adds Gravity because of simple move, this is needed because the above gravity is fast but doesn't finish
 
-        float touchGround = 2f;
+        float touchGround = 1f;
         float distanceFromPlayerFar = 1.3f;
         float distanceFromPlayerFarNeg = -1.3f;
         float distanceFromPlayer = 0.5f;
         float distanceFromPlayerNeg = -0.5f;
 
-        if (Physics.Raycast(transform.position + new Vector3(distanceFromPlayerFar, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround1, touchGround))
+        /*if (Physics.Raycast(transform.position + new Vector3(distanceFromPlayerFar, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround1, touchGround))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
@@ -440,25 +454,41 @@ public class PlayerController : MonoBehaviour
             isGrounded = true;
             Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround9.distance, Color.red);
 
+        }*/
+        Vector3 p1 = transform.position - new Vector3 (0f, 0f, 0f);
+        Vector3 p2 = transform.position + new Vector3(0f, 0f, 0f);
+
+        if (Physics.CapsuleCast(p1, p2, controller.radius, transform.TransformDirection(Vector3.down), out RaycastHit hit, touchGround, groundMask))
+        {
+            anim.SetBool("isGrounded", true);
+            isGrounded = true;
+            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * hit.distance, Color.red);
         }
         else
         {
             
             //this if statement exist to stop the player from being knocked up and entering another state while in knockdown anim
-            if(state != PlayerState.KNOCKEDDOWN && state != PlayerState.ROLLING)
+            if(state != PlayerState.KNOCKEDDOWN)
             {
 
                 anim.SetBool("isGrounded", false);
-                isGrounded = false;
-
-                state = PlayerState.FALLING;
-
+                
                 Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * 1f, Color.green);
+
+                StartCoroutine(FallDelay());
             }
 
         }
-
         
+    }
+
+    IEnumerator FallDelay()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        isGrounded = false;
+
+        state = PlayerState.FALLING;
     }
 
     #endregion
@@ -577,6 +607,8 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region - LIGHT ATTACK -
+
     //start light attack
     void LightAtk(InputAction.CallbackContext attk)
     {
@@ -588,6 +620,10 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    #endregion
+
+    #region - HEAVY ATTACK -
+
     //Heavy attack sequence
     void HeavyAtkCharge(InputAction.CallbackContext HeavyAtkCharge)
     {
@@ -596,8 +632,9 @@ public class PlayerController : MonoBehaviour
             state = PlayerState.ATTACKING;
             GetComponent<PlayerHeavyAttack>().HeavyAtkCharge();
         }
-    }
+    }   
 
+    //this is an input action to detect when player lets go of mouse
     void HeavyAtkRelease(InputAction.CallbackContext HeavyAtkRelease)
     {
         if(state == PlayerState.ATTACKING)
@@ -606,6 +643,8 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+
+    #endregion
 
     #region - POSSIBLE SWITCHING CHARACTER CONCEPT -
     //switch characters, after discussion we may never use this
@@ -660,6 +699,7 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region - POSSIBLE CAMERA ROTATION CONCEPT -
     public void CameraRight()
     {
         camera.GetComponent<CameraControls>().RotateRight();
@@ -672,6 +712,9 @@ public class PlayerController : MonoBehaviour
         isometricRotation = isometricRotation + 90;
     }
 
+    #endregion
+
+    #region - REWIND -
     //start Rewind
     void Rewind()
     {
@@ -680,7 +723,9 @@ public class PlayerController : MonoBehaviour
             GetComponent<PlayerRewind>().PlsRewind();
         }  
     }
+    #endregion
 
+    #region - PAUSE -
     //Pause game 
     void PressPause(InputAction.CallbackContext PauseInput)
     {
@@ -689,7 +734,9 @@ public class PlayerController : MonoBehaviour
        // gameManager.GetComponent<MenuManager>().MenuUIPauseUnpause();
         
     }
+    #endregion
 
+    #region - IMMUNITY -
     //currently being used by the rewind
     public IEnumerator Immunity(float immunityTime)
     {
@@ -699,8 +746,9 @@ public class PlayerController : MonoBehaviour
 
         immune = false;
     }
+    #endregion
 
-    #region - Interacting -
+    #region - INTERACTING -
 
     public void ObtainInteractableObject(GameObject obj)
     {
@@ -725,7 +773,6 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
-
 
     #region - Inputs Enable/Disable -
     public void EnableMovement()

@@ -30,7 +30,7 @@ public class WeaponDamage : MonoBehaviour
         if (PlayerController.state == PlayerState.ATTACKING)
         {
             if (collision.gameObject.tag == "Enemy")
-           {
+            {
                 collision.gameObject.GetComponent<AIHealth>().TakeDamage(damage);
                
             }
