@@ -27,9 +27,9 @@ public class PlayerController : MonoBehaviour
     Vector3 posLookAt;
     public PlayerInputActions playerInput;
     float gravity;
-    private CapsuleCollider capsuleCollider;
-    private float colliderRadius;
     [SerializeField]private LayerMask groundMask;
+
+    public string hello;
 
     float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     //these bools are helpful for animations and state control
     [SerializeField]bool isMoving;
     bool isGrounded;
+    bool isDizzy;
 
     //to check whether or not an object is within range for interaction
     public static bool inRange =  false;
@@ -113,7 +114,6 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         dizzyAffect = GameObject.Find("DizzyAffect");
         dizzyAffect.SetActive(false);
-        capsuleCollider = GetComponent<CapsuleCollider>();
 
         //calling all the inputs
         playerInput.Player.Roll.performed += rollPerformed => RollAnimation();
@@ -144,9 +144,6 @@ public class PlayerController : MonoBehaviour
 
         //this is called so the rotation is checked so player doesn't roll on the spot
         rollDirection = transform.rotation * Vector3.forward;
-
-        //setting radius for fall detection
-        colliderRadius = capsuleCollider.radius -= 0.1f;
 
     }
     #endregion
@@ -261,8 +258,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 anim.SetBool("isMoving", false);
-            }
-            
+            }   
         }
         else
         {
@@ -271,24 +267,80 @@ public class PlayerController : MonoBehaviour
 
         if (state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
+            IsometricMovement();
+        }
 
-            //this code makes sure the idle state is correctly utilised
-            if (isMoving == false && state == PlayerState.MOVING)
-            {
-                state = PlayerState.IDLE;
+        if(state == PlayerState.DIZZY) 
+        {
+            DizzyMovement();            
+        }
+    }
 
-            }
-            else if (isMoving == true && state != PlayerState.MOVING)
-            {
-                state = PlayerState.MOVING;
-                
-            }
+    void IsometricMovement()
+    {
+        //this code makes sure the idle state is correctly utilised
+        if (isMoving == false && state == PlayerState.MOVING)
+        {
+            state = PlayerState.IDLE;
 
-            currentMoveInput = move.ReadValue<Vector2>();
-            actualMovement = new Vector3();
-            //Condensed movement -- Converted y to z axis
-            actualMovement.x = currentMoveInput.x;
-            actualMovement.z = currentMoveInput.y;
+        }
+        else if (isMoving == true && state != PlayerState.MOVING)
+        {
+            state = PlayerState.MOVING;
+
+        }
+
+        currentMoveInput = move.ReadValue<Vector2>();
+        actualMovement = new Vector3();
+        //Condensed movement -- Converted y to z axis
+        actualMovement.x = currentMoveInput.x;
+        actualMovement.z = currentMoveInput.y;
+
+        //magic code that converts the basic player movement into isometric
+        isometric = new Vector3();
+        var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, isometricRotation, 0));
+        isometric = matrix.MultiplyPoint3x4(actualMovement);
+
+        //move the character controller
+        controller.Move(isometric * speed * Time.deltaTime);
+        isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+
+        //Character Rotation
+        Vector3 currentPos = transform.position;
+        Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
+        Vector3 posLookAt = currentPos + newPos;
+        transform.LookAt(posLookAt);
+
+
+        RollDirection();
+    }
+
+    void DizzyMovement()
+    {
+        currentMoveInput = move.ReadValue<Vector2>();
+        actualMovement = new Vector3();
+        //Condensed movement -- Converted y to z axis
+        actualMovement.z = currentMoveInput.x;
+        actualMovement.x = currentMoveInput.y;
+
+        if (rollRandomGen > 50)
+        {
+
+            //move charachter controller
+            controller.Move(actualMovement * speed * Time.deltaTime);
+            isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+
+            //Character Rotation
+            Vector3 currentPos = transform.position;
+            Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
+            posLookAt = currentPos + newPos;
+            transform.LookAt(posLookAt);
+
+
+            RollDirection();
+        }
+        else
+        {
 
             //magic code that converts the basic player movement into isometric
             isometric = new Vector3();
@@ -298,66 +350,16 @@ public class PlayerController : MonoBehaviour
             //move the character controller
             controller.Move(isometric * speed * Time.deltaTime);
             isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
-            
+
             //Character Rotation
             Vector3 currentPos = transform.position;
             Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
             Vector3 posLookAt = currentPos + newPos;
             transform.LookAt(posLookAt);
 
-
             RollDirection();
-
-        }
-
-        if(state == PlayerState.DIZZY) 
-        {
-            
-            currentMoveInput = move.ReadValue<Vector2>();
-            actualMovement = new Vector3();
-            //Condensed movement -- Converted y to z axis
-            actualMovement.z = currentMoveInput.x;
-            actualMovement.x = currentMoveInput.y;
-
-            if (rollRandomGen > 50)
-            {
-                
-                //move charachter controller
-                controller.Move(actualMovement * speed * Time.deltaTime);
-                isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
-
-                //Character Rotation
-                Vector3 currentPos = transform.position;
-                Vector3 newPos = new Vector3(actualMovement.x, 0, actualMovement.z);
-                posLookAt = currentPos + newPos;
-                transform.LookAt(posLookAt);
-
-
-                RollDirection();
-            }
-            else
-            { 
-
-                //magic code that converts the basic player movement into isometric
-                isometric = new Vector3();
-                var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, isometricRotation, 0));
-                isometric = matrix.MultiplyPoint3x4(actualMovement);
-
-                //move the character controller
-                controller.Move(isometric * speed * Time.deltaTime);
-                isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
-
-                //Character Rotation
-                Vector3 currentPos = transform.position;
-                Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
-                Vector3 posLookAt = currentPos + newPos;
-                transform.LookAt(posLookAt);
-
-                RollDirection();
-            }  
         }
     }
-
     #endregion
 
     #region - FALLING -
@@ -371,102 +373,40 @@ public class PlayerController : MonoBehaviour
             state = PlayerState.IDLE;
         }
 
-        //This is the gravity, it increases over time and has more control than simple move
-        if(state != PlayerState.FALLING)
+        //the below controls the players gravity, it is strong when player is grounded to prevent floating on stairs
+        float weight;
+
+        if (state != PlayerState.FALLING)
         {
-            float weight = 0.4f;
-            
-            gravity -= weight * Time.deltaTime;
+            gravity = -2 * Time.deltaTime;
             controller.Move(new Vector3(0, gravity, 0));
-            if (isGrounded == true) { gravity = 0; }
-            
         }
         else if (state == PlayerState.FALLING) 
         {
-            float weight = 0.1f;
+            weight = 0.1f;
 
+            //slowly increase players gravity for a more natural fall
             gravity -= weight * Time.deltaTime;
             controller.Move(new Vector3(0, gravity, 0));
-            if (isGrounded == true) { gravity = 0; }
         }
 
-        //controller.SimpleMove(Vector3.forward * 0); //Adds Gravity because of simple move, this is needed because the above gravity is fast but doesn't finish
+        float touchGround = 2f;
 
-        float touchGround = 1f;
-        float distanceFromPlayerFar = 1.3f;
-        float distanceFromPlayerFarNeg = -1.3f;
-        float distanceFromPlayer = 0.5f;
-        float distanceFromPlayerNeg = -0.5f;
-
-        /*if (Physics.Raycast(transform.position + new Vector3(distanceFromPlayerFar, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround1, touchGround))
-        {
-            anim.SetBool("isGrounded", true);
-            isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(distanceFromPlayerFar, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround1.distance, Color.red);
-        }
-        else if (Physics.Raycast(transform.position + new Vector3(distanceFromPlayerFarNeg, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround2, touchGround))
-        {
-            anim.SetBool("isGrounded", true);
-            isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(distanceFromPlayerFarNeg, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround2.distance, Color.red);
-
-        }
-        else if (Physics.Raycast(transform.position + new Vector3(0f, 0f, distanceFromPlayerFar), transform.TransformDirection(Vector3.down), out RaycastHit touchGround3, touchGround))
-        {
-            anim.SetBool("isGrounded", true);
-            isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, distanceFromPlayerFar), transform.TransformDirection(Vector3.down) * touchGround3.distance, Color.red);
-        }
-        else if (Physics.Raycast(transform.position + new Vector3(0f, 0f, distanceFromPlayerFarNeg), transform.TransformDirection(Vector3.down), out RaycastHit touchGround4, touchGround))
-        {
-            anim.SetBool("isGrounded", true);
-            isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, distanceFromPlayerFarNeg), transform.TransformDirection(Vector3.down) * touchGround4.distance, Color.red);
-        }
-        else if (Physics.Raycast(transform.position + new Vector3(distanceFromPlayer, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround5, touchGround))
-        {
-            anim.SetBool("isGrounded", true);
-            isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(distanceFromPlayer, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround5.distance, Color.red);
-        }
-        else if (Physics.Raycast(transform.position + new Vector3(distanceFromPlayerNeg, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround6, touchGround))
-        {
-            anim.SetBool("isGrounded", true);
-            isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(distanceFromPlayerNeg, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround6.distance, Color.red);
-
-        }
-        else if (Physics.Raycast(transform.position + new Vector3(0f, 0f, distanceFromPlayer), transform.TransformDirection(Vector3.down), out RaycastHit touchGround7, touchGround))
-        {
-            anim.SetBool("isGrounded", true);
-            isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, distanceFromPlayer), transform.TransformDirection(Vector3.down) * touchGround7.distance, Color.red);
-        }
-        else if (Physics.Raycast(transform.position + new Vector3(0f, 0f, distanceFromPlayerNeg), transform.TransformDirection(Vector3.down), out RaycastHit touchGround8, touchGround))
-        {
-            anim.SetBool("isGrounded", true);
-            isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, distanceFromPlayerNeg), transform.TransformDirection(Vector3.down) * touchGround8.distance, Color.red);
-        }
-        else if (Physics.Raycast(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down), out RaycastHit touchGround9, touchGround))
-        {
-            anim.SetBool("isGrounded", true);
-            isGrounded = true;
-            Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * touchGround9.distance, Color.red);
-
-        }*/
-        Vector3 p1 = transform.position - new Vector3 (0f, 0f, 0f);
-        Vector3 p2 = transform.position + new Vector3(0f, 0f, 0f);
-
-        if (Physics.CapsuleCast(p1, p2, controller.radius, transform.TransformDirection(Vector3.down), out RaycastHit hit, touchGround, groundMask))
+        if (Physics.CapsuleCast(transform.position - new Vector3(0f, 0f, 0f), transform.position + new Vector3(0f, 0f, 0f), controller.radius, transform.TransformDirection(Vector3.down), out RaycastHit hit, touchGround, groundMask))
         {
             anim.SetBool("isGrounded", true);
             isGrounded = true;
             Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * hit.distance, Color.red);
+
+            // little check to return to dizzy state when you land if you should be dizzy
+            if(isDizzy == true)
+            {
+                state = PlayerState.DIZZY;
+            }
         }
         else
         {
-            
+
             //this if statement exist to stop the player from being knocked up and entering another state while in knockdown anim
             if(state != PlayerState.KNOCKEDDOWN)
             {
@@ -476,10 +416,9 @@ public class PlayerController : MonoBehaviour
                 Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * 1f, Color.green);
 
                 StartCoroutine(FallDelay());
+                
             }
-
-        }
-        
+        }   
     }
 
     IEnumerator FallDelay()
@@ -539,7 +478,7 @@ public class PlayerController : MonoBehaviour
     {
 
         //isRolling = false;
-        if ((rollCDTimer > 0) && (rollUsed == 3))
+        if ((rollCDTimer > 0) && (rollUsed >= 3))
         {
             StartCoroutine(Dizzy());
 
@@ -566,7 +505,7 @@ public class PlayerController : MonoBehaviour
     {
         DisableRoll();
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
 
         EnableRoll();
     }
@@ -594,7 +533,11 @@ public class PlayerController : MonoBehaviour
 
         state = PlayerState.DIZZY;
 
+        isDizzy = true;
+
         yield return new WaitForSeconds(3);
+
+        isDizzy = false;
 
         dizzyAffect.SetActive(false);
 
@@ -602,7 +545,11 @@ public class PlayerController : MonoBehaviour
         anim.ResetTrigger("Roll");
         anim.SetTrigger("StopDizzy");
 
-        state = PlayerState.IDLE;
+        if(state != PlayerState.FALLING)
+        {
+            state = PlayerState.IDLE;
+        }
+        
     }
 
     #endregion
