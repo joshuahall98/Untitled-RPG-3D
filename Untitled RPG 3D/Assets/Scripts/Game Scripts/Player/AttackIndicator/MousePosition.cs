@@ -14,14 +14,14 @@ public class MousePosition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Cursor.visible = false;
+        //Cursor.visible = false;
 
         Vector3 mouse = Input.mousePosition;
         Ray castPoint = Camera.main.ScreenPointToRay(mouse);
         RaycastHit hit;
-        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, ground))
+        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity))
         {
-            customMouse.transform.position = hit.point;
+            customMouse.transform.position = new Vector3(hit.point.x, hit.point.y + 2, hit.point.z);
 
             //LAYER MASK IGNORES COLLIDERS, USE COLLIDERS WHEN YOU WANT TO STOP A RAYCAST
             /*if(hit.collider.tag == "Ground")

@@ -505,7 +505,7 @@ public class PlayerController : MonoBehaviour
     {
         DisableRoll();
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.25f);
 
         EnableRoll();
     }
