@@ -57,7 +57,7 @@ public class PlayerLightAttack : MonoBehaviour
         if (atkNum == 0 || atkNum == 2)
         {
             sword.GetComponent<WeaponDamage>().LightAttackDamage();
-            GetComponent<AttackAim>().Aim();
+            GetComponent<AttackIndicator>().Aim();
             WeaponDamage.isAttacking = true;
             sword.SetActive(true);
             sheathedSword.SetActive(false);
@@ -71,7 +71,7 @@ public class PlayerLightAttack : MonoBehaviour
         else
         {
             sword.GetComponent<WeaponDamage>().LightAttackDamage();
-            GetComponent<AttackAim>().Aim();
+            GetComponent<AttackIndicator>().Aim();
             WeaponDamage.isAttacking = true;
             sword.SetActive(true);
             sheathedSword.SetActive(false);

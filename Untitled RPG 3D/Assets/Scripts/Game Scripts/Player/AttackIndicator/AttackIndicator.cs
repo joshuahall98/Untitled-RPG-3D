@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
 
+//THIS SCRIPT CONTROLS THE POINTER AND ALLOWS THE PLAYER TO AIM ATTACKS
 public class AttackIndicator : MonoBehaviour
 {
     Vector3 position;
@@ -22,7 +23,8 @@ public class AttackIndicator : MonoBehaviour
     float distanceBetweenP1P2;
     float length;
 
-    Vector3 pointHerePlease;
+    //have this accessed for all directional attacks
+    [SerializeField]public Vector3 pointHerePlease;
 
     private void Start()
     {
@@ -98,7 +100,6 @@ public class AttackIndicator : MonoBehaviour
             hypoto = Mathf.Sqrt(hypoto);
  
             //CALCULATE DISTANCE FROM CAMERA TO GROUND REMOVING HYPTONUSE
-            distanceFromCameraToGround = Vector3.Distance(Camera.main.transform.position , new Vector3(hit.point.x, hit.point.y, hit.point.z));
             distanceFromCameraToGround = hit.distance;
             distanceFromCameraToGround = (distanceFromCameraToGround - hypoto);
 
@@ -106,5 +107,24 @@ public class AttackIndicator : MonoBehaviour
             pointHerePlease = castPoint.GetPoint(distanceFromCameraToGround);
 
         }
+    }
+
+    //All attacks and spells call this function to aim
+    public void Aim()
+    {
+        //confirm mouse is being used
+        if(PlayerController.lastDevice.displayName == "Mouse")
+        {
+            // Calculate the direction
+            var direction = pointHerePlease - transform.position;
+
+            // You might want to delete this line.
+            // Ignore the height difference.
+            direction.y = 0;
+
+            // Make the transform look in the direction.
+            transform.forward = direction;
+        }
+       
     }
 }

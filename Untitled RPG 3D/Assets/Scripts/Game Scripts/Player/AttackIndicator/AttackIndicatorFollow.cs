@@ -18,7 +18,5 @@ public class AttackIndicatorFollow : MonoBehaviour
     {
         this.transform.position = new Vector3 (player.transform.position.x, player.transform.position.y - 1.2f, player.transform.position.z);
 
-
-
     }
 }

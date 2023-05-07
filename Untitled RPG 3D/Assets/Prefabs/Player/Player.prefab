@@ -5414,7 +5414,6 @@ GameObject:
   - component: {fileID: 1689940224852358946}
   - component: {fileID: 1689940224852358945}
   - component: {fileID: 1689940224852358944}
-  - component: {fileID: 1689940224852359007}
   - component: {fileID: 1689940224852359006}
   - component: {fileID: 1689940224852359005}
   - component: {fileID: 1689940224852359004}
@@ -5498,6 +5497,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 512
+  hello: willies
   isometricRotation: 45
   visibleState: 0
   isMoving: 0
@@ -5549,21 +5549,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f8fa8ff9076aa34990c4f3bca69119f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1689940224852359007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1689940224852359003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 189897e7a331ac34e96e9de30ee6a1e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 512
 --- !u!114 &1689940224852359006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5638,6 +5623,10 @@ MonoBehaviour:
   attackIndicatorCanvas: {fileID: 0}
   attackIndicator: {fileID: 0}
   player: {fileID: 1689940224852358950}
+  ground:
+    serializedVersion: 2
+    m_Bits: 512
+  pointHerePlease: {x: 0, y: 0, z: 0}
 --- !u!1 &1689940225372480533
 GameObject:
   m_ObjectHideFlags: 0
