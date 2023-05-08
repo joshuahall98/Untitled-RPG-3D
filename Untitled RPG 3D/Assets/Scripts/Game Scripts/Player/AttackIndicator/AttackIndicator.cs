@@ -9,19 +9,14 @@ using UnityEngine.UI;
 //THIS SCRIPT CONTROLS THE POINTER AND ALLOWS THE PLAYER TO AIM ATTACKS
 public class AttackIndicator : MonoBehaviour
 {
-    Vector3 position;
     public GameObject attackIndicatorCanvas;
     public GameObject attackIndicator;
     public GameObject player;
-    public LayerMask ground;
+    public LayerMask playerLayer;
 
-    float distanceFromCameraToGround;
-
-    Vector3 p1;
-    Vector3 p2;
-
-    float distanceBetweenP1P2;
-    float length;
+    [SerializeField]GameObject testcube1;
+    [SerializeField]GameObject testcube2;
+    [SerializeField] GameObject testcube3;
 
     //have this accessed for all directional attacks
     [SerializeField]public Vector3 pointHerePlease;
@@ -48,22 +43,11 @@ public class AttackIndicator : MonoBehaviour
     void PointFromPlayer()
     {
 
-        //get the point of the mouse and record position
-        //DONT KNOW IF THIS IS STILL NECCESARY?
-        /*RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity,ground))
-        {
-            position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-        }*/
-
-
         //rotate indicator based on player and mouse position
         Quaternion transRot = Quaternion.LookRotation(pointHerePlease - new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z));
         //prevent mouse pointing up
         transRot.eulerAngles = new Vector3(0, transRot.eulerAngles.y, transRot.eulerAngles.z);
-        attackIndicatorCanvas.transform.rotation = Quaternion.Slerp(transRot, attackIndicatorCanvas.transform.rotation, 0f);
+        attackIndicatorCanvas.transform.rotation = Quaternion.Lerp(transRot, attackIndicatorCanvas.transform.rotation, 0f);
         //attackIndicatorCanvas.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0f);
     }
 
@@ -74,12 +58,17 @@ public class AttackIndicator : MonoBehaviour
         Vector3 mouse = Input.mousePosition;
         Ray castPoint = Camera.main.ScreenPointToRay(mouse);
         RaycastHit hit;
-        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, ground))
+        //cast to every ;ayer but the player layer 
+        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, playerLayer))
         {
             //DISTANCE BETWEEN PLAYER HEIGHT AND RAYCAST ON GROUND
-            p1 = new Vector3(hit.point.x, player.transform.position.y -0.8f, hit.point.z);
-            p2 = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-            distanceBetweenP1P2 = Vector3.Distance(p1, p2);
+            Vector3 playerHeight = new Vector3(hit.point.x, player.transform.position.y, hit.point.z);
+
+            Debug.Log(playerHeight);
+            Vector3 rayHitPoint = new Vector3(hit.point.x, hit.point.y, hit.point.z);
+
+            Debug.Log(rayHitPoint);
+            float distanceBetweenPlayerHeightAndRayHitpoint = Vector3.Distance(playerHeight, rayHitPoint);
 
             //POINT THE INDICATOR ON THE GROUND
             //attackIndicator.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
@@ -94,17 +83,39 @@ public class AttackIndicator : MonoBehaviour
             //CONVERT THE DEGREE TO RADIAN
             var rad = deg * Mathf.Deg2Rad;
             //PASS RADIAN THROUGH TAN AND MUTIPLY BY DISTANCE BETWEEN PLAYER HIEGHT AND MOUSE POINT
-            length = Mathf.Tan(rad) * distanceBetweenP1P2;
+            float length = Mathf.Tan(rad) * distanceBetweenPlayerHeightAndRayHitpoint;
             //ALGORITHM FOR HYPOTONUSE
-            float hypoto = Mathf.Pow(length, 2) + Mathf.Pow(distanceBetweenP1P2, 2);
+            float hypoto = Mathf.Pow(length, 2) + Mathf.Pow(distanceBetweenPlayerHeightAndRayHitpoint, 2);
             hypoto = Mathf.Sqrt(hypoto);
- 
-            //CALCULATE DISTANCE FROM CAMERA TO GROUND REMOVING HYPTONUSE
-            distanceFromCameraToGround = hit.distance;
-            distanceFromCameraToGround = (distanceFromCameraToGround - hypoto);
 
-            //WHERE THE INDICATOR SHOULD POINT
-            pointHerePlease = castPoint.GetPoint(distanceFromCameraToGround);
+            //CALCULATE DISTANCE FROM CAMERA TO GROUND REMOVING HYPTONUSE
+            float distanceFromCameraToGround = hit.distance;
+            distanceFromCameraToGround = (distanceFromCameraToGround - hypoto);
+            
+            //DEPENDING ON PLAYER HEIGHT DEPENDS ON CAST
+            if (player.transform.position.y > hit.point.y)
+            {
+                //PULL THE POINTER TOWARDS CAMERA IF PLAYER IS ABOVE HIT POINT
+                pointHerePlease = castPoint.GetPoint(distanceFromCameraToGround);
+    
+            }
+            else if(player.transform.position.y < hit.point.y)
+            {
+                //PUSH THE POINTER AWAY FROM CAMERA IF PLAYER IS BELOW HIT POINT
+                pointHerePlease = castPoint.GetPoint(distanceFromCameraToGround + (hypoto * 2));
+            }
+            else if(player.transform.position.y == hit.point.y)
+            {
+                //DONT MOVE POINTER IF ON SAME LEVEL
+                pointHerePlease = rayHitPoint;
+            }
+
+            //POSITION OF ATTACK INDICATOR
+            attackIndicator.transform.position = pointHerePlease;
+
+           /* testcube1.transform.position = p1;
+            testcube2.transform.position = p2;
+            testcube3.transform.position = pointHerePlease;*/
 
         }
     }

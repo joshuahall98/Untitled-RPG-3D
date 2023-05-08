@@ -27,7 +27,7 @@ public class AttackDash : MonoBehaviour
     {
         dashDirection = transform.rotation * Vector3.forward;
 
-        Debug.Log("attack");
+       // Debug.Log("attack");
 
         float startTime = Time.time;
 

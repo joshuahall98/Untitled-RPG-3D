@@ -44,7 +44,7 @@ public class SoundManager : MonoBehaviour
     //stops all audio when called
     public void StopAllAudio()
     {
-        Debug.Log("stop please");
+        //Debug.Log("stop please");
         allAudio = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
         foreach (AudioSource audioSource in allAudio)
         {
