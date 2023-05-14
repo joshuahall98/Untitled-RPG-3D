@@ -12,11 +12,11 @@ public class AttackIndicator : MonoBehaviour
     public GameObject attackIndicatorCanvas;
     public GameObject attackIndicator;
     public GameObject player;
-    public LayerMask playerLayer;
+    //public LayerMask playerLayer;
 
-    [SerializeField]GameObject testcube1;
+    /*[SerializeField]GameObject testcube1;
     [SerializeField]GameObject testcube2;
-    [SerializeField] GameObject testcube3;
+    [SerializeField] GameObject testcube3;*/
 
     //have this accessed for all directional attacks
     [SerializeField]public Vector3 pointHerePlease;
@@ -59,15 +59,15 @@ public class AttackIndicator : MonoBehaviour
         Ray castPoint = Camera.main.ScreenPointToRay(mouse);
         RaycastHit hit;
         //cast to every ;ayer but the player layer 
-        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, playerLayer))
+        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity))
         {
             //DISTANCE BETWEEN PLAYER HEIGHT AND RAYCAST ON GROUND
             Vector3 playerHeight = new Vector3(hit.point.x, player.transform.position.y, hit.point.z);
 
-            Debug.Log(playerHeight);
+            //Debug.Log(playerHeight);
             Vector3 rayHitPoint = new Vector3(hit.point.x, hit.point.y, hit.point.z);
 
-            Debug.Log(rayHitPoint);
+            //Debug.Log(rayHitPoint);
             float distanceBetweenPlayerHeightAndRayHitpoint = Vector3.Distance(playerHeight, rayHitPoint);
 
             //POINT THE INDICATOR ON THE GROUND
@@ -129,7 +129,6 @@ public class AttackIndicator : MonoBehaviour
             // Calculate the direction
             var direction = pointHerePlease - transform.position;
 
-            // You might want to delete this line.
             // Ignore the height difference.
             direction.y = 0;
 

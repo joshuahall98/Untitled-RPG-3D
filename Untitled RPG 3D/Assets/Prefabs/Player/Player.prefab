@@ -5623,9 +5623,6 @@ MonoBehaviour:
   attackIndicatorCanvas: {fileID: 0}
   attackIndicator: {fileID: 0}
   player: {fileID: 1689940224852358950}
-  ground:
-    serializedVersion: 2
-    m_Bits: 512
   pointHerePlease: {x: 0, y: 0, z: 0}
 --- !u!1 &1689940225372480533
 GameObject:
