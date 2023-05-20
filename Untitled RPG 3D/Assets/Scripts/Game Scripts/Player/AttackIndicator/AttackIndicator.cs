@@ -11,12 +11,12 @@ public class AttackIndicator : MonoBehaviour
 {
     public GameObject attackIndicatorCanvas;
     public GameObject attackIndicator;
-    public GameObject player;
-    //public LayerMask playerLayer;
+    public GameObject player; // store the refernce position object in this variable, so that the attack indicator is calculated from player base
+    public LayerMask playerLayer;
 
-    /*[SerializeField]GameObject testcube1;
-    [SerializeField]GameObject testcube2;
-    [SerializeField] GameObject testcube3;*/
+    [SerializeField] GameObject testcube1;
+    [SerializeField] GameObject testcube2;
+    [SerializeField] GameObject testcube3;
 
     //have this accessed for all directional attacks
     [SerializeField]public Vector3 pointHerePlease;
@@ -25,7 +25,7 @@ public class AttackIndicator : MonoBehaviour
     {
         attackIndicatorCanvas = GameObject.Find("AttackIndicator");
         attackIndicator = GameObject.Find("AttackIndicatorImage");
-        player = GameObject.Find("Player");
+        //player = GameObject.Find("Player");
     }
 
     // Update is called once per frame
@@ -59,7 +59,7 @@ public class AttackIndicator : MonoBehaviour
         Ray castPoint = Camera.main.ScreenPointToRay(mouse);
         RaycastHit hit;
         //cast to every ;ayer but the player layer 
-        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity))
+        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, ~playerLayer))
         {
             //DISTANCE BETWEEN PLAYER HEIGHT AND RAYCAST ON GROUND
             Vector3 playerHeight = new Vector3(hit.point.x, player.transform.position.y, hit.point.z);
@@ -72,7 +72,7 @@ public class AttackIndicator : MonoBehaviour
 
             //POINT THE INDICATOR ON THE GROUND
             //attackIndicator.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-            attackIndicator.transform.position = pointHerePlease;
+            
 
             //https://www.reddit.com/r/Unity3D/comments/p4ckq4/isometric_view_problem_that_i_dont_know_how_to/
             //https://www.mathsisfun.com/algebra/trig-finding-side-right-triangle.html
@@ -111,10 +111,11 @@ public class AttackIndicator : MonoBehaviour
             }
 
             //POSITION OF ATTACK INDICATOR
+            pointHerePlease = new Vector3 (pointHerePlease.x, pointHerePlease.y, pointHerePlease.z);
             attackIndicator.transform.position = pointHerePlease;
 
-           /* testcube1.transform.position = p1;
-            testcube2.transform.position = p2;
+            /*testcube1.transform.position = playerHeight;
+            testcube2.transform.position = rayHitPoint;
             testcube3.transform.position = pointHerePlease;*/
 
         }
