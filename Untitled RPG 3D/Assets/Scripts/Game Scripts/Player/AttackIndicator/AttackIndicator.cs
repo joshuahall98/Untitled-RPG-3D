@@ -11,21 +11,18 @@ public class AttackIndicator : MonoBehaviour
 {
     public GameObject attackIndicatorCanvas;
     public GameObject attackIndicator;
-    public GameObject player; // store the refernce position object in this variable, so that the attack indicator is calculated from player base
+    public GameObject player; // using player position for now, may use another object as the base of players position, we see.
     public LayerMask playerLayer;
-
-    [SerializeField] GameObject testcube1;
-    [SerializeField] GameObject testcube2;
-    [SerializeField] GameObject testcube3;
 
     //have this accessed for all directional attacks
     [SerializeField]public Vector3 pointHerePlease;
+
+    [SerializeField]GameObject testcube;
 
     private void Start()
     {
         attackIndicatorCanvas = GameObject.Find("AttackIndicator");
         attackIndicator = GameObject.Find("AttackIndicatorImage");
-        //player = GameObject.Find("Player");
     }
 
     // Update is called once per frame
@@ -58,23 +55,14 @@ public class AttackIndicator : MonoBehaviour
         Vector3 mouse = Input.mousePosition;
         Ray castPoint = Camera.main.ScreenPointToRay(mouse);
         RaycastHit hit;
-        //cast to every ;ayer but the player layer 
+        //cast to every layer but the player layer 
         if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, ~playerLayer))
         {
             //DISTANCE BETWEEN PLAYER HEIGHT AND RAYCAST ON GROUND
             Vector3 playerHeight = new Vector3(hit.point.x, player.transform.position.y, hit.point.z);
-
-            //Debug.Log(playerHeight);
             Vector3 rayHitPoint = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-
-            //Debug.Log(rayHitPoint);
             float distanceBetweenPlayerHeightAndRayHitpoint = Vector3.Distance(playerHeight, rayHitPoint);
-
-            //POINT THE INDICATOR ON THE GROUND
-            //attackIndicator.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
             
-
-            //https://www.reddit.com/r/Unity3D/comments/p4ckq4/isometric_view_problem_that_i_dont_know_how_to/
             //https://www.mathsisfun.com/algebra/trig-finding-side-right-triangle.html
             //https://www.nuffieldfoundation.org/sites/default/files/files/FSMA%20Pythagoras%20theorem%20student.pdf
 
@@ -111,12 +99,9 @@ public class AttackIndicator : MonoBehaviour
             }
 
             //POSITION OF ATTACK INDICATOR
-            pointHerePlease = new Vector3 (pointHerePlease.x, pointHerePlease.y, pointHerePlease.z);
             attackIndicator.transform.position = pointHerePlease;
 
-            /*testcube1.transform.position = playerHeight;
-            testcube2.transform.position = rayHitPoint;
-            testcube3.transform.position = pointHerePlease;*/
+            testcube.transform.position = rayHitPoint;
 
         }
     }
