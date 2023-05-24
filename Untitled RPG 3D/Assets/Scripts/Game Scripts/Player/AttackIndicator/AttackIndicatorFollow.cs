@@ -16,7 +16,7 @@ public class AttackIndicatorFollow : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        this.transform.position = new Vector3 (player.transform.position.x, player.transform.position.y - 1.2f, player.transform.position.z);
+        this.transform.position = new Vector3 (player.transform.position.x, player.transform.position.y, player.transform.position.z);
 
     }
 }
