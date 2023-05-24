@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Worgel
   m_EditorClassIdentifier: 
   maxHP: 100
-  speed: 5
+  speed: 1
   maxTime: 0.1
   maxDistance: 0
   maxSightDistance: 50
   attackRadius: 2
   damage: 50
+  AvoidancePredictionTime: 2
+  PathfindingIterationsPerFrame: 100

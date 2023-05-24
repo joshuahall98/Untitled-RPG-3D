@@ -13,7 +13,7 @@ public class FleeState : AiState
     }
     public void Enter(AIAgent agent)
     {
-       
+       Debug.Log("Fleeing");
     }
 
     public void Update(AIAgent agent)

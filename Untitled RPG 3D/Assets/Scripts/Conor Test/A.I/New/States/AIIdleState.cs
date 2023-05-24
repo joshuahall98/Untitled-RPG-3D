@@ -15,6 +15,8 @@ public class AIIdleState : AiState
 
     public void Update(AIAgent agent)
     {
+        // agent.config is the scriptable obj
+        // If in range move to Chase Player. Dot product used for more precise calculations
         Vector3 playerDirection = agent.Player.position - agent.transform.position;
         if(playerDirection.magnitude > agent.config.maxSightDistance)
         {

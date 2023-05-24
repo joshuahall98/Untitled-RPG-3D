@@ -17,7 +17,7 @@ public class AIChasePlayerState : AiState
 
     public void Enter(AIAgent agent)
     {
-  
+        Debug.Log("Chasing");
     }
 
     public void Update(AIAgent agent)
@@ -25,6 +25,7 @@ public class AIChasePlayerState : AiState
 
         //Track distance from Enemy to Player
         distFromPlayer = Vector3.Distance(agent.Player.transform.position, agent.navMeshAgent.transform.position);
+      
 
         if (!agent.enabled)
         {
@@ -40,6 +41,7 @@ public class AIChasePlayerState : AiState
         {
             Vector3 direction = (agent.Player.position - agent.navMeshAgent.destination);
             direction.y = 0;
+            
             if (direction.sqrMagnitude > agent.config.maxDistance * agent.config.maxDistance)
             {
                 if (agent.navMeshAgent.pathStatus != NavMeshPathStatus.PathPartial)
@@ -50,15 +52,22 @@ public class AIChasePlayerState : AiState
             timer = agent.config.maxTime;
         }
 
+          // If in attack radius switch to attack state
+
         if (distFromPlayer <= agent.config.attackRadius)
         {
             agent.stateMachine.ChangeState(AIStateID.Attack);
             
         }
-        // If in attack radius switch to attack state
 
+        //Flee if less than 20%
+        if(agent.aiHealth.currentHealth <= agent.aiHealth.maxHealth * 80/100){
+
+                agent.stateMachine.ChangeState(AIStateID.Flee);
+        }
         
     }
+
 
     public void Exit(AIAgent agent)
     {

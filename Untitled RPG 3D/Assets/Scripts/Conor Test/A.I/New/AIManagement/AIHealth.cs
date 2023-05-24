@@ -6,8 +6,10 @@ using UnityEngine.UI;
 // Conor 
 
 public class AIHealth : MonoBehaviour
-{
+{   
+  
     public float maxHealth;
+    public float currentHealth;
 
     // public Slider healthBar;
     [SerializeField]
@@ -17,7 +19,11 @@ public class AIHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        agent = GetComponent<AIAgent>();
+
         maxHealth = agent.config.maxHP;
+
+        currentHealth = maxHealth;
 
       //  healthBar.maxValue = maxHealth;
       //  healthBar.value = maxHealth;
@@ -31,10 +37,10 @@ public class AIHealth : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        maxHealth -= damageAmount;
-        if (maxHealth <= 0)
+        currentHealth -= damageAmount;
+        if (currentHealth <= 0)
         {
-            maxHealth = 0;
+            currentHealth = 0;
             Destroy(gameObject);
 
             //Play death anim

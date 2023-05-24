@@ -10,8 +10,12 @@ public class DeathState : AiState
     }
     public void Enter(AIAgent agent)
     {
-        //Put Die in here
-        Debug.Log("is dead");
+  
+        Debug.Log("Dead");
+        
+       agent.navMeshAgent.velocity = Vector3.zero;
+       
+       //Play Animation 
     }
 
     public void Update(AIAgent agent)

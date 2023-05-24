@@ -14,7 +14,7 @@ using UnityEngine.AI;
         public Transform Player;
         public AIAttack aiAttack;
         public Animator animator;
-
+        public AIHealth aiHealth;
 
 
         // Start is called before the first frame update
@@ -24,6 +24,7 @@ using UnityEngine.AI;
             animator = GetComponent<Animator>();
             Player = GameObject.FindGameObjectWithTag("Player").transform;
             aiAttack = GetComponent<AIAttack>();
+            aiHealth = GetComponent<AIHealth>();
 
             //Scriptable Object
 
@@ -41,8 +42,12 @@ using UnityEngine.AI;
             stateMachine.RegisterState(new AIIdleState());
             stateMachine.RegisterState(new AIChasePlayerState());
             stateMachine.RegisterState(new AiAttackPlayerState());
+            stateMachine.RegisterState(new CelebrationState());
             stateMachine.RegisterState(new DeathState());
             stateMachine.RegisterState(new FleeState());
+            stateMachine.RegisterState(new PatrolState());
+            
+            
 
             stateMachine.ChangeState(initialState);
 
@@ -52,6 +57,7 @@ using UnityEngine.AI;
         // Update is called once per frame
         void Update()
         {
+
             stateMachine.Update();
         }
 

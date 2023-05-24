@@ -18,16 +18,8 @@ public class PatrolState : AiState
     public void Update(AIAgent agent)
     {
         //Opposite direction to Player
-        Vector3 playerDirection = agent.transform.position - agent.Player.position;
-
-        if (!agent.enabled)
-        {
-            return;
-        }
-        if (!agent.navMeshAgent.hasPath)
-        {
-            agent.navMeshAgent.destination = agent.transform.position + playerDirection;
-        }
+        
+        //Patrol
     }
     public void Exit(AIAgent agent)
     {

@@ -12,7 +12,8 @@ public enum AIStateID
     Attack,
     Death,
     Flee,
-    Patrol
+    Patrol,
+    Celebration
 }
 public interface AiState
 {
