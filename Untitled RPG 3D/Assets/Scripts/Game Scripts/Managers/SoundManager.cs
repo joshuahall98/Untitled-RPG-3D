@@ -20,9 +20,9 @@ public class SoundManager : MonoBehaviour
     [SerializeField] Sound[] wurgle;
 
     //for storing currently used sounds
-    //[Space]
-    //[Header("EMPTY FIELD")]
-    Sound[] sounds;
+    [Space]
+    [Header("EMPTY FIELD")]
+    [SerializeField]Sound[] sounds;
 
     List<Sound[]> arrayStorage = new List<Sound[]>();
 
@@ -58,7 +58,7 @@ public class SoundManager : MonoBehaviour
         Sound s = Array.Find(sounds, sound => sound.name == name);
         if (s == null)
             return;
-        //use oneshot so the audio clips don;t cancel each other out
+        //use oneshot so the audio clips don't cancel each other out
         s.source.PlayOneShot(s.clip, s.volume);
     }
 

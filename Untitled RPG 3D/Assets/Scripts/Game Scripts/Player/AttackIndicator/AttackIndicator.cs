@@ -15,21 +15,24 @@ public class AttackIndicator : MonoBehaviour
     public LayerMask playerLayer;
 
     //have this accessed for all directional attacks
-    [SerializeField]public Vector3 pointHerePlease;
+    Vector3 pointHerePlease;
 
-    [SerializeField]GameObject testcube;
+    /*[SerializeField] GameObject testcube;
+    [SerializeField] GameObject testcube2;
+    [SerializeField] GameObject testcube3;*/
 
     private void Start()
     {
         attackIndicatorCanvas = GameObject.Find("AttackIndicator");
         attackIndicator = GameObject.Find("AttackIndicatorImage");
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         PointFromPlayer();
-        Cursor.visible = false;
+        
     }
 
     private void Update()
@@ -62,35 +65,32 @@ public class AttackIndicator : MonoBehaviour
             Vector3 playerHeight = new Vector3(hit.point.x, player.transform.position.y, hit.point.z);
             Vector3 rayHitPoint = new Vector3(hit.point.x, hit.point.y, hit.point.z);
             float distanceBetweenPlayerHeightAndRayHitpoint = Vector3.Distance(playerHeight, rayHitPoint);
-            
+
             //https://www.mathsisfun.com/algebra/trig-finding-side-right-triangle.html
-            //https://www.nuffieldfoundation.org/sites/default/files/files/FSMA%20Pythagoras%20theorem%20student.pdf
 
             //GET ANGLE OF ISOMETRIC CAMERA
-            var deg = 60;
+            var deg = 30;
+
             //CONVERT THE DEGREE TO RADIAN
             var rad = deg * Mathf.Deg2Rad;
-            //PASS RADIAN THROUGH TAN AND MUTIPLY BY DISTANCE BETWEEN PLAYER HIEGHT AND MOUSE POINT
-            float length = Mathf.Tan(rad) * distanceBetweenPlayerHeightAndRayHitpoint;
-            //ALGORITHM FOR HYPOTONUSE
-            float hypoto = Mathf.Pow(length, 2) + Mathf.Pow(distanceBetweenPlayerHeightAndRayHitpoint, 2);
-            hypoto = Mathf.Sqrt(hypoto);
+
+            //PASS RADIAN THROUGH SIN AND DIVIDE DISTANCE BETWEEN PLAYER HIEGHT AND MOUSE POINT BY THE RESULT TO OBTAIN HYPOTENUSE 
+            float hypote = distanceBetweenPlayerHeightAndRayHitpoint / (Mathf.Sin(rad));
 
             //CALCULATE DISTANCE FROM CAMERA TO GROUND REMOVING HYPTONUSE
             float distanceFromCameraToGround = hit.distance;
-            distanceFromCameraToGround = (distanceFromCameraToGround - hypoto);
             
             //DEPENDING ON PLAYER HEIGHT DEPENDS ON CAST
             if (player.transform.position.y > hit.point.y)
             {
                 //PULL THE POINTER TOWARDS CAMERA IF PLAYER IS ABOVE HIT POINT
-                pointHerePlease = castPoint.GetPoint(distanceFromCameraToGround);
+                pointHerePlease = castPoint.GetPoint(distanceFromCameraToGround - hypote);
     
             }
             else if(player.transform.position.y < hit.point.y)
             {
                 //PUSH THE POINTER AWAY FROM CAMERA IF PLAYER IS BELOW HIT POINT
-                pointHerePlease = castPoint.GetPoint(distanceFromCameraToGround + (hypoto * 2));
+                pointHerePlease = castPoint.GetPoint(distanceFromCameraToGround + hypote);
             }
             else if(player.transform.position.y == hit.point.y)
             {
@@ -101,7 +101,9 @@ public class AttackIndicator : MonoBehaviour
             //POSITION OF ATTACK INDICATOR
             attackIndicator.transform.position = pointHerePlease;
 
-            testcube.transform.position = rayHitPoint;
+            /*testcube.transform.position = rayHitPoint;
+            testcube2.transform.position = playerHeight;
+            testcube3.transform.position = pointHerePlease;*/
 
         }
     }
