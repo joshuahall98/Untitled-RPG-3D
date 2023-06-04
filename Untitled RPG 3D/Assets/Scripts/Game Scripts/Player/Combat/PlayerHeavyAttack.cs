@@ -73,7 +73,7 @@ public class PlayerHeavyAttack : MonoBehaviour
             swordCollider.enabled = true;
             releaseReady = false;
             GetComponent<AttackIndicator>().Aim();
-            FindObjectOfType<SoundManager>().SelectAudioClass("Wurgle");
+            FindObjectOfType<SoundManager>().SelectAudioClass("Player");
             FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
         }
         else

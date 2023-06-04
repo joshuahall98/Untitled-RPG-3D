@@ -3,6 +3,7 @@ using UnityEngine;
 
 //Joshua
 
+//Old sound script, now using scriptable objects
 [System.Serializable]
 public class Sound
 {
@@ -23,6 +24,8 @@ public class Sound
 
     [HideInInspector]
     public AudioSource source;
+
+
 
 
 }

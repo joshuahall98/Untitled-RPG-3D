@@ -12,34 +12,31 @@ public class SoundManager : MonoBehaviour
     public static SoundManager SoundManagerInstance;
 
     [Header("PLAYER")]
-    [SerializeField] Sound[] player;
+    [SerializeField] AudioScriptableObject[] player;
 
     
     [Space]
     [Header("AI")]
-    [SerializeField] Sound[] wurgle;
+    [SerializeField] AudioScriptableObject[] wurgle;
 
     //for storing currently used sounds
-    [Space]
-    [Header("EMPTY FIELD")]
-    [SerializeField]Sound[] sounds;
+    AudioScriptableObject[] sounds;
 
-    List<Sound[]> arrayStorage = new List<Sound[]>();
+
+    List<AudioScriptableObject[]> arrayStorage = new List<AudioScriptableObject[]>();
 
     private AudioSource[] allAudio;
 
-
-    //decide on scriptable, will look at later
-    //[SerializeField]List<AudioScriptableObject> scriptObj = new List<AudioScriptableObject>();
 
     void Awake()
     {
         SoundManagerInstance = this;
 
         AddArrayToList();
-        TheAudioComponentList();   
-        
+        TheAudioComponentList();
+
     }
+
 
     //stops all audio when called
     public void StopAllAudio()
@@ -55,7 +52,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySound(string name)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
         if (s == null)
             return;
         //use oneshot so the audio clips don't cancel each other out
@@ -64,7 +61,7 @@ public class SoundManager : MonoBehaviour
 
     public void StopSound(string name)
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
         if (s == null)
             return;
         s.source.Stop();
@@ -73,9 +70,10 @@ public class SoundManager : MonoBehaviour
     //this creates all the audio components on the game manager
     void TheAudioComponentList()
     {
+
         for (int i = 0; i < arrayStorage.Count; i++)
         {
-            foreach (Sound s in arrayStorage[i])
+            foreach (AudioScriptableObject s in arrayStorage[i])
             {
                 s.source = gameObject.AddComponent<AudioSource>();
                 s.source.clip = s.clip;
@@ -87,7 +85,6 @@ public class SoundManager : MonoBehaviour
                 s.source.panStereo = s.pan;
             }
         }
-
     }
 
     //Call this function to select which class
@@ -101,6 +98,7 @@ public class SoundManager : MonoBehaviour
         {
             sounds = wurgle;
         }
+
         
     }
 
@@ -112,6 +110,7 @@ public class SoundManager : MonoBehaviour
 
         //AI
         arrayStorage.Add(wurgle);
+
     }
 
     
