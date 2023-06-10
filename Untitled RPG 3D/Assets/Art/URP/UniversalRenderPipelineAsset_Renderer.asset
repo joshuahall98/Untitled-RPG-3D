@@ -235,12 +235,11 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -6287883025641983631}
   - {fileID: -2638251600722120041}
-  - {fileID: 316798738366110541}
   - {fileID: -2283827829637663402}
   - {fileID: -6824572756217831845}
   - {fileID: -4765222508372858770}
   - {fileID: -16954144082618973}
-  m_RendererFeatureMap: 71b166ebb3f3bca89732daae250c63db4d9b9a29c67e650456b54b6eb0364ee05bded3813c3f4aa16e68bd386087debda3157cb84bc4c3ff
+  m_RendererFeatureMap: 71b166ebb3f3bca89732daae250c63db56b54b6eb0364ee05bded3813c3f4aa16e68bd386087debda3157cb84bc4c3ff
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -278,42 +277,3 @@ MonoBehaviour:
   m_ClusteredRendering: 0
   m_TileSize: 32
   m_IntermediateTextureMode: 0
---- !u!114 &316798738366110541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: AttackIndicatorAlwaysSeen
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  settings:
-    passTag: AttackIndicatorAlwaysSeen
-    Event: 300
-    filterSettings:
-      RenderQueueType: 0
-      LayerMask:
-        serializedVersion: 2
-        m_Bits: 8192
-      PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: a0df4747a4ddd7640bf90fe121f95805, type: 2}
-    overrideMaterialPassIndex: 0
-    overrideDepthState: 1
-    depthCompareFunction: 2
-    enableWrite: 1
-    stencilSettings:
-      overrideStencilState: 0
-      stencilReference: 15
-      stencilCompareFunction: 8
-      passOperation: 0
-      failOperation: 0
-      zFailOperation: 0
-    cameraSettings:
-      overrideCamera: 0
-      restoreCamera: 1
-      offset: {x: 0, y: 0, z: 0, w: 0}
-      cameraFieldOfView: 60
