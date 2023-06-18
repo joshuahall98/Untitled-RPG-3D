@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class PlayerLightAttack : MonoBehaviour
@@ -53,6 +54,8 @@ public class PlayerLightAttack : MonoBehaviour
 
     public void LightAtk()
     {
+
+        
 
         if (atkNum == 0 || atkNum == 2)
         {

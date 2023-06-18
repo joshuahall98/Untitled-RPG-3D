@@ -21,12 +21,13 @@ public class PlayerController : MonoBehaviour
     //inputs and movement
     private CharacterController controller;
     [SerializeField] private float speed = 8;
+    float baseSpeed;
     Vector2 currentMoveInput;
     Vector3 actualMovement;
     [SerializeField]Vector3 isometric;
     Vector3 posLookAt;
     public PlayerInputActions playerInput;
-    float gravity;
+    [SerializeField]float gravity;
     [SerializeField]private LayerMask groundMask;
 
     public string hello;
@@ -142,10 +143,17 @@ public class PlayerController : MonoBehaviour
 
         state = PlayerState.IDLE;
 
+        baseSpeed = speed;
+    }
+    #endregion
+
+    #region - START -
+    private void Start()
+    {
         //this is called so the rotation is checked so player doesn't roll on the spot
         rollDirection = transform.rotation * Vector3.forward;
-
     }
+
     #endregion
 
     #region - CHECK LAST INPUT DEVICE -
@@ -185,43 +193,6 @@ public class PlayerController : MonoBehaviour
         PlayerFalling();
 
         LastDevice();
-
-        //DONT THINK ANY OF THIS OLD CODE IS NEEDED BUT UNSURE YET
-        /*if (state == PlayerState.ROLLING)
-        {
-            StartCoroutine(RollMovement());
-        }*/
-
-
-        //running sound
-        //is currently broken unsure why, need to remake it
-        /*if (isMoving && isGrounded)
-        {
-            FindObjectOfType<SoundManager>().PlaySound("Running");
-        }
-        else
-        {   
-            FindObjectOfType<SoundManager>().StopSound("Running");
-        }*/
-
-        //BUGS
-        //isAttacking variable sometimes stays true freezing player character 
-        //heavy attack charge activates but you have no weapon and can still move
-
-
-        //unsure if needed, was input to stop running on spot bug
-        /*if (isAttacking == true)
-        {
-            isMoving = false;
-        }*/
-
-        //stops bug where roll and attack activate at the same time
-        /*if(isAttacking == true && isRolling == true)
-        {
-            isRolling = false;
-            isAttacking = false;
-        }*/
-
 
         //this prevents you from rolling too much
         if (rollCDTimer > 0)
@@ -274,10 +245,17 @@ public class PlayerController : MonoBehaviour
         {
             DizzyMovement();            
         }
+
+        if (state == PlayerState.FALLING)
+        {
+            FallingMovement();
+        }
     }
 
     void IsometricMovement()
     {
+        speed = baseSpeed;
+ 
         //this code makes sure the idle state is correctly utilised
         if (isMoving == false && state == PlayerState.MOVING)
         {
@@ -315,6 +293,7 @@ public class PlayerController : MonoBehaviour
         RollDirection();
     }
 
+    //movement while dizzy, randomized
     void DizzyMovement()
     {
         currentMoveInput = move.ReadValue<Vector2>();
@@ -360,6 +339,37 @@ public class PlayerController : MonoBehaviour
             RollDirection();
         }
     }
+
+    //movement speed while you are falling
+    void FallingMovement()
+    {
+
+        speed = baseSpeed / 4;
+
+        currentMoveInput = move.ReadValue<Vector2>();
+        actualMovement = new Vector3();
+        //Condensed movement -- Converted y to z axis
+        actualMovement.x = currentMoveInput.x;
+        actualMovement.z = currentMoveInput.y;
+
+        //magic code that converts the basic player movement into isometric
+        isometric = new Vector3();
+        var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, isometricRotation, 0));
+        isometric = matrix.MultiplyPoint3x4(actualMovement);
+
+        //move the character controller
+        controller.Move(isometric * speed * Time.deltaTime);
+        //isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+
+        //Character Rotation
+        Vector3 currentPos = transform.position;
+        Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
+        Vector3 posLookAt = currentPos + newPos;
+        transform.LookAt(posLookAt);
+
+
+        RollDirection();
+    }
     #endregion
 
     #region - FALLING -
@@ -378,19 +388,21 @@ public class PlayerController : MonoBehaviour
 
         if (state != PlayerState.FALLING)
         {
-            gravity = -2 * Time.deltaTime;
+            weight = -4;
+
+            gravity = weight * Time.deltaTime;
             controller.Move(new Vector3(0, gravity, 0));
         }
-        else if (state == PlayerState.FALLING) 
+        else if (state == PlayerState.FALLING || state == PlayerState.ROLLING) 
         {
-            weight = 0.1f;
+            weight = 0.2f;
 
             //slowly increase players gravity for a more natural fall
             gravity -= weight * Time.deltaTime;
             controller.Move(new Vector3(0, gravity, 0));
         }
 
-        float touchGround = 2f;
+        float touchGround = 1.5f;
 
         if (Physics.CapsuleCast(transform.position - new Vector3(0f, 0f, 0f), transform.position + new Vector3(0f, 0f, 0f), controller.radius, transform.TransformDirection(Vector3.down), out RaycastHit hit, touchGround, groundMask))
         {
@@ -676,7 +688,7 @@ public class PlayerController : MonoBehaviour
     //Pause game 
     void PressPause(InputAction.CallbackContext PauseInput)
     {
-        //Debug.Log("pause");
+        Debug.Log("pause");
         gameManager.GetComponent<GameManager>().PauseAndUnpause();
        // gameManager.GetComponent<MenuManager>().MenuUIPauseUnpause();
         
