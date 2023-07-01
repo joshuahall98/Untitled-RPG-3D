@@ -92363,7 +92363,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 283530613241129062, guid: e74c1c53870c2f04c90da974822f8c45, type: 3}
       propertyPath: m_Name
-      value: --GameManager
+      value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 283530613241129080, guid: e74c1c53870c2f04c90da974822f8c45, type: 3}
       propertyPath: m_RootOrder

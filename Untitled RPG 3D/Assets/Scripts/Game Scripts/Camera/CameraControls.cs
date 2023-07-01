@@ -7,7 +7,8 @@ using Cinemachine;
 
 public class CameraControls : MonoBehaviour
 {
-    public CinemachineVirtualCamera camera;
+    public CinemachineVirtualCamera cinemachineCamera;
+    public Camera camera;
 
     GameObject sideCharacter;
     GameObject player;
@@ -15,14 +16,19 @@ public class CameraControls : MonoBehaviour
     enum LookAt { Player, SideCharacter }
     LookAt lookAt;
 
-    [SerializeField] int nextRotate; 
+    [SerializeField] int nextRotate;
+
+    float distance;
+    GameObject distanceCheckerObj;
 
     private void Awake()
     {
         //this sets the clipping pain at the start of the scene so that the camera doesn't clip through object
-        camera.m_Lens.NearClipPlane = -20f;
+       // camera.m_Lens.NearClipPlane = -20f;
+        camera.nearClipPlane = -50f;
 
         player = GameObject.Find("Player");
+        distanceCheckerObj = GameObject.Find("DistanceChecker");
         sideCharacter = GameObject.Find("SideCharacter");
 
         lookAt = LookAt.Player;
@@ -37,16 +43,34 @@ public class CameraControls : MonoBehaviour
         if (lookAt == LookAt.Player)
         {
             lookAt = LookAt.SideCharacter;
-            camera.Follow = sideCharacter.transform;
+            cinemachineCamera.Follow = sideCharacter.transform;
         }
         else if (lookAt == LookAt.SideCharacter)
         {
             lookAt = LookAt.Player;
-            camera.Follow = player.transform;
+            cinemachineCamera.Follow = player.transform;
         }
     }
 
     private void Update()
+    {
+        Rotation();
+
+        //AdjustableClippingPlane();
+    }
+
+    //this allows for far objects to appear small in the ortho camera based off distance from player to object
+    void AdjustableClippingPlane()
+    {
+        distance = Vector3.Distance(distanceCheckerObj.transform.position, player.transform.position);
+
+        distance -= 20;
+
+        cinemachineCamera.m_Lens.NearClipPlane = distance;
+        camera.farClipPlane = distance;
+    }
+
+    void Rotation()
     {
         //position to rotate to
         Quaternion target = Quaternion.Euler(transform.eulerAngles.x, nextRotate, transform.eulerAngles.z);

@@ -11,7 +11,7 @@ public class AttackIndicator : MonoBehaviour
 {
     public GameObject attackIndicatorCanvas;
     public GameObject attackIndicator;
-    public GameObject player; // using player position for now, may use another object as the base of players position, we see.
+    public GameObject player; // this looks better when attached to object at players feet
     public LayerMask playerLayer;
 
     //have this accessed for all directional attacks
@@ -42,13 +42,16 @@ public class AttackIndicator : MonoBehaviour
 
     void PointFromPlayer()
     {
+        if(attackIndicator != null)
+        {
+            //rotate indicator based on player and mouse position
+            Quaternion transRot = Quaternion.LookRotation(pointHerePlease - new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z));
+            //prevent mouse pointing up
+            transRot.eulerAngles = new Vector3(0, transRot.eulerAngles.y, transRot.eulerAngles.z);
+            attackIndicatorCanvas.transform.rotation = Quaternion.Lerp(transRot, attackIndicatorCanvas.transform.rotation, 0f);
+            //attackIndicatorCanvas.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0f);
+        }
 
-        //rotate indicator based on player and mouse position
-        Quaternion transRot = Quaternion.LookRotation(pointHerePlease - new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z));
-        //prevent mouse pointing up
-        transRot.eulerAngles = new Vector3(0, transRot.eulerAngles.y, transRot.eulerAngles.z);
-        attackIndicatorCanvas.transform.rotation = Quaternion.Lerp(transRot, attackIndicatorCanvas.transform.rotation, 0f);
-        //attackIndicatorCanvas.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0f);
     }
 
     void PositionOfMouse()
