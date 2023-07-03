@@ -26,4 +26,10 @@ public class AIStateManager : MonoBehaviour
     {
         currentState = nextState;
     }
+
+    //Animation events
+    public void AEStaggerFin()
+    {
+        this.GetComponentInChildren<AIStaggerState>().AEStaggerFin();
+    }
 }

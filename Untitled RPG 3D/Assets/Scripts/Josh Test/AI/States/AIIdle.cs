@@ -7,7 +7,11 @@ using UnityEngine.AI;
 public class AIIdle : AIState
 {
     public AIChaseState chaseState;
-    public bool canSeePlayer;
+    public AIStaggerState staggerState;
+
+    //state transitions
+    [SerializeField]bool canSeePlayer;
+    [SerializeField] bool staggered;
 
     Animator anim;
 
@@ -33,7 +37,13 @@ public class AIIdle : AIState
             canSeePlayer = false;
             return chaseState;   
         }
-        else
+        else if (staggered)//stagger
+        {
+            staggered = false;
+            anim.SetTrigger("isHit");
+            return staggerState;
+        }
+        else//idle state
         { 
             IdleMovement();
             return this;
