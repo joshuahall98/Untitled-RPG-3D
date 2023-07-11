@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class AIHealth : MonoBehaviour
 {   
   
-    public float maxHealth;
+    public float maxHealth = 100;
     public float currentHealth;
 
     // public Slider healthBar;
@@ -19,9 +19,9 @@ public class AIHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        agent = GetComponent<AIAgent>();
+        //agent = GetComponent<AIAgent>();
 
-        maxHealth = agent.config.maxHP;
+       // maxHealth = agent.config.maxHP;
 
         currentHealth = maxHealth;
 

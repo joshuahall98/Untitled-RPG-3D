@@ -30,6 +30,6 @@ public class AIStateManager : MonoBehaviour
     //Animation events
     public void AEStaggerFin()
     {
-        this.GetComponentInChildren<AIStaggerState>().AEStaggerFin();
+        this.GetComponentInChildren<AIStaggerState>().StaggerFin();
     }
 }

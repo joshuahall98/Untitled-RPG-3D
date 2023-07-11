@@ -59,7 +59,7 @@ public class AIChaseState : AIState
         this.navMeshAgent.SetDestination(player.transform.position);
         if (Vector3.Distance(this.transform.position, player.transform.position) < 2)
         {
-           // isInAttackRange = true;
+            isInAttackRange = true;
         }
     }
 

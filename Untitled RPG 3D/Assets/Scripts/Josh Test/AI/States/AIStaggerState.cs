@@ -31,7 +31,7 @@ public class AIStaggerState : AIState
         
     }
 
-    public void AEStaggerFin()
+    public void StaggerFin()
     {
         Debug.Log("stagger false");
         isStaggered = false;
