@@ -180,6 +180,8 @@ public class PlayerController : MonoBehaviour
     private void CameraRight_performed(InputAction.CallbackContext obj)
     {
         throw new NotImplementedException();
+
+        
     }
 
     #region - UPDATE - 

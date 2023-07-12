@@ -6,35 +6,40 @@ using UnityEngine.AI;
 
 public class AIIdle : AIState
 {
-    public AIChaseState chaseState;
-    public AIStaggerState staggerState;
+    [SerializeField]AIChaseState chaseState;
+    [SerializeField]AIStaggerState staggerState;
 
     //state transitions
-    [SerializeField]bool canSeePlayer;
     [SerializeField] bool staggered;
 
     Animator anim;
 
     //patrol
     [SerializeField]Vector3 idleZone;
-    [SerializeField] Vector3 destPoint;
-    [SerializeField] LayerMask groundLayer;
+    [SerializeField]Vector3 destPoint;
+    [SerializeField]LayerMask groundLayer;
     [SerializeField]bool walkPointSet;
-    [SerializeField] bool canWalk;
+    [SerializeField]bool canWalk;
     NavMeshAgent navMeshAgent;
+
+    GameObject player;
 
     private void Start()
     {
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
         anim = GetComponentInParent<Animator>();
+        player = GameObject.Find("Player");
         IdleZone();
+
+        
     }
 
     public override AIState RunCurrentState()
     {
-        if(canSeePlayer)//chase state
+        if(AIStateManager.state == AIStateEnum.CHASE)//chase state
         {
-            canSeePlayer = false;
+            
+            anim.SetBool("isWalking", false);
             return chaseState;   
         }
         else if (staggered)//stagger
@@ -46,18 +51,21 @@ public class AIIdle : AIState
         else//idle state
         { 
             IdleMovement();
+            ActivateChaseState();
             return this;
         }
         
     }
 
-    private void OnTriggerEnter(Collider other)
+
+    void ActivateChaseState() 
     {
-        if (other.gameObject.tag == "Player")
+        if (Vector3.Distance(this.transform.position, player.transform.position) < 10)
         {
-            canSeePlayer = true;
+            AIStateManager.state = AIStateEnum.CHASE;
         }
     }
+
     //move AI in idle zone
     void IdleMovement()
     {
@@ -70,14 +78,19 @@ public class AIIdle : AIState
         }
         if(canWalk)
         {
+            navMeshAgent.isStopped = false;
             navMeshAgent.SetDestination(destPoint);
             anim.SetBool("isWalking", true);
         }
         if (Vector3.Distance(this.transform.position, destPoint) < 1)
         {
+            //navMeshAgent.SetDestination(gameObject.transform.position);
             walkPointSet = false;
             canWalk = false;
             anim.SetBool("isWalking", false);
+            navMeshAgent.velocity = Vector3.zero;
+            navMeshAgent.isStopped = true;
+            
         }
     }
     //search for new location to walk

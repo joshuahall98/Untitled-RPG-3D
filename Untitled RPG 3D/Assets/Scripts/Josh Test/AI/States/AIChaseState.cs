@@ -9,9 +9,6 @@ public class AIChaseState : AIState
     public AIAttackState attackState;
     public AIIdle idleState;
 
-    public bool isInAttackRange;
-    public bool isOutOfRange;
-
     NavMeshAgent navMeshAgent;
 
     GameObject player;
@@ -27,39 +24,44 @@ public class AIChaseState : AIState
 
     public override AIState RunCurrentState()
     {
-        if (isInAttackRange)//attack state
+        if (AIStateManager.state == AIStateEnum.ATTACK)//attack state
         {
-            isInAttackRange = false;
+            anim.SetBool("isChasing", false);
             return attackState;
         }
-        else if (isOutOfRange)//idle state  THIS SHOULD ALSO GO TO PATROL WHERE APPLICABLE OR STAND STILL
+        else if (AIStateManager.state == AIStateEnum.IDLE)//idle state  THIS SHOULD ALSO GO TO PATROL WHERE APPLICABLE OR STAND STILL
         {
+            anim.SetBool("isChasing", false);
             OutOfRange();
             return idleState;
         }
         else//chase state
         {
             ChasePlayer();
+            ReturnToIdle();
             return this;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    void ReturnToIdle()
     {
-        if(other.gameObject.tag == "Player") 
+        if (Vector3.Distance(this.transform.position, player.transform.position) > 20)
         {
-            isOutOfRange = true;
+            AIStateManager.state = AIStateEnum.IDLE;
         }
     }
 
     void ChasePlayer()
     {
+        navMeshAgent.isStopped = false;
         anim.SetBool("isChasing", true);
         navMeshAgent.speed = 4;
         this.navMeshAgent.SetDestination(player.transform.position);
         if (Vector3.Distance(this.transform.position, player.transform.position) < 2)
         {
-            isInAttackRange = true;
+            navMeshAgent.velocity = Vector3.zero;
+            navMeshAgent.isStopped = true;
+            AIStateManager.state = AIStateEnum.ATTACK;
         }
     }
 
@@ -67,7 +69,6 @@ public class AIChaseState : AIState
     {
         anim.SetBool("isChasing", false);
         this.navMeshAgent.SetDestination(this.transform.position);
-        isOutOfRange = false;
         //idleState.IdleZone();//reset the idle zone to where the AI has stopped
     }
 

@@ -5,5 +5,9 @@ using UnityEngine.AI;
 
 public abstract class AIState : MonoBehaviour
 {
+    Animator animator;
+    
     public abstract AIState RunCurrentState();
+
+    
 }

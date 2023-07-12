@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum AIStateEnum { IDLE, ATTACK, CHASE, FLEE, ROAM, STAGGER}
 public class AIStateManager : MonoBehaviour
 {
     public AIState currentState;
+    public static AIStateEnum state;
+
+    private void Start()
+    {
+        state = AIStateEnum.IDLE;
+    }
 
     // Update is called once per frame
     void Update()
@@ -31,5 +38,10 @@ public class AIStateManager : MonoBehaviour
     public void AEStaggerFin()
     {
         this.GetComponentInChildren<AIStaggerState>().StaggerFin();
+    }
+
+    public void AEAttackFin()
+    {
+        this.GetComponentInChildren<AIAttackState>().AttackFin();
     }
 }
