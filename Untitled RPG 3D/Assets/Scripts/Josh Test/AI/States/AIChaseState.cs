@@ -6,8 +6,9 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class AIChaseState : AIState
 {
-    public AIAttackState attackState;
-    public AIIdle idleState;
+    [SerializeField]AIAttackState attackState;
+    [SerializeField]AIIdle idleState;
+    [SerializeField]AIStateManager stateManager;
 
     NavMeshAgent navMeshAgent;
 
@@ -24,12 +25,12 @@ public class AIChaseState : AIState
 
     public override AIState RunCurrentState()
     {
-        if (AIStateManager.state == AIStateEnum.ATTACK)//attack state
+        if (stateManager.state == AIStateEnum.ATTACK)//attack state
         {
             anim.SetBool("isChasing", false);
             return attackState;
         }
-        else if (AIStateManager.state == AIStateEnum.IDLE)//idle state  THIS SHOULD ALSO GO TO PATROL WHERE APPLICABLE OR STAND STILL
+        else if (stateManager.state == AIStateEnum.IDLE)//idle state  THIS SHOULD ALSO GO TO PATROL WHERE APPLICABLE OR STAND STILL
         {
             anim.SetBool("isChasing", false);
             OutOfRange();
@@ -47,7 +48,7 @@ public class AIChaseState : AIState
     {
         if (Vector3.Distance(this.transform.position, player.transform.position) > 20)
         {
-            AIStateManager.state = AIStateEnum.IDLE;
+            stateManager.state = AIStateEnum.IDLE;
         }
     }
 
@@ -61,7 +62,7 @@ public class AIChaseState : AIState
         {
             navMeshAgent.velocity = Vector3.zero;
             navMeshAgent.isStopped = true;
-            AIStateManager.state = AIStateEnum.ATTACK;
+            stateManager.state = AIStateEnum.ATTACK;
         }
     }
 

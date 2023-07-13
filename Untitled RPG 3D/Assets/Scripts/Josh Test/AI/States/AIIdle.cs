@@ -8,6 +8,7 @@ public class AIIdle : AIState
 {
     [SerializeField]AIChaseState chaseState;
     [SerializeField]AIStaggerState staggerState;
+    [SerializeField]AIStateManager stateManager;
 
     //state transitions
     [SerializeField] bool staggered;
@@ -36,7 +37,7 @@ public class AIIdle : AIState
 
     public override AIState RunCurrentState()
     {
-        if(AIStateManager.state == AIStateEnum.CHASE)//chase state
+        if(stateManager.state == AIStateEnum.CHASE)//chase state
         {
             
             anim.SetBool("isWalking", false);
@@ -62,7 +63,7 @@ public class AIIdle : AIState
     {
         if (Vector3.Distance(this.transform.position, player.transform.position) < 10)
         {
-            AIStateManager.state = AIStateEnum.CHASE;
+            stateManager.state = AIStateEnum.CHASE;
         }
     }
 

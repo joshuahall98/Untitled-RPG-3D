@@ -5,8 +5,8 @@ using UnityEngine;
 public enum AIStateEnum { IDLE, ATTACK, CHASE, FLEE, ROAM, STAGGER}
 public class AIStateManager : MonoBehaviour
 {
-    public AIState currentState;
-    public static AIStateEnum state;
+     [SerializeField]AIState currentState;
+     public AIStateEnum state;
 
     private void Start()
     {
@@ -33,6 +33,11 @@ public class AIStateManager : MonoBehaviour
     {
         currentState = nextState;
     }
+
+   /* private void NextStateEnum(AIStateEnum state)
+    {
+        
+    }*/
 
     //Animation events
     public void AEStaggerFin()

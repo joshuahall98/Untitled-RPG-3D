@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public class AIAttackState : AIState
 {
     [SerializeField]AIIdle idleState;
+    [SerializeField]AIStateManager stateManager;
 
     NavMeshAgent navMeshAgent;
 
@@ -20,7 +21,7 @@ public class AIAttackState : AIState
 
     public override AIState RunCurrentState()
     {
-        if (AIStateManager.state == AIStateEnum.IDLE)//idle state
+        if (stateManager.state == AIStateEnum.IDLE)//idle state
         {
             anim.ResetTrigger("Attack");
             navMeshAgent.isStopped = false;
@@ -36,6 +37,6 @@ public class AIAttackState : AIState
 
     public void AttackFin()
     {
-        AIStateManager.state = AIStateEnum.IDLE;
+        stateManager.state = AIStateEnum.IDLE;
     }
 }
