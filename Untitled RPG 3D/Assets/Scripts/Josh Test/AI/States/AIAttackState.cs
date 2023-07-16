@@ -11,11 +11,10 @@ public class AIAttackState : AIState
 
     NavMeshAgent navMeshAgent;
 
-    Animator anim;
+    [SerializeField] Animator anim;
 
     private void Start()
     {
-        anim = GetComponentInParent<Animator>();
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
     }
 

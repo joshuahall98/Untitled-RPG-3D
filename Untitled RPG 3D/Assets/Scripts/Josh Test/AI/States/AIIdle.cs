@@ -13,14 +13,14 @@ public class AIIdle : AIState
     //state transitions
     [SerializeField] bool staggered;
 
-    Animator anim;
+    [SerializeField]Animator anim;
 
     //patrol
-    [SerializeField]Vector3 idleZone;
-    [SerializeField]Vector3 destPoint;
+    Vector3 idleZone;
+    Vector3 destPoint;
     [SerializeField]LayerMask groundLayer;
-    [SerializeField]bool walkPointSet;
-    [SerializeField]bool canWalk;
+    bool walkPointSet;
+    bool canWalk;
     NavMeshAgent navMeshAgent;
 
     GameObject player;
@@ -28,7 +28,6 @@ public class AIIdle : AIState
     private void Start()
     {
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
-        anim = GetComponentInParent<Animator>();
         player = GameObject.Find("Player");
         IdleZone();
 

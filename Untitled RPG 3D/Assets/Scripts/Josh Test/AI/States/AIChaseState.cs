@@ -14,12 +14,11 @@ public class AIChaseState : AIState
 
     GameObject player;
 
-    Animator anim;
+    [SerializeField] Animator anim;
 
     private void Start()
     {
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
-        anim = GetComponentInParent<Animator>();
         player = GameObject.Find("Player");
     }
 
@@ -30,7 +29,7 @@ public class AIChaseState : AIState
             anim.SetBool("isChasing", false);
             return attackState;
         }
-        else if (stateManager.state == AIStateEnum.IDLE)//idle state  THIS SHOULD ALSO GO TO PATROL WHERE APPLICABLE OR STAND STILL
+        else if (stateManager.state == AIStateEnum.IDLE)//idle state  
         {
             anim.SetBool("isChasing", false);
             OutOfRange();

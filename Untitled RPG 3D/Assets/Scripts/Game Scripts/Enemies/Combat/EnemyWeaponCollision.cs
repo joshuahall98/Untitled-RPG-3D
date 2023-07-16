@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class EnemyWeaponCollision : MonoBehaviour
 {
-    [SerializeField]float force;
-
     public EnemyScriptableObject Enemy;
 
     private void OnTriggerEnter(Collider collision)
@@ -18,7 +16,7 @@ public class EnemyWeaponCollision : MonoBehaviour
             var dir = collision.transform.position - this.transform.position;
             var enemyPos = this.transform.position;
             collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(Enemy.damage);
-            collision.gameObject.transform.GetComponent<PlayerKnockback>().AddImpact(dir, enemyPos, force);
+            collision.gameObject.transform.GetComponent<PlayerKnockback>().AddImpact(dir, enemyPos, Enemy.knockBackForce);
             //disable collider after hitting player so they can only be hit once
             GetComponent<Collider>().enabled = false;
 

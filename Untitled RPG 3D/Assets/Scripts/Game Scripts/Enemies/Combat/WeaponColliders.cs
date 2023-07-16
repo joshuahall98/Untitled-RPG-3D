@@ -8,7 +8,7 @@ public class WeaponColliders : MonoBehaviour
 {
     Collider collider;
 
-    public GameObject weapon;
+    [SerializeField]GameObject weapon;
 
     private void Start()
     {
@@ -16,12 +16,12 @@ public class WeaponColliders : MonoBehaviour
         collider.enabled = false;
     }
 
-    public void AEcolliderOn()
+    public void AEWeaponColliderOn()
     {
         collider.enabled = true;
     }
 
-    public void AEcolliderOff()
+    public void AEWeaponColliderOff()
     {
         collider.enabled = false;
     }

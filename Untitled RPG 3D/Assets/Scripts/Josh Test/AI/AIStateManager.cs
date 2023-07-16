@@ -34,19 +34,5 @@ public class AIStateManager : MonoBehaviour
         currentState = nextState;
     }
 
-   /* private void NextStateEnum(AIStateEnum state)
-    {
-        
-    }*/
-
-    //Animation events
-    public void AEStaggerFin()
-    {
-        this.GetComponentInChildren<AIStaggerState>().StaggerFin();
-    }
-
-    public void AEAttackFin()
-    {
-        this.GetComponentInChildren<AIAttackState>().AttackFin();
-    }
+    
 }
