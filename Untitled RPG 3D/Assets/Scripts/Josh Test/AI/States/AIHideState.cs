@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AIHideState : AIState
 {
+    [SerializeField]AIStateManager stateManager;
+
     public override AIState RunCurrentState()
     {
         //AI is hiding

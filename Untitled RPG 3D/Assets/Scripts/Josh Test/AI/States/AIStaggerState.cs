@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AIStaggerState : AIState
 {
-    public AIIdle idleState;
+    [SerializeField]AIStateManager stateManager;
 
     [SerializeField]bool isStaggered = true;
 
@@ -21,7 +21,7 @@ public class AIStaggerState : AIState
         if(!isStaggered) 
         {
             isStaggered = true;
-            return idleState;
+            return stateManager.idleState;
         }
         else
         {

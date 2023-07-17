@@ -5,8 +5,16 @@ using UnityEngine;
 public enum AIStateEnum { IDLE, ATTACK, CHASE, FLEE, ROAM, STAGGER}
 public class AIStateManager : MonoBehaviour
 {
-     [SerializeField]AIState currentState;
-     public AIStateEnum state;
+    //states scripts
+    public AIState currentState;
+    public AIIdle idleState;
+    public AIChaseState chaseState;
+    public AIAttackState attackState;
+    public AIFleeState fleeState;
+    public AIStaggerState staggerState;
+    public AIHideState hideState;
+
+    public AIStateEnum state;
 
     private void Start()
     {
@@ -34,5 +42,11 @@ public class AIStateManager : MonoBehaviour
         currentState = nextState;
     }
 
-    
+    public void Hit()
+    {
+        state = AIStateEnum.IDLE;
+        state = AIStateEnum.STAGGER;
+    }
+
+
 }

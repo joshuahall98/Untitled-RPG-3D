@@ -6,8 +6,6 @@ using UnityEngine.AI;
 
 public class AIIdle : AIState
 {
-    [SerializeField]AIChaseState chaseState;
-    [SerializeField]AIStaggerState staggerState;
     [SerializeField]AIStateManager stateManager;
 
     //state transitions
@@ -29,24 +27,20 @@ public class AIIdle : AIState
     {
         navMeshAgent = GetComponentInParent<NavMeshAgent>();
         player = GameObject.Find("Player");
-        IdleZone();
-
-        
+        IdleZone();   
     }
 
     public override AIState RunCurrentState()
     {
         if(stateManager.state == AIStateEnum.CHASE)//chase state
-        {
-            
+        {   
             anim.SetBool("isWalking", false);
-            return chaseState;   
+            return stateManager.chaseState;    
         }
-        else if (staggered)//stagger
+        else if (stateManager.state == AIStateEnum.STAGGER)//stagger
         {
-            staggered = false;
             anim.SetTrigger("isHit");
-            return staggerState;
+            return stateManager.staggerState;
         }
         else//idle state
         { 
@@ -54,9 +48,9 @@ public class AIIdle : AIState
             ActivateChaseState();
             return this;
         }
+
         
     }
-
 
     void ActivateChaseState() 
     {
@@ -111,9 +105,11 @@ public class AIIdle : AIState
         }
     }
 
-    public void IdleZone()
+    void IdleZone()
     {
         idleZone = this.transform.position;
     }
+
+    
 
 }

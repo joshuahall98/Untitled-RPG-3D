@@ -6,8 +6,6 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class AIChaseState : AIState
 {
-    [SerializeField]AIAttackState attackState;
-    [SerializeField]AIIdle idleState;
     [SerializeField]AIStateManager stateManager;
 
     NavMeshAgent navMeshAgent;
@@ -27,13 +25,13 @@ public class AIChaseState : AIState
         if (stateManager.state == AIStateEnum.ATTACK)//attack state
         {
             anim.SetBool("isChasing", false);
-            return attackState;
+            return stateManager.attackState;
         }
         else if (stateManager.state == AIStateEnum.IDLE)//idle state  
         {
             anim.SetBool("isChasing", false);
             OutOfRange();
-            return idleState;
+            return stateManager.idleState;
         }
         else//chase state
         {

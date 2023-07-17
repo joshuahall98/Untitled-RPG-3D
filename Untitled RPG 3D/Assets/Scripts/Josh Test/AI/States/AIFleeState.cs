@@ -7,7 +7,7 @@ public class AIFleeState : AIState
 {
     bool hidden;
 
-    public AIHideState hideState;
+    [SerializeField]AIStateManager stateManager;
 
     GameObject player;
 
@@ -25,7 +25,7 @@ public class AIFleeState : AIState
         if (hidden)
         {
             //enemy hides
-            return hideState;
+            return stateManager.hideState;
         }
         else 
         {

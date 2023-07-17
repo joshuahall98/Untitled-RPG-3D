@@ -10,29 +10,17 @@ public class WeaponDamage : MonoBehaviour
 
     public WeaponScriptableObject Weapon;
 
-    [SerializeField] int damage = 100;
+    [SerializeField]float damage;
 
-    /*private void OnCollisionEnter(Collision collision)
-    {
-
-        if (isAttacking == true)
-        {
-            if (collision.gameObject.tag == "Enemy")
-            {
-                collision.gameObject.GetComponent<EnemyHealth>().TakeDamage(damage);
-            }
-        }
-
-    }*/
-
-    public void OnTriggerEnter(Collider collision)
+    private void OnTriggerEnter(Collider other)
     {
         if (PlayerController.state == PlayerState.ATTACKING)
         {
-            if (collision.gameObject.tag == "Enemy")
+            if (other.gameObject.tag == "Enemy")
             {
-                collision.gameObject.GetComponent<AIHealth>().TakeDamage(damage);
-               
+                Debug.Log("Hit");
+                other.gameObject.GetComponentInParent<AIHealth>().TakeDamage(damage);
+                other.gameObject.GetComponentInParent<AIStateManager>().Hit();
             }
         }
     }

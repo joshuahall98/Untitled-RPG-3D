@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 747fc3c755aaba041ae3e6ddd3494422, type: 3}
   m_Name: PlayerStartSword
   m_EditorClassIdentifier: 
-  baseDmg: 100
+  baseDmg: 10
   heavyDmg: 20
   dashSpeed: 5
   dashDistance: 1
