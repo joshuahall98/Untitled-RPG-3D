@@ -7,10 +7,9 @@ using UnityEngine.AI;
 public class AIAttackState : AIState
 {
     [SerializeField]AIStateManager stateManager;
+    [SerializeField]AIController controller;
 
     NavMeshAgent navMeshAgent;
-
-    [SerializeField] Animator anim;
 
     private void Start()
     {
@@ -21,13 +20,19 @@ public class AIAttackState : AIState
     {
         if (stateManager.state == AIStateEnum.IDLE)//idle state
         {
-            anim.ResetTrigger("Attack");
+            controller.anim.ResetTrigger("Attack");
             navMeshAgent.isStopped = false;
             return stateManager.idleState;
         }
+        else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
+        {
+            controller.anim.ResetTrigger("Attack");
+            navMeshAgent.isStopped = false;
+            return stateManager.staggerState;
+        }
         else
         {
-            anim.SetTrigger("Attack");
+            controller.anim.SetTrigger("Attack");
             return this;
         }
         

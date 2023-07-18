@@ -7,12 +7,13 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class AIChaseState : AIState
 {
     [SerializeField]AIStateManager stateManager;
+    [SerializeField]AIController controller;
 
     NavMeshAgent navMeshAgent;
 
     GameObject player;
 
-    [SerializeField] Animator anim;
+
 
     private void Start()
     {
@@ -24,14 +25,20 @@ public class AIChaseState : AIState
     {
         if (stateManager.state == AIStateEnum.ATTACK)//attack state
         {
-            anim.SetBool("isChasing", false);
+            controller.anim.SetBool("isChasing", false);
             return stateManager.attackState;
         }
         else if (stateManager.state == AIStateEnum.IDLE)//idle state  
         {
-            anim.SetBool("isChasing", false);
+            controller.anim.SetBool("isChasing", false);
             OutOfRange();
             return stateManager.idleState;
+        }
+        else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
+        {
+            StopMovement();
+            controller.anim.SetBool("isChasing", false);
+            return stateManager.staggerState;
         }
         else//chase state
         {
@@ -52,22 +59,27 @@ public class AIChaseState : AIState
     void ChasePlayer()
     {
         navMeshAgent.isStopped = false;
-        anim.SetBool("isChasing", true);
+        controller.anim.SetBool("isChasing", true);
         navMeshAgent.speed = 4;
         this.navMeshAgent.SetDestination(player.transform.position);
         if (Vector3.Distance(this.transform.position, player.transform.position) < 2)
         {
-            navMeshAgent.velocity = Vector3.zero;
-            navMeshAgent.isStopped = true;
+            StopMovement();
             stateManager.state = AIStateEnum.ATTACK;
         }
     }
 
     void OutOfRange()
     {
-        anim.SetBool("isChasing", false);
+        controller.anim.SetBool("isChasing", false);
         this.navMeshAgent.SetDestination(this.transform.position);
         //idleState.IdleZone();//reset the idle zone to where the AI has stopped
+    }
+
+    void StopMovement()
+    {
+        navMeshAgent.velocity = Vector3.zero;
+        navMeshAgent.isStopped = true;
     }
 
 }

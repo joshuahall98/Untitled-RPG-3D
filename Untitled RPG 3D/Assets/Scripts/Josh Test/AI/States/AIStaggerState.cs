@@ -5,27 +5,18 @@ using UnityEngine;
 public class AIStaggerState : AIState
 {
     [SerializeField]AIStateManager stateManager;
-
-    [SerializeField]bool isStaggered = true;
-
-    Animator anim;
-
-    private void Start()
-    {
-        anim = GetComponentInParent<Animator>();
-    }
-
+    [SerializeField]AIController controller;
 
     public override AIState RunCurrentState()
     {
-        if(!isStaggered) 
+        if(stateManager.state == AIStateEnum.IDLE) 
         {
-            isStaggered = true;
+            controller.anim.ResetTrigger("isHit");
             return stateManager.idleState;
         }
         else
         {
-            Debug.Log("Stagger");
+            controller.anim.SetTrigger("isHit");
             return this;
         }
         
@@ -33,8 +24,7 @@ public class AIStaggerState : AIState
 
     public void StaggerFin()
     {
-        Debug.Log("stagger false");
-        isStaggered = false;
+        stateManager.state = AIStateEnum.IDLE;
     }
     
 }

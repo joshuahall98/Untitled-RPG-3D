@@ -20,7 +20,7 @@ public class WeaponDamage : MonoBehaviour
             {
                 Debug.Log("Hit");
                 other.gameObject.GetComponentInParent<AIHealth>().TakeDamage(damage);
-                other.gameObject.GetComponentInParent<AIStateManager>().Hit();
+                other.gameObject.GetComponentInParent<AIStateManager>().IsHit();
             }
         }
     }

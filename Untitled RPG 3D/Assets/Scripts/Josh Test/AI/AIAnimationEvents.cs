@@ -5,16 +5,13 @@ using UnityEngine;
 public class AIAnimationEvents : MonoBehaviour
 {
 
-    [SerializeField] AIAttackState attackState;
-    [SerializeField] AIStaggerState staggerState;
+    [SerializeField]AIStateManager stateManager;
 
-    public void AEStaggerFin()
+
+    public void AEReturnToIdle()
     {
-        staggerState.StaggerFin();
+        Debug.Log("Idle");
+        stateManager.state = AIStateEnum.IDLE;
     }
 
-    public void AEAttackFin()
-    {
-        attackState.AttackFin();
-    }
 }

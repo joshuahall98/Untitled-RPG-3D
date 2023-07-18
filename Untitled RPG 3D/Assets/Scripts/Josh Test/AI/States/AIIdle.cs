@@ -7,11 +7,7 @@ using UnityEngine.AI;
 public class AIIdle : AIState
 {
     [SerializeField]AIStateManager stateManager;
-
-    //state transitions
-    [SerializeField] bool staggered;
-
-    [SerializeField]Animator anim;
+    [SerializeField]AIController controller;
 
     //patrol
     Vector3 idleZone;
@@ -34,12 +30,12 @@ public class AIIdle : AIState
     {
         if(stateManager.state == AIStateEnum.CHASE)//chase state
         {   
-            anim.SetBool("isWalking", false);
+            controller.anim.SetBool("isWalking", false);
             return stateManager.chaseState;    
         }
-        else if (stateManager.state == AIStateEnum.STAGGER)//stagger
+        else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
         {
-            anim.SetTrigger("isHit");
+            controller.anim.SetBool("isWalking", false);
             return stateManager.staggerState;
         }
         else//idle state
@@ -74,14 +70,14 @@ public class AIIdle : AIState
         {
             navMeshAgent.isStopped = false;
             navMeshAgent.SetDestination(destPoint);
-            anim.SetBool("isWalking", true);
+            controller.anim.SetBool("isWalking", true);
         }
         if (Vector3.Distance(this.transform.position, destPoint) < 1)
         {
             //navMeshAgent.SetDestination(gameObject.transform.position);
             walkPointSet = false;
             canWalk = false;
-            anim.SetBool("isWalking", false);
+            controller.anim.SetBool("isWalking", false);
             navMeshAgent.velocity = Vector3.zero;
             navMeshAgent.isStopped = true;
             

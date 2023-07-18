@@ -7,6 +7,7 @@ public class AIStateManager : MonoBehaviour
 {
     //states scripts
     public AIState currentState;
+    
     public AIIdle idleState;
     public AIChaseState chaseState;
     public AIAttackState attackState;
@@ -42,9 +43,8 @@ public class AIStateManager : MonoBehaviour
         currentState = nextState;
     }
 
-    public void Hit()
+    public void IsHit()
     {
-        state = AIStateEnum.IDLE;
         state = AIStateEnum.STAGGER;
     }
 
