@@ -20,7 +20,8 @@ public class JAHKnockback : MonoBehaviour
     {
         if (isHit)
         {
-            hitObject.transform.Translate(direction * knockbackStrength * Time.deltaTime);
+            //hitObject.transform.Translate(direction * knockbackStrength * Time.deltaTime);
+            hitObject.transform.position += player.transform.forward * Time.deltaTime * knockbackStrength;
         }
 
     }
@@ -38,19 +39,12 @@ public class JAHKnockback : MonoBehaviour
 
             //rb.isKinematic = false;
 
-            if(collision.tag != "Enemy")
-            {
-                direction = collision.transform.position - player.transform.position;
-                direction.y = 0;
+            
+            direction = collision.transform.position - player.transform.position;
+            direction.y = 0;
 
-            }
-            else if(collision.tag == "Enemy")
-            {
-                direction = collision.transform.position - player.transform.position;
-                direction.y = 0;
-
-               
-            }
+            
+            
             
 
             //rb.AddForce(direction.normalized * knockbackStrength, ForceMode.Impulse);
@@ -59,13 +53,13 @@ public class JAHKnockback : MonoBehaviour
 
             hitObject = collision.gameObject;
 
-            hitObject.GetComponent<NavMeshAgent>().updatePosition = false;
-
             /*hitObject.GetComponent<NavMeshAgent>().velocity = Vector3.zero;
             hitObject.GetComponent<NavMeshAgent>().isStopped = true;*/
 
 
             isHit = true;
+
+            hitObject.GetComponent<Animator>().SetTrigger("isHit");
 
             Debug.Log("Hit");
             
@@ -84,8 +78,6 @@ public class JAHKnockback : MonoBehaviour
        // rb.velocity = Vector3.zero;
 
         isHit = false;
-
-        hitObject.GetComponent<NavMeshAgent>().updatePosition = true;
 
         // hitObject.GetComponent<NavMeshAgent>().isStopped = false;
     }

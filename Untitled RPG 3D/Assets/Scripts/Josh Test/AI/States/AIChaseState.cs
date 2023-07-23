@@ -34,9 +34,6 @@ public class AIChaseState : AIState
         {
             StopMovement();
             controller.anim.SetBool("isChasing", false);
-            controller.anim.SetTrigger("isHit");
-            controller.agent.velocity = Vector3.zero;
-            controller.agent.isStopped = true;
             return stateManager.staggerState;
         }
         else//chase state

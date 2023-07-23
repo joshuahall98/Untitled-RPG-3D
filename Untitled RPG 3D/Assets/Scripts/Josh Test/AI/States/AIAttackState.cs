@@ -18,10 +18,6 @@ public class AIAttackState : AIState
         }
         else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
         {
-            controller.agent.isStopped = false;
-            controller.anim.SetTrigger("isHit");
-            controller.agent.velocity = Vector3.zero;
-            controller.agent.isStopped = true;
             return stateManager.staggerState;
         }
         else

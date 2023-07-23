@@ -35,10 +35,6 @@ public class AIIdle : AIState
         else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
         {
             controller.anim.SetBool("isWalking", false);
-            controller.anim.SetTrigger("isHit");
-            controller.agent.velocity = Vector3.zero;
-            controller.agent.isStopped = true;
-            //controller.agent.enabled = false;
             return stateManager.staggerState;
         }
         else//idle state
