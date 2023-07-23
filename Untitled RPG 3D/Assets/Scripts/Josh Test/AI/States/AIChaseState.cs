@@ -6,18 +6,14 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class AIChaseState : AIState
 {
-    [SerializeField]AIStateManager stateManager;
-    [SerializeField]AIController controller;
-
-    NavMeshAgent navMeshAgent;
+    [SerializeField] AIStateManager stateManager;
+    [SerializeField] AIController controller;
+    [SerializeField] float dist;
 
     GameObject player;
 
-
-
     private void Start()
     {
-        navMeshAgent = GetComponentInParent<NavMeshAgent>();
         player = GameObject.Find("Player");
     }
 
@@ -38,10 +34,15 @@ public class AIChaseState : AIState
         {
             StopMovement();
             controller.anim.SetBool("isChasing", false);
+            controller.anim.SetTrigger("isHit");
+            controller.agent.velocity = Vector3.zero;
+            controller.agent.isStopped = true;
             return stateManager.staggerState;
         }
         else//chase state
         {
+            dist = Vector3.Distance(this.transform.position, player.transform.position);
+
             ChasePlayer();
             ReturnToIdle();
             return this;
@@ -50,6 +51,7 @@ public class AIChaseState : AIState
 
     void ReturnToIdle()
     {
+        
         if (Vector3.Distance(this.transform.position, player.transform.position) > 20)
         {
             stateManager.state = AIStateEnum.IDLE;
@@ -58,13 +60,14 @@ public class AIChaseState : AIState
 
     void ChasePlayer()
     {
-        navMeshAgent.isStopped = false;
+        controller.agent.isStopped = false;
         controller.anim.SetBool("isChasing", true);
-        navMeshAgent.speed = 4;
-        this.navMeshAgent.SetDestination(player.transform.position);
-        if (Vector3.Distance(this.transform.position, player.transform.position) < 2)
+        controller.agent.speed = 4;
+        this.controller.agent.SetDestination(player.transform.position);
+        if (Vector3.Distance(this.transform.position, player.transform.position) < 1.5f)
         {
             StopMovement();
+            controller.anim.SetTrigger("Attack");
             stateManager.state = AIStateEnum.ATTACK;
         }
     }
@@ -72,14 +75,14 @@ public class AIChaseState : AIState
     void OutOfRange()
     {
         controller.anim.SetBool("isChasing", false);
-        this.navMeshAgent.SetDestination(this.transform.position);
+        this.controller.agent.SetDestination(this.transform.position);
         //idleState.IdleZone();//reset the idle zone to where the AI has stopped
     }
 
     void StopMovement()
     {
-        navMeshAgent.velocity = Vector3.zero;
-        navMeshAgent.isStopped = true;
+        controller.agent.velocity = Vector3.zero;
+        controller.agent.isStopped = true;
     }
 
 }

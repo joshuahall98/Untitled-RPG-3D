@@ -15,13 +15,12 @@ public class AIIdle : AIState
     [SerializeField]LayerMask groundLayer;
     bool walkPointSet;
     bool canWalk;
-    NavMeshAgent navMeshAgent;
+    
 
     GameObject player;
 
     private void Start()
     {
-        navMeshAgent = GetComponentInParent<NavMeshAgent>();
         player = GameObject.Find("Player");
         IdleZone();   
     }
@@ -36,6 +35,10 @@ public class AIIdle : AIState
         else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
         {
             controller.anim.SetBool("isWalking", false);
+            controller.anim.SetTrigger("isHit");
+            controller.agent.velocity = Vector3.zero;
+            controller.agent.isStopped = true;
+            //controller.agent.enabled = false;
             return stateManager.staggerState;
         }
         else//idle state
@@ -59,7 +62,7 @@ public class AIIdle : AIState
     //move AI in idle zone
     void IdleMovement()
     {
-        navMeshAgent.speed = 2; 
+        controller.agent.speed = 2; 
 
         if(!walkPointSet)
         {
@@ -68,8 +71,8 @@ public class AIIdle : AIState
         }
         if(canWalk)
         {
-            navMeshAgent.isStopped = false;
-            navMeshAgent.SetDestination(destPoint);
+            controller.agent.isStopped = false;
+            controller.agent.SetDestination(destPoint);
             controller.anim.SetBool("isWalking", true);
         }
         if (Vector3.Distance(this.transform.position, destPoint) < 1)
@@ -78,8 +81,8 @@ public class AIIdle : AIState
             walkPointSet = false;
             canWalk = false;
             controller.anim.SetBool("isWalking", false);
-            navMeshAgent.velocity = Vector3.zero;
-            navMeshAgent.isStopped = true;
+            controller.agent.velocity = Vector3.zero;
+            controller.agent.isStopped = true;
             
         }
     }

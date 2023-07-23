@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AIStaggerState : AIState
 {
@@ -11,12 +12,11 @@ public class AIStaggerState : AIState
     {
         if(stateManager.state == AIStateEnum.IDLE) 
         {
-            controller.anim.ResetTrigger("isHit");
+            controller.agent.isStopped = false;
             return stateManager.idleState;
         }
         else
         {
-            controller.anim.SetTrigger("isHit");
             return this;
         }
         

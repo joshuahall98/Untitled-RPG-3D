@@ -21,12 +21,18 @@ public class AttackIndicator : MonoBehaviour
     [SerializeField] GameObject testcube2;
     [SerializeField] GameObject testcube3;*/
 
-    private void Start()
+    private void Awake()
     {
         attackIndicatorCanvas = GameObject.Find("AttackIndicator");
         attackIndicator = GameObject.Find("AttackIndicatorImage");
+        
+    }
+
+    private void Start()
+    {
         Cursor.visible = false;
     }
+
 
     // Update is called once per frame
     void FixedUpdate()

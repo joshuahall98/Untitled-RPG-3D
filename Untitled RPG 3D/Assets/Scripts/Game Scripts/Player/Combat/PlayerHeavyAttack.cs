@@ -35,7 +35,8 @@ public class PlayerHeavyAttack : MonoBehaviour
         
         anim.SetTrigger("HeavyAttackHold");
         anim.ResetTrigger("HeavyAttackFail");
-        sword.SetActive(true);
+        sword.GetComponent<MeshRenderer>().enabled = true;
+        sword.GetComponent<BoxCollider>().enabled = true;
         sheathedSword.SetActive(false);
         swordCollider.enabled = false;
         releaseReady = false;
@@ -90,7 +91,8 @@ public class PlayerHeavyAttack : MonoBehaviour
                 PlayerController.state = PlayerState.IDLE;
             }
 
-            sword.SetActive(false);
+            sword.GetComponent<MeshRenderer>().enabled = false;
+            sword.GetComponent<BoxCollider>().enabled = false;
             sheathedSword.SetActive(true);
 
         }
@@ -98,7 +100,8 @@ public class PlayerHeavyAttack : MonoBehaviour
 
     void HeavyAttackEndAnimEvent()
     {
-        sword.SetActive(false);
+        sword.GetComponent<MeshRenderer>().enabled = false;
+        sword.GetComponent<BoxCollider>().enabled = false;
         sheathedSword.SetActive(true);
         swordCollider.enabled = false;
         WeaponDamage.isAttacking = false;
@@ -122,7 +125,8 @@ public class PlayerHeavyAttack : MonoBehaviour
             SoundManager.SoundManagerInstance.StopSound("Heavy Attack Charge");
             releaseReady = false;
             anim.SetTrigger("HeavyAttackFail");
-            sword.SetActive(false);
+            sword.GetComponent<MeshRenderer>().enabled = false;
+            sword.GetComponent<BoxCollider>().enabled = false;
             sheathedSword.SetActive(true);
         }
     }

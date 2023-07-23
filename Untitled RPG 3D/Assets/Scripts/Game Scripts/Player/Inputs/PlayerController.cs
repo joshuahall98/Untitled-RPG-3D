@@ -136,7 +136,8 @@ public class PlayerController : MonoBehaviour
         rewind = playerInput.Player.Rewind;
 
         //weapons
-        sword.SetActive(false);
+        sword.GetComponent<MeshRenderer>().enabled = false;
+        sword.GetComponent<BoxCollider>().enabled = false;
         sheathedSword.SetActive(true);
         swordCollider = sword.GetComponent<Collider>();
         swordCollider.enabled = false;

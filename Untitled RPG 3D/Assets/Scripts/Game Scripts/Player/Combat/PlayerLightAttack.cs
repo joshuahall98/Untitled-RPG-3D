@@ -62,7 +62,8 @@ public class PlayerLightAttack : MonoBehaviour
             sword.GetComponent<WeaponDamage>().LightAttackDamage();
             GetComponent<AttackIndicator>().Aim();
             WeaponDamage.isAttacking = true;
-            sword.SetActive(true);
+            sword.GetComponent<MeshRenderer>().enabled = true;
+            sword.GetComponent<BoxCollider>().enabled = true;
             sheathedSword.SetActive(false);
             atkNum++;
             swingCDTimer = 1;
@@ -76,7 +77,8 @@ public class PlayerLightAttack : MonoBehaviour
             sword.GetComponent<WeaponDamage>().LightAttackDamage();
             GetComponent<AttackIndicator>().Aim();
             WeaponDamage.isAttacking = true;
-            sword.SetActive(true);
+            sword.GetComponent<MeshRenderer>().enabled = true;
+            sword.GetComponent<BoxCollider>().enabled = true;
             sheathedSword.SetActive(false);
             atkNum++;
             swingCDTimer = 1;
@@ -91,7 +93,8 @@ public class PlayerLightAttack : MonoBehaviour
     {
         
         WeaponDamage.isAttacking = false;
-        sword.SetActive(false);
+        sword.GetComponent<MeshRenderer>().enabled = false;
+        sword.GetComponent<BoxCollider>().enabled = false;
         sheathedSword.SetActive(true);
 
         //If player were to be knockeddown during an attack the idle would trigger overidiing knockdown

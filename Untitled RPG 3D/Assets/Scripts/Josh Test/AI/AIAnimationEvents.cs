@@ -10,7 +10,6 @@ public class AIAnimationEvents : MonoBehaviour
 
     public void AEReturnToIdle()
     {
-        Debug.Log("Idle");
         stateManager.state = AIStateEnum.IDLE;
     }
 

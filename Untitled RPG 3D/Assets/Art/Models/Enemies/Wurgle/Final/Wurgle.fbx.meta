@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 286e77665ac601b4cb753a90a9d7e3ca
+guid: 62706b55b8a7c1f468a8145c554333f9
 ModelImporter:
   serializedVersion: 22102
   internalIDToNameTable:
@@ -13,6 +13,9 @@ ModelImporter:
       74: -7813579317751813016
     second: celebration.001
   - first:
+      74: 5397288376180163424
+    second: Damaged.001
+  - first:
       74: -1629947103407606841
     second: death.001
   - first:
@@ -21,18 +24,6 @@ ModelImporter:
   - first:
       74: 2954781969323615919
     second: Flee.001
-  - first:
-      74: 6517714258327031822
-    second: Idle.001
-  - first:
-      74: 6281953650394205071
-    second: Run.001
-  - first:
-      74: 5833027053681363263
-    second: Stagger.001
-  - first:
-      74: -5097121600575731516
-    second: walk.001
   - first:
       74: -3359888916716740746
     second: rig_deform|Attack weapon small.001
@@ -43,11 +34,20 @@ ModelImporter:
       74: -1785555296681772741
     second: rig_deform|celebration.001
   - first:
+      74: -2210792865689560713
+    second: rig_deform|Damaged.001
+  - first:
       74: 1802399290432748529
     second: rig_deform|death.001
   - first:
       74: -3358151939283174792
     second: rig_deform|Default.001
+  - first:
+      74: 8628866542643495800
+    second: rig_deform|Eye LAction
+  - first:
+      74: 4008531753061948172
+    second: rig_deform|Eye RAction
   - first:
       74: 92784476627559264
     second: rig_deform|Flee.001
@@ -63,51 +63,6 @@ ModelImporter:
   - first:
       74: -2714375094518602203
     second: rig_deform|walk.001
-  - first:
-      74: 5397288376180163424
-    second: Damaged.001
-  - first:
-      74: -2210792865689560713
-    second: rig_deform|Damaged.001
-  - first:
-      74: 8628866542643495800
-    second: rig_deform|Eye LAction
-  - first:
-      74: 4008531753061948172
-    second: rig_deform|Eye RAction
-  - first:
-      74: -6464178533435968529
-    second: rig|Attack
-  - first:
-      74: -8095142001535694815
-    second: rig|Attack weapon small
-  - first:
-      74: -492552532445076018
-    second: rig|celebration
-  - first:
-      74: 9004948250731605685
-    second: rig|Damaged
-  - first:
-      74: 476617491422175090
-    second: rig|death
-  - first:
-      74: -1725503540156421417
-    second: rig|Default
-  - first:
-      74: 8208988007687874122
-    second: rig|Flee
-  - first:
-      74: -7361427651036151181
-    second: rig|Idle
-  - first:
-      74: -5480419611278045171
-    second: rig|Run
-  - first:
-      74: 1268133330014210327
-    second: rig|Stagger
-  - first:
-      74: 2982955500637902885
-    second: rig|walk
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -140,7 +95,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.15
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -194,7 +149,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 0.0015
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
@@ -203,7 +158,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   additionalBone: 0

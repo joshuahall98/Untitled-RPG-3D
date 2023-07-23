@@ -18,9 +18,8 @@ public class WeaponDamage : MonoBehaviour
         {
             if (other.gameObject.tag == "Enemy")
             {
-                Debug.Log("Hit");
-                other.gameObject.GetComponentInParent<AIHealth>().TakeDamage(damage);
-                other.gameObject.GetComponentInParent<AIStateManager>().IsHit();
+                other.gameObject.GetComponent<AIHealth>().TakeDamage(damage);
+                other.gameObject.GetComponent<AIStateManager>().IsHit();
             }
         }
     }
