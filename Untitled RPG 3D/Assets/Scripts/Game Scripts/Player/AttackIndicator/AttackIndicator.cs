@@ -4,6 +4,7 @@ using System.EnterpriseServices;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 //THIS SCRIPT CONTROLS THE POINTER AND ALLOWS THE PLAYER TO AIM ATTACKS
@@ -13,6 +14,7 @@ public class AttackIndicator : MonoBehaviour
     public GameObject attackIndicator;
     public GameObject player; // this looks better when attached to object at players feet
     public LayerMask playerLayer;
+    PlayerController playerController;
 
     //have this accessed for all directional attacks
     Vector3 pointHerePlease;
@@ -25,12 +27,13 @@ public class AttackIndicator : MonoBehaviour
     {
         attackIndicatorCanvas = GameObject.Find("AttackIndicator");
         attackIndicator = GameObject.Find("AttackIndicatorImage");
+        playerController = this.GetComponent<PlayerController>();
         
     }
 
     private void Start()
     {
-        Cursor.visible = false;
+        attackIndicator.SetActive(false);
     }
 
 
@@ -44,6 +47,21 @@ public class AttackIndicator : MonoBehaviour
     private void Update()
     {
         PositionOfMouse();
+        ControlsUsed();
+    }
+
+    void ControlsUsed()
+    {
+        
+        if (playerController.lastDeviceStr == "Mouse:/Mouse" || playerController.lastDeviceStr == "Keyboard:/Keyboard")
+        {
+            attackIndicator.SetActive(true);
+        }
+        else
+        {
+            attackIndicator.SetActive(false);
+        }
+        
     }
 
     void PointFromPlayer()
@@ -121,7 +139,7 @@ public class AttackIndicator : MonoBehaviour
     public void Aim()
     {
         //confirm mouse is being used
-        if(PlayerController.lastDevice.displayName == "Mouse")
+        if (playerController.lastDeviceStr == "Mouse:/Mouse")
         {
             // Calculate the direction
             var direction = pointHerePlease - transform.position;
@@ -132,6 +150,6 @@ public class AttackIndicator : MonoBehaviour
             // Make the transform look in the direction.
             transform.forward = direction;
         }
-       
+
     }
 }

@@ -10,6 +10,9 @@ using UnityEngine.SceneManagement;
 using ClipperLib;
 using Unity.Mathematics;
 using Random = UnityEngine.Random;
+using UnityEngine.iOS;
+using System.Web.Mvc;
+using UnityEngine.InputSystem.Utilities;
 
 //Joshua
 
@@ -93,8 +96,9 @@ public class PlayerController : MonoBehaviour
     //interactbale objects
     GameObject interactableObj;
 
-    //last device used variable
-    public static InputControl lastDevice;
+    //last device used variables
+    InputControl lastDevice;
+    public string lastDeviceStr;
 
     //random variable 
     int rollRandomGen;
@@ -103,6 +107,8 @@ public class PlayerController : MonoBehaviour
     #region - AWAKE - 
     void Awake()
     {
+        
+
         //make this object appear at top of heirarchy
         transform.SetSiblingIndex(0);
 
@@ -153,6 +159,11 @@ public class PlayerController : MonoBehaviour
     {
         //this is called so the rotation is checked so player doesn't roll on the spot
         rollDirection = transform.rotation * Vector3.forward;
+
+        //create the last device container
+        LastDevice();
+
+
     }
 
     #endregion
@@ -168,8 +179,11 @@ public class PlayerController : MonoBehaviour
                 var inputAction = (InputAction)obj;
                 var lastControl = inputAction.activeControl;
                 lastDevice = lastControl.device;
+                lastDeviceStr = lastDevice.ToString();
 
-                //Debug.Log($"device: {lastDevice.displayName}");
+               // Debug.Log(lastDeviceStr);
+
+               // Debug.Log($"device: {lastDevice.displayName}");
 
             
             }
@@ -188,14 +202,19 @@ public class PlayerController : MonoBehaviour
     #region - UPDATE - 
     void Update()
     {
+        //run last device whenever any key is pressed
+        if (Input.anyKey)
+        {
+            LastDevice();
+        }
+        
+
         //to see state in inspector
         visibleState = state;
 
         PlayerMovement();
 
         PlayerFalling();
-
-        LastDevice();
 
         //this prevents you from rolling too much
         if (rollCDTimer > 0)

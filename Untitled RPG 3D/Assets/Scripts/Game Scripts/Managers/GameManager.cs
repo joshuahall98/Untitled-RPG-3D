@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
+
         gameState = GameState.PLAY;
 
         player = GameObject.Find("Player");
