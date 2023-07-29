@@ -13,4 +13,19 @@ public class AIAnimationEvents : MonoBehaviour
         stateManager.state = AIStateEnum.IDLE;
     }
 
+    public void AEWeaponColliderOn()
+    {
+        this.GetComponent<WeaponColliders>().WeaponColliderOn();
+    }
+
+    public void AEWeaponColliderOff()
+    {
+        this.GetComponent<WeaponColliders>().WeaponColliderOff();
+    }
+
+    public void AECheckIfDead()
+    {
+        this.GetComponent<AIHealth>().CheckIfDead();
+    }
+
 }

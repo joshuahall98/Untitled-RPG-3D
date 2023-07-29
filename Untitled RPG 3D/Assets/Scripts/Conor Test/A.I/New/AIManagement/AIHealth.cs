@@ -19,36 +19,31 @@ public class AIHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //agent = GetComponent<AIAgent>();
-
-       // maxHealth = agent.config.maxHP;
-
         currentHealth = maxHealth;
-
-      //  healthBar.maxValue = maxHealth;
-      //  healthBar.value = maxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-       // healthBar.transform.rotation = Camera.main.transform.rotation;
+        
     }
 
     public void TakeDamage(float damageAmount)
     {
-        currentHealth -= damageAmount;
+        currentHealth -= damageAmount;  
+    }
+
+    public void CheckIfDead()
+    {
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            Destroy(gameObject);
+            this.GetComponent<AIStateManager>().state = AIStateEnum.DEATH;
+            this.GetComponent<Animator>().SetBool("isDead", true);
+            this.GetComponent<CapsuleCollider>().enabled = false;
 
             //Play death anim
-            GetComponent<ConXP>().DropXP();
+            //GetComponent<ConXP>().DropXP();
 
         }
-
-       // healthBar.value = maxHealth;
-       // healthBar.gameObject.SetActive(true);
     }
 }

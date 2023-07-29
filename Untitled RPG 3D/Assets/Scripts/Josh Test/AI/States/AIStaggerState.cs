@@ -15,6 +15,10 @@ public class AIStaggerState : AIState
             controller.agent.isStopped = false;
             return stateManager.idleState;
         }
+        else if(stateManager.state == AIStateEnum.DEATH)
+        {
+            return stateManager.deathState;
+        }
         else
         {
             return this;

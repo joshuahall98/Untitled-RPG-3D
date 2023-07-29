@@ -16,12 +16,12 @@ public class WeaponColliders : MonoBehaviour
         collider.enabled = false;
     }
 
-    public void AEWeaponColliderOn()
+    public void WeaponColliderOn()
     {
         collider.enabled = true;
     }
 
-    public void AEWeaponColliderOff()
+    public void WeaponColliderOff()
     {
         collider.enabled = false;
     }

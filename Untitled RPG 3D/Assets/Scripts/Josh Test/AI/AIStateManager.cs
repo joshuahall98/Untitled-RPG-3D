@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum AIStateEnum { IDLE, ATTACK, CHASE, FLEE, ROAM, STAGGER}
+public enum AIStateEnum { IDLE, ATTACK, CHASE, FLEE, ROAM, STAGGER, DEATH}
 public class AIStateManager : MonoBehaviour
 {
     //states scripts
@@ -14,6 +14,7 @@ public class AIStateManager : MonoBehaviour
     public AIFleeState fleeState;
     public AIStaggerState staggerState;
     public AIHideState hideState;
+    public AIDeathState deathState;
 
     public AIStateEnum state;
 
