@@ -112,7 +112,7 @@ public class PlayerLightAttack : MonoBehaviour
         {
             GetComponent<PlayerController>().DisableLightAttack();
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(.5f);
 
             GetComponent<PlayerController>().EnableLightAttack();
             atkNum = 0;

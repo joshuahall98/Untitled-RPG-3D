@@ -63,6 +63,18 @@ ModelImporter:
   - first:
       74: -2714375094518602203
     second: rig_deform|walk.001
+  - first:
+      74: 6517714258327031822
+    second: Idle.001
+  - first:
+      74: 6281953650394205071
+    second: Run.001
+  - first:
+      74: 5833027053681363263
+    second: Stagger.001
+  - first:
+      74: -5097121600575731516
+    second: walk.001
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -149,7 +161,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.0015
+    globalScale: 0.15
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
