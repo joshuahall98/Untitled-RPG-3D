@@ -1,7 +1,7 @@
  using System.Collections;
 using System.Collections.Generic;
 using System.EnterpriseServices;
-using UnityEditor.ShaderGraph.Internal;
+//using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.InputSystem;

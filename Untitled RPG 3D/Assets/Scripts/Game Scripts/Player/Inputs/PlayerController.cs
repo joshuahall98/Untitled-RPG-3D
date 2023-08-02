@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 using ClipperLib;
 using Unity.Mathematics;
 using Random = UnityEngine.Random;
-using UnityEngine.iOS;
+//using UnityEngine.iOS;
 using System.Web.Mvc;
 using UnityEngine.InputSystem.Utilities;
 
@@ -102,6 +102,11 @@ public class PlayerController : MonoBehaviour
 
     //random variable 
     int rollRandomGen;
+
+
+    //for testing AI
+    GameObject aiSpawner;
+
     #endregion
 
     #region - AWAKE - 
@@ -119,12 +124,13 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         playerInput = new PlayerInputActions();
         controller = GetComponent<CharacterController>();
+        aiSpawner = GameObject.Find("TestArenaSpawner");
         dizzyAffect = GameObject.Find("DizzyAffect");
         dizzyAffect.SetActive(false);
 
         //calling all the inputs
         playerInput.Player.Roll.performed += rollPerformed => RollAnimation();
-        //playerInput.Player.SwitchCharacters.performed += damagePerformed => SwitchCharacters();
+        playerInput.Player.SwitchCharacters.performed += spawnPerformed => SpawnAIButton();
         playerInput.Player.CameraRight.performed += CameraRight_performed => CameraRight();
         playerInput.Player.CameraLeft.performed += CameraLeft_performed => CameraLeft();
         playerInput.Player.Rewind.performed += rewindPerformed => Rewind();
@@ -677,6 +683,15 @@ public class PlayerController : MonoBehaviour
         this.GetComponent<PlayerRewind>().enabled = false;*//*
         this.GetComponent<PlayerController>().enabled = false;
     }*/
+
+    #endregion
+
+    #region - SPAWN AI FOR TEST ARENA -
+
+    void SpawnAIButton()
+    {
+        aiSpawner.GetComponent<TestArenaSpawner>().SpawnAI();
+    }
 
     #endregion
 
