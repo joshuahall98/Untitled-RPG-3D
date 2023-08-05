@@ -22,11 +22,6 @@ public class AIHealth : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    private void Update()
-    {
-        
-    }
-
     public void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;  
@@ -38,12 +33,16 @@ public class AIHealth : MonoBehaviour
         {
             currentHealth = 0;
             this.GetComponent<AIStateManager>().state = AIStateEnum.DEATH;
-            this.GetComponent<Animator>().SetBool("isDead", true);
-            this.GetComponent<CapsuleCollider>().enabled = false;
-
-            //Play death anim
             //GetComponent<ConXP>().DropXP();
 
+        }
+    }
+
+    public void CheckHealthPercentage()
+    {
+        if (currentHealth < (maxHealth / 2) && this.GetComponent<AIStateManager>().state != AIStateEnum.DEATH) 
+        {
+            this.GetComponent<AIStateManager>().state = AIStateEnum.FLEE;
         }
     }
 }

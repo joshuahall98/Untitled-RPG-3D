@@ -21,52 +21,31 @@ public class AIIdle : AIState
     private void Start()
     {
         player = GameObject.Find("Player");
-        IdleZone();
-
-    }
-
-
-    public override AIState RunCurrentState()
-    {
-        if(stateManager.state == AIStateEnum.CHASE)//chase state
-        {   
-            controller.anim.SetBool("isWalking", false);
-            return stateManager.chaseState;    
-        }
-        /*else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
-        {
-            controller.anim.SetBool("isWalking", false);
-            return stateManager.staggerState;
-        }*/
-        else//idle state
-        { 
-            IdleMovement();
-            ActivateChaseState();
-            return this;
-        }
-
         
+
     }
 
-    void ActivateChaseState() 
+    void IdleZone()
     {
-        if (Vector3.Distance(this.transform.position, player.transform.position) < 10)
-        {
-            stateManager.state = AIStateEnum.CHASE;
-        }
+        idleZone = this.transform.position;
     }
 
-    //move AI in idle zone
-    void IdleMovement()
+    public override void EnterState(AIStateManager state)
     {
-        controller.agent.speed = 2; 
+        IdleZone();
+    }
 
-        if(!walkPointSet)
+    public override void UpdateState(AIStateManager state)
+    {
+        //idle movement
+        controller.agent.speed = 2;
+
+        if (!walkPointSet)
         {
             StartCoroutine(SearchForLocation());
-            
+
         }
-        if(canWalk)
+        if (canWalk)
         {
             controller.agent.isStopped = false;
             controller.agent.SetDestination(destPoint);
@@ -74,15 +53,54 @@ public class AIIdle : AIState
         }
         if (Vector3.Distance(this.transform.position, destPoint) < 1)
         {
-            //navMeshAgent.SetDestination(gameObject.transform.position);
             walkPointSet = false;
             canWalk = false;
             controller.anim.SetBool("isWalking", false);
             controller.agent.velocity = Vector3.zero;
             controller.agent.isStopped = true;
-            
+
+        }
+
+
+        //switch to chase state
+        if (Vector3.Distance(this.transform.position, player.transform.position) < 10)
+        {
+            stateManager.state = AIStateEnum.CHASE;
+            state.SwitchToTheNextState(state.ChaseState);
         }
     }
+
+    public override void ExitState(AIStateManager state)
+    {
+        controller.anim.SetBool("isWalking", false);
+    }
+
+
+    /*public override AIState RunCurrentState()
+    {
+        if(stateManager.state == AIStateEnum.CHASE)//chase state
+        {   
+            controller.anim.SetBool("isWalking", false);
+            return stateManager.chaseState;    
+        }
+        else//idle state
+        {
+            IdleMovement();
+            ActivateChaseState();
+            return this;
+        }   
+    }*/
+
+    /*void ActivateChaseState(AIStateManager state) 
+    {
+        
+    }
+
+    //move AI in idle zone
+    void IdleMovement()
+    {
+        
+    }*/
     //search for new location to walk
     IEnumerator SearchForLocation()
     {
@@ -99,11 +117,6 @@ public class AIIdle : AIState
 
             canWalk = true;
         }
-    }
-
-    void IdleZone()
-    {
-        idleZone = this.transform.position;
     }
 
     

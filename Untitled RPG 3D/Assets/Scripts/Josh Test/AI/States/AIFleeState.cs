@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Web.Mvc;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class AIFleeState : AIState
 {
-    bool hidden;
 
     [SerializeField]AIStateManager stateManager;
+    [SerializeField]AIController controller;
 
     GameObject player;
 
@@ -20,11 +21,10 @@ public class AIFleeState : AIState
 
     }
 
-    public override AIState RunCurrentState()
+    /*public override AIState RunCurrentState()
     {
-        if (hidden)
+        if (stateManager.state == AIStateEnum.HIDE)//hide state
         {
-            //enemy hides
             return stateManager.hideState;
         }
         else 
@@ -33,10 +33,25 @@ public class AIFleeState : AIState
 
             this.navMeshAgent.destination = this.transform.position + playerDirection;
 
+           // controller.anim.SetBool("isFleeing", true);
+
             return this;
         }
        
+    }*/
+
+    public override void EnterState(AIStateManager state)
+    {
+        throw new System.NotImplementedException();
     }
 
-    
+    public override void UpdateState(AIStateManager state)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void ExitState(AIStateManager state)
+    {
+        throw new System.NotImplementedException();
+    }
 }

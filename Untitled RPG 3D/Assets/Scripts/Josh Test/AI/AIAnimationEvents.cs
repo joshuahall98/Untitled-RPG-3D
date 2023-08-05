@@ -28,4 +28,9 @@ public class AIAnimationEvents : MonoBehaviour
         this.GetComponent<AIHealth>().CheckIfDead();
     }
 
+    public void AECheckHealthPercentage()
+    {
+        this.GetComponent<AIHealth>().CheckHealthPercentage();
+    }
+
 }

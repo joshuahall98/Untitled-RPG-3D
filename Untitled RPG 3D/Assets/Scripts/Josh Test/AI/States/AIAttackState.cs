@@ -9,29 +9,52 @@ public class AIAttackState : AIState
     [SerializeField]AIStateManager stateManager;
     [SerializeField]AIController controller;
 
-    public override AIState RunCurrentState()
+    bool attackFin = false;
+
+    public override void EnterState(AIStateManager state)
     {
-        if (stateManager.state == AIStateEnum.IDLE)//idle state
+
+        controller.anim.SetTrigger("Attack");
+        controller.agent.velocity = Vector3.zero;
+        controller.agent.isStopped = true;
+        stateManager.state = AIStateEnum.ATTACK;
+    }
+
+    public override void UpdateState(AIStateManager state)
+    {
+        if(attackFin ==  true)
         {
-            controller.agent.isStopped = false;
-            return stateManager.idleState;
+            state.SwitchToTheNextState(state.IdleState);
         }
-        else if (stateManager.state == AIStateEnum.CHASE)//chase state
-        {
-            return stateManager.chaseState;
-        }
-        else
-        {
-            controller.anim.SetBool("isChasing", false);
-            return this;
-        }
-        
+    }
+
+    public override void ExitState(AIStateManager state)
+    {
+        controller.anim.SetBool("isChasing", false);//this has to be called after otherwise it bugs
+        controller.agent.isStopped = false;
+        attackFin = false;
     }
 
     public void AttackFin()
     {
-        stateManager.state = AIStateEnum.IDLE;
+        attackFin = true;
+        Debug.Log("attack fone");
     }
+
+    /*public override AIState RunCurrentState()
+    {
+        if (stateManager.state == AIStateEnum.IDLE)//idle state
+        {
+            
+            return stateManager.idleState;
+        }
+        else
+        {
+            
+            return this;
+        }
+        
+    }*/
 
     
 }

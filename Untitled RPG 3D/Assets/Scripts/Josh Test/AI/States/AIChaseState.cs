@@ -17,7 +17,43 @@ public class AIChaseState : AIState
         player = GameObject.Find("Player");
     }
 
-    public override AIState RunCurrentState()
+    public override void EnterState(AIStateManager state)
+    {
+        //unused
+    }
+
+    public override void UpdateState(AIStateManager state)
+    {
+        //dist = Vector3.Distance(this.transform.position, player.transform.position);
+
+
+        //return to idle
+        if (Vector3.Distance(this.transform.position, player.transform.position) > 20)
+        {
+            stateManager.state = AIStateEnum.IDLE;
+            controller.anim.SetBool("isChasing", false);
+            state.SwitchToTheNextState(state.IdleState);
+        }
+
+        //chase player
+        controller.agent.isStopped = false;
+        controller.anim.SetBool("isChasing", true);
+        controller.agent.speed = 4;
+        this.controller.agent.SetDestination(player.transform.position);
+
+        //attack state
+        if (Vector3.Distance(this.transform.position, player.transform.position) < 1.5f)
+        {
+            state.SwitchToTheNextState(state.AttackState);
+        }
+    }
+
+    public override void ExitState(AIStateManager state)
+    {
+        this.controller.agent.SetDestination(this.transform.position);
+    }
+
+    /*public override AIState RunCurrentState()
     {
         if (stateManager.state == AIStateEnum.ATTACK)//attack state
         {
@@ -28,57 +64,36 @@ public class AIChaseState : AIState
             OutOfRange();
             return stateManager.idleState;
         }
-        /*else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
-        {
-            StopMovement();
-            controller.anim.SetBool("isChasing", false);
-            return stateManager.staggerState;
-        }*/
         else//chase state
         {
-            dist = Vector3.Distance(this.transform.position, player.transform.position);
+            
 
             ChasePlayer();
             ReturnToIdle();
             return this;
         }
-    }
+    }*/
 
     void ReturnToIdle()
     {
         
-        if (Vector3.Distance(this.transform.position, player.transform.position) > 20)
-        {
-            stateManager.state = AIStateEnum.IDLE;
-        }
+        
     }
 
     void ChasePlayer()
     {
-        controller.agent.isStopped = false;
-        controller.anim.SetBool("isChasing", true);
-        controller.agent.speed = 4;
-        this.controller.agent.SetDestination(player.transform.position);
-        if (Vector3.Distance(this.transform.position, player.transform.position) < 1.5f)
-        {
-            
-            controller.anim.SetTrigger("Attack");
-            StopMovement();
-            stateManager.state = AIStateEnum.ATTACK;
-        }
+        
     }
 
     void OutOfRange()
     {
-        controller.anim.SetBool("isChasing", false);
-        this.controller.agent.SetDestination(this.transform.position);
+        
         //idleState.IdleZone();//reset the idle zone to where the AI has stopped
     }
 
     void StopMovement()
     {
-        controller.agent.velocity = Vector3.zero;
-        controller.agent.isStopped = true;
+       
     }
 
     
