@@ -27,6 +27,14 @@ public class AIStateManager : MonoBehaviour
     void Update()
     {
         RunStateMachine();
+        if (state == AIStateEnum.STAGGER)
+        {
+            currentState = staggerState;
+        }
+        else if (state == AIStateEnum.DEATH)
+        {
+            currentState = deathState;
+        }
     }
 
     private void RunStateMachine()

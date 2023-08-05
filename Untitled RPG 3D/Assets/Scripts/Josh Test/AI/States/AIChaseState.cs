@@ -21,21 +21,19 @@ public class AIChaseState : AIState
     {
         if (stateManager.state == AIStateEnum.ATTACK)//attack state
         {
-            controller.anim.SetBool("isChasing", false);
             return stateManager.attackState;
         }
         else if (stateManager.state == AIStateEnum.IDLE)//idle state  
         {
-            controller.anim.SetBool("isChasing", false);
             OutOfRange();
             return stateManager.idleState;
         }
-        else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
+        /*else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
         {
             StopMovement();
             controller.anim.SetBool("isChasing", false);
             return stateManager.staggerState;
-        }
+        }*/
         else//chase state
         {
             dist = Vector3.Distance(this.transform.position, player.transform.position);
@@ -63,8 +61,9 @@ public class AIChaseState : AIState
         this.controller.agent.SetDestination(player.transform.position);
         if (Vector3.Distance(this.transform.position, player.transform.position) < 1.5f)
         {
-            StopMovement();
+            
             controller.anim.SetTrigger("Attack");
+            StopMovement();
             stateManager.state = AIStateEnum.ATTACK;
         }
     }
@@ -82,5 +81,6 @@ public class AIChaseState : AIState
         controller.agent.isStopped = true;
     }
 
+    
 }
   

@@ -16,12 +16,13 @@ public class AIAttackState : AIState
             controller.agent.isStopped = false;
             return stateManager.idleState;
         }
-        else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
+        else if (stateManager.state == AIStateEnum.CHASE)//chase state
         {
-            return stateManager.staggerState;
+            return stateManager.chaseState;
         }
         else
         {
+            controller.anim.SetBool("isChasing", false);
             return this;
         }
         
@@ -31,4 +32,6 @@ public class AIAttackState : AIState
     {
         stateManager.state = AIStateEnum.IDLE;
     }
+
+    
 }

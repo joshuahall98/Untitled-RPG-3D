@@ -15,15 +15,16 @@ public class AIIdle : AIState
     [SerializeField]LayerMask groundLayer;
     bool walkPointSet;
     bool canWalk;
-    
 
     GameObject player;
 
     private void Start()
     {
         player = GameObject.Find("Player");
-        IdleZone();   
+        IdleZone();
+
     }
+
 
     public override AIState RunCurrentState()
     {
@@ -32,11 +33,11 @@ public class AIIdle : AIState
             controller.anim.SetBool("isWalking", false);
             return stateManager.chaseState;    
         }
-        else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
+        /*else if (stateManager.state == AIStateEnum.STAGGER)//stagger state
         {
             controller.anim.SetBool("isWalking", false);
             return stateManager.staggerState;
-        }
+        }*/
         else//idle state
         { 
             IdleMovement();
@@ -106,5 +107,4 @@ public class AIIdle : AIState
     }
 
     
-
 }
