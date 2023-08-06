@@ -20,8 +20,7 @@ public class AIIdle : AIState
 
     private void Start()
     {
-        player = GameObject.Find("Player");
-        
+        player = GameObject.Find("Player");    
 
     }
 
@@ -33,6 +32,12 @@ public class AIIdle : AIState
     public override void EnterState(AIStateManager state)
     {
         IdleZone();
+
+        //calling this to allow for mutiple stagger hits
+        if(controller.isHit == true)
+        {
+            stateManager.IsHit();
+        }
     }
 
     public override void UpdateState(AIStateManager state)
@@ -63,10 +68,11 @@ public class AIIdle : AIState
 
 
         //switch to chase state
-        if (Vector3.Distance(this.transform.position, player.transform.position) < 10)
+        if (Vector3.Distance(this.transform.position, player.transform.position) < 10 || stateManager.angry == true)
         {
             stateManager.state = AIStateEnum.CHASE;
             state.SwitchToTheNextState(state.ChaseState);
+            stateManager.angry = true;
         }
     }
 

@@ -30,7 +30,7 @@ public class AIAttackState : AIState
 
     public override void ExitState(AIStateManager state)
     {
-        controller.anim.SetBool("isChasing", false);//this has to be called after otherwise it bugs
+        controller.anim.SetBool("isChasing", false);//this has to be called after otherwise animator bugs
         controller.agent.isStopped = false;
         attackFin = false;
     }
@@ -38,7 +38,6 @@ public class AIAttackState : AIState
     public void AttackFin()
     {
         attackFin = true;
-        Debug.Log("attack fone");
     }
 
     /*public override AIState RunCurrentState()

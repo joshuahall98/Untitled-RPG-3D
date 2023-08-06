@@ -19,9 +19,14 @@ public class WeaponDamage : MonoBehaviour
             if (other.gameObject.tag == "Enemy")
             {
                 other.gameObject.GetComponent<AIHealth>().TakeDamage(damage);
-                other.gameObject.GetComponent<AIStateManager>().IsHit();
+                GetComponent<Collider>().enabled = false;
             }
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        GetComponent<Collider>().enabled = true;
     }
 
     public void LightAttackDamage()

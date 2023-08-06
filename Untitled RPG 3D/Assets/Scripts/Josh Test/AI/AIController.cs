@@ -10,7 +10,7 @@ public class AIController : MonoBehaviour
     public NavMeshAgent agent;
 
     float tempStrength;
-    bool isHit;
+    public bool isHit;
     float weight;
     Vector3 playerPos;
 
@@ -37,5 +37,6 @@ public class AIController : MonoBehaviour
         isHit = true;
         weight = knockbackStrength / 25;
         playerPos = playerPosition;
+
     }
 }

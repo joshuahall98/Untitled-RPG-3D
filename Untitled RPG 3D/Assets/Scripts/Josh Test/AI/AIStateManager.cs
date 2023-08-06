@@ -6,7 +6,7 @@ public enum AIStateEnum { IDLE, ATTACK, CHASE, FLEE, ROAM, STAGGER, DEATH, HIDE}
 public class AIStateManager : MonoBehaviour
 {
     //states scripts
-    [SerializeField]AIState currentState;
+    public AIState currentState;
     public AIIdle IdleState;
     public AIChaseState ChaseState;
     public AIAttackState AttackState;
@@ -14,6 +14,8 @@ public class AIStateManager : MonoBehaviour
     public AIDeathState DeathState;
     public AIFleeState FleeState;
     public AIHideState HideState;
+
+    public bool angry; // to control whether AI is angry
     
     
     /*public AIIdle idleState;
@@ -76,6 +78,14 @@ public class AIStateManager : MonoBehaviour
     public void IsHit()
     {
         state = AIStateEnum.STAGGER;
+        if(currentState != StaggerState)
+        {
+            currentState.ExitState(this);
+            currentState = StaggerState;
+            currentState.EnterState(this);
+        }
+
+        
     }
 
 

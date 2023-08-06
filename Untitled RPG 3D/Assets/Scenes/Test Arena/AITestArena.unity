@@ -185,7 +185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1689940225591495859, guid: d3a6362d2dff6f944ab0422baf23a927, type: 3}
       propertyPath: knockbackStrength
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -1508,7 +1508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4795095493341186605, guid: 2365fb1b5183af14ca18fa5ba581f093, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 45.08
+      value: 50.37
       objectReference: {fileID: 0}
     - target: {fileID: 4795095493341186605, guid: 2365fb1b5183af14ca18fa5ba581f093, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8324,7 +8324,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh27934
+  m_Name: pb_Mesh27936
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2

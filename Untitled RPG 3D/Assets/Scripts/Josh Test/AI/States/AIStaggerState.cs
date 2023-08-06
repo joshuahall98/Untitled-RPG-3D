@@ -8,21 +8,40 @@ public class AIStaggerState : AIState
     [SerializeField]AIStateManager stateManager;
     [SerializeField]AIController controller;
 
+    
+
+    [SerializeField]bool staggerFin = false;
+
+
     public override void EnterState(AIStateManager state)
     {
-        throw new System.NotImplementedException();
+        staggerFin = false;
+        controller.agent.isStopped = true;
+    }
+
+    public override void UpdateState(AIStateManager state)
+    {
+
+        if (staggerFin == true)
+        {
+            state.SwitchToTheNextState(state.IdleState);
+        }
+
+        controller.anim.ResetTrigger("Attack");//to stop animator transitioning to wrong animation
     }
 
     public override void ExitState(AIStateManager state)
     {
-        throw new System.NotImplementedException();
+        staggerFin = false;
+        controller.agent.isStopped = false;
+        
     }
 
    /* public override AIState RunCurrentState()
     {
         if(stateManager.state == AIStateEnum.IDLE) 
         {
-            controller.agent.isStopped = false;
+            
             return stateManager.idleState;
         }
         else
@@ -34,11 +53,12 @@ public class AIStaggerState : AIState
 
     public void StaggerFin()
     {
-        stateManager.state = AIStateEnum.IDLE;
-    }
 
-    public override void UpdateState(AIStateManager state)
-    {
-        throw new System.NotImplementedException();
+        //stateManager.state = AIStateEnum.IDLE;
+        staggerFin = true;
+        Debug.Log("stagger done");
+
+        
     }
+    
 }

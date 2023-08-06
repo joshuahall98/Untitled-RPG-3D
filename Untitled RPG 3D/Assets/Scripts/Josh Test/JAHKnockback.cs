@@ -17,6 +17,8 @@ public class JAHKnockback : MonoBehaviour
     GameObject hitObject;
     Vector3 direction;
 
+    public bool collisionHappened;
+
     private void OnTriggerEnter(Collider collision)
     {
 
@@ -32,8 +34,10 @@ public class JAHKnockback : MonoBehaviour
             playerPos = player.transform.forward;
 
             hitObject.GetComponent<Animator>().SetTrigger("isHit");
+            hitObject.GetComponent<AIStateManager>().IsHit();
             hitObject.GetComponent<AIController>().KnockedBack(knockbackStrength, playerPos);
 
         }
     }
+
 }

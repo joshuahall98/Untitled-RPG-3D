@@ -33,6 +33,7 @@ public class AIChaseState : AIState
             stateManager.state = AIStateEnum.IDLE;
             controller.anim.SetBool("isChasing", false);
             state.SwitchToTheNextState(state.IdleState);
+            stateManager.angry = false;
         }
 
         //chase player
