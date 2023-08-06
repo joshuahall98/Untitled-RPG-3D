@@ -17,6 +17,11 @@ public class AIStaggerState : AIState
     {
         staggerFin = false;
         controller.agent.isStopped = true;
+
+        if(stateManager.GetComponent<AIHealth>().currentHealth <= 0)
+        {
+            state.SwitchToTheNextState(state.DeathState);
+        }
     }
 
     public override void UpdateState(AIStateManager state)
@@ -34,6 +39,8 @@ public class AIStaggerState : AIState
     {
         staggerFin = false;
         controller.agent.isStopped = false;
+
+        
         
     }
 
@@ -53,12 +60,8 @@ public class AIStaggerState : AIState
 
     public void StaggerFin()
     {
-
         //stateManager.state = AIStateEnum.IDLE;
         staggerFin = true;
-        Debug.Log("stagger done");
-
-        
     }
     
 }

@@ -7,12 +7,6 @@ public class AIAnimationEvents : MonoBehaviour
 
     [SerializeField]AIStateManager stateManager;
 
-
-    public void AEReturnToIdle()
-    {
-        stateManager.state = AIStateEnum.IDLE;
-    }
-
     public void AEWeaponColliderOn()
     {
         this.GetComponent<WeaponColliders>().WeaponColliderOn();
@@ -23,10 +17,10 @@ public class AIAnimationEvents : MonoBehaviour
         this.GetComponent<WeaponColliders>().WeaponColliderOff();
     }
 
-    public void AECheckIfDead()
+    /*public void AECheckIfDead()
     {
         this.GetComponent<AIHealth>().CheckIfDead();
-    }
+    }*/
 
     public void AECheckHealthPercentage()
     {

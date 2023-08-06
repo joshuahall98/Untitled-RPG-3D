@@ -15,7 +15,6 @@ public class AIHealth : MonoBehaviour
     [SerializeField]
     AIAgent agent;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -27,16 +26,16 @@ public class AIHealth : MonoBehaviour
         currentHealth -= damageAmount;  
     }
 
-    public void CheckIfDead()
+    /*public void CheckIfDead()
     {
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            this.GetComponent<AIStateManager>().state = AIStateEnum.DEATH;
+            this.GetComponent<AIStateManager>().IsDead();
             //GetComponent<ConXP>().DropXP();
 
         }
-    }
+    }*/
 
     public void CheckHealthPercentage()
     {

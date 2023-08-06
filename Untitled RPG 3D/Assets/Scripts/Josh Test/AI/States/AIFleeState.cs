@@ -29,11 +29,9 @@ public class AIFleeState : AIState
         }
         else 
         {
-            Vector3 playerDirection = this.transform.position - player.transform.position;
+            
 
-            this.navMeshAgent.destination = this.transform.position + playerDirection;
-
-           // controller.anim.SetBool("isFleeing", true);
+           // 
 
             return this;
         }
@@ -42,16 +40,18 @@ public class AIFleeState : AIState
 
     public override void EnterState(AIStateManager state)
     {
-        throw new System.NotImplementedException();
+        controller.anim.SetBool("isFleeing", true);
     }
 
     public override void UpdateState(AIStateManager state)
     {
-        throw new System.NotImplementedException();
+        Vector3 playerDirection = this.transform.position - player.transform.position;
+
+        this.navMeshAgent.destination = this.transform.position + playerDirection;
     }
 
     public override void ExitState(AIStateManager state)
     {
-        throw new System.NotImplementedException();
+
     }
 }

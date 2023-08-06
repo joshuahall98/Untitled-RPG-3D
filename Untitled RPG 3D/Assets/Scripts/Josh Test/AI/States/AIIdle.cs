@@ -38,6 +38,10 @@ public class AIIdle : AIState
         {
             stateManager.IsHit();
         }
+        else if (stateManager.GetComponent<AIHealth>().currentHealth < stateManager.GetComponent<AIHealth>().maxHealth / 2)
+        {
+            state.SwitchToTheNextState(state.FleeState);
+        }
     }
 
     public override void UpdateState(AIStateManager state)

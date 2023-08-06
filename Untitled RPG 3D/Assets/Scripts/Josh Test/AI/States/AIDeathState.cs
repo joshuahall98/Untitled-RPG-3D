@@ -9,23 +9,25 @@ public class AIDeathState : AIState
 
     public override void EnterState(AIStateManager state)
     {
-        throw new System.NotImplementedException();
+        controller.GetComponent<Animator>().SetBool("isDead", true);
+        controller.GetComponent<CapsuleCollider>().enabled = false;
+    }
+
+    public override void UpdateState(AIStateManager state)
+    {
+
     }
 
     public override void ExitState(AIStateManager state)
     {
-        throw new System.NotImplementedException();
+
     }
 
     /*public override AIState RunCurrentState()
     {
-        controller.GetComponent<Animator>().SetBool("isDead", true);
-        controller.GetComponent<CapsuleCollider>().enabled = false;
+        
         return this;
     }*/
 
-    public override void UpdateState(AIStateManager state)
-    {
-        throw new System.NotImplementedException();
-    }
+    
 }

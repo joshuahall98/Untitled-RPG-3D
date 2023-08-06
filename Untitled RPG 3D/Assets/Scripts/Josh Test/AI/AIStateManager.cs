@@ -16,6 +16,7 @@ public class AIStateManager : MonoBehaviour
     public AIHideState HideState;
 
     public bool angry; // to control whether AI is angry
+    bool delayDone = false;
     
     
     /*public AIIdle idleState;
@@ -30,11 +31,19 @@ public class AIStateManager : MonoBehaviour
 
     private void Start()
     {
-        state = AIStateEnum.IDLE;
+        StartCoroutine(DelayedStart());
+    }
+
+    //this delay stops the error when instantiating AI, the problem is with the start method calling late
+    IEnumerator DelayedStart()
+    {
+        yield return new WaitForSeconds(0.1f);
 
         currentState = IdleState;
 
         currentState.EnterState(this);
+
+        delayDone = true;
     }
 
     // Update is called once per frame
@@ -54,20 +63,13 @@ public class AIStateManager : MonoBehaviour
             currentState = fleeState;
         }*/
 
-
-        currentState.UpdateState(this);
-    }
-
-   /* private void RunStateMachine()
-    {
-        AIState nextState = currentState?.RunCurrentState();
-
-        if(nextState != null ) 
+        if(delayDone == true)
         {
-            SwitchToTheNextState(nextState);
+            currentState.UpdateState(this);
         }
-    }*/
-
+        
+    }
+    
     public void SwitchToTheNextState( AIState nextState )
     {
         currentState.ExitState(this);
@@ -84,9 +86,6 @@ public class AIStateManager : MonoBehaviour
             currentState = StaggerState;
             currentState.EnterState(this);
         }
-
-        
     }
-
 
 }
