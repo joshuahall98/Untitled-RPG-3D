@@ -11,6 +11,8 @@ public class AIHealth : MonoBehaviour
     public float maxHealth = 100;
     public float currentHealth;
 
+    bool canTakeDamage;
+
     // public Slider healthBar;
     [SerializeField]
     AIAgent agent;
@@ -19,11 +21,26 @@ public class AIHealth : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+        canTakeDamage = true;
     }
 
     public void TakeDamage(float damageAmount)
     {
-        currentHealth -= damageAmount;  
+        if (canTakeDamage == true)
+        {
+            currentHealth -= damageAmount;
+            canTakeDamage = false;
+            StartCoroutine(Reset());
+        }
+          
+    }
+
+    //should stop enemy taking damage twice on the same frame for collisions
+    private IEnumerator Reset()
+    {
+        yield return new WaitForEndOfFrame();
+
+        canTakeDamage = true;
     }
 
     /*public void CheckIfDead()
@@ -37,11 +54,11 @@ public class AIHealth : MonoBehaviour
         }
     }*/
 
-    public void CheckHealthPercentage()
+    /*public void CheckHealthPercentage()
     {
         if (currentHealth < (maxHealth / 2) && this.GetComponent<AIStateManager>().state != AIStateEnum.DEATH) 
         {
             this.GetComponent<AIStateManager>().state = AIStateEnum.FLEE;
         }
-    }
+    }*/
 }

@@ -8,17 +8,15 @@ public class AIStaggerState : AIState
     [SerializeField]AIStateManager stateManager;
     [SerializeField]AIController controller;
 
-    
-
     [SerializeField]bool staggerFin = false;
-
 
     public override void EnterState(AIStateManager state)
     {
         staggerFin = false;
         controller.agent.isStopped = true;
+        controller.anim.SetTrigger("Hit");
 
-        if(stateManager.GetComponent<AIHealth>().currentHealth <= 0)
+        if (stateManager.GetComponent<AIHealth>().currentHealth <= 0)
         {
             state.SwitchToTheNextState(state.DeathState);
         }
@@ -39,28 +37,11 @@ public class AIStaggerState : AIState
     {
         staggerFin = false;
         controller.agent.isStopped = false;
-
-        
-        
+  
     }
-
-   /* public override AIState RunCurrentState()
-    {
-        if(stateManager.state == AIStateEnum.IDLE) 
-        {
-            
-            return stateManager.idleState;
-        }
-        else
-        {
-            return this;
-        }
-        
-    }*/
 
     public void StaggerFin()
     {
-        //stateManager.state = AIStateEnum.IDLE;
         staggerFin = true;
     }
     

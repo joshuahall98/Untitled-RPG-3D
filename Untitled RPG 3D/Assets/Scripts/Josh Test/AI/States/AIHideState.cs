@@ -5,25 +5,22 @@ using UnityEngine;
 public class AIHideState : AIState
 {
     [SerializeField]AIStateManager stateManager;
+    [SerializeField]AIController controller;
 
     public override void EnterState(AIStateManager state)
     {
-        throw new System.NotImplementedException();
+        controller.anim.SetBool("isHiding", true);
+    }
+
+    public override void UpdateState(AIStateManager state)
+    {
+        
     }
 
     public override void ExitState(AIStateManager state)
     {
-        throw new System.NotImplementedException();
+        controller.anim.SetBool("isHiding", false);
     }
 
-    /*public override AIState RunCurrentState()
-    {
-        //AI is hiding
-        return this;
-    }*/
-
-    public override void UpdateState(AIStateManager state)
-    {
-        throw new System.NotImplementedException();
-    }
+   
 }

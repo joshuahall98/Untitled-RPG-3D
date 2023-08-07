@@ -18,16 +18,10 @@ public class WeaponDamage : MonoBehaviour
         {
             if (other.gameObject.tag == "Enemy")
             {
-                GetComponent<Collider>().isTrigger = false;//stop damage occuring twice
                 other.gameObject.GetComponent<AIHealth>().TakeDamage(damage);
                 
             }
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        GetComponent<Collider>().isTrigger = true;
     }
 
     public void LightAttackDamage()

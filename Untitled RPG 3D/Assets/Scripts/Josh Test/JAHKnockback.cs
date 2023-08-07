@@ -33,7 +33,6 @@ public class JAHKnockback : MonoBehaviour
             hitObject = collision.gameObject;
             playerPos = player.transform.forward;
 
-            hitObject.GetComponent<Animator>().SetTrigger("isHit");
             hitObject.GetComponent<AIStateManager>().IsHit();
             hitObject.GetComponent<AIController>().KnockedBack(knockbackStrength, playerPos);
 

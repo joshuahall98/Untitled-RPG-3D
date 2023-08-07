@@ -12,42 +12,31 @@ public class AIFleeState : AIState
 
     GameObject player;
 
-    NavMeshAgent navMeshAgent;
-
     private void Start()
     {
         player = GameObject.Find("Player");
-        navMeshAgent = GetComponentInParent<NavMeshAgent>();
 
     }
-
-    /*public override AIState RunCurrentState()
-    {
-        if (stateManager.state == AIStateEnum.HIDE)//hide state
-        {
-            return stateManager.hideState;
-        }
-        else 
-        {
-            
-
-           // 
-
-            return this;
-        }
-       
-    }*/
 
     public override void EnterState(AIStateManager state)
     {
         controller.anim.SetBool("isFleeing", true);
+        controller.anim.ResetTrigger("Hit");
     }
 
     public override void UpdateState(AIStateManager state)
     {
         Vector3 playerDirection = this.transform.position - player.transform.position;
 
-        this.navMeshAgent.destination = this.transform.position + playerDirection;
+        controller.agent.destination = this.transform.position + playerDirection;
+
+        //return to idle
+        if (Vector3.Distance(this.transform.position, player.transform.position) > 20)
+        {
+            controller.anim.SetBool("isFleeing", false);
+            state.SwitchToTheNextState(state.HideState);
+            stateManager.angry = false;
+        }
     }
 
     public override void ExitState(AIStateManager state)

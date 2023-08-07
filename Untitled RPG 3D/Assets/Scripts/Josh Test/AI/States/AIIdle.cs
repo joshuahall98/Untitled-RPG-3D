@@ -74,7 +74,6 @@ public class AIIdle : AIState
         //switch to chase state
         if (Vector3.Distance(this.transform.position, player.transform.position) < 10 || stateManager.angry == true)
         {
-            stateManager.state = AIStateEnum.CHASE;
             state.SwitchToTheNextState(state.ChaseState);
             stateManager.angry = true;
         }
@@ -85,32 +84,6 @@ public class AIIdle : AIState
         controller.anim.SetBool("isWalking", false);
     }
 
-
-    /*public override AIState RunCurrentState()
-    {
-        if(stateManager.state == AIStateEnum.CHASE)//chase state
-        {   
-            controller.anim.SetBool("isWalking", false);
-            return stateManager.chaseState;    
-        }
-        else//idle state
-        {
-            IdleMovement();
-            ActivateChaseState();
-            return this;
-        }   
-    }*/
-
-    /*void ActivateChaseState(AIStateManager state) 
-    {
-        
-    }
-
-    //move AI in idle zone
-    void IdleMovement()
-    {
-        
-    }*/
     //search for new location to walk
     IEnumerator SearchForLocation()
     {

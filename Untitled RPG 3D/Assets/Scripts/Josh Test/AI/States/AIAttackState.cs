@@ -13,11 +13,9 @@ public class AIAttackState : AIState
 
     public override void EnterState(AIStateManager state)
     {
-
         controller.anim.SetTrigger("Attack");
         controller.agent.velocity = Vector3.zero;
         controller.agent.isStopped = true;
-        stateManager.state = AIStateEnum.ATTACK;
     }
 
     public override void UpdateState(AIStateManager state)
@@ -39,21 +37,5 @@ public class AIAttackState : AIState
     {
         attackFin = true;
     }
-
-    /*public override AIState RunCurrentState()
-    {
-        if (stateManager.state == AIStateEnum.IDLE)//idle state
-        {
-            
-            return stateManager.idleState;
-        }
-        else
-        {
-            
-            return this;
-        }
-        
-    }*/
-
     
 }
