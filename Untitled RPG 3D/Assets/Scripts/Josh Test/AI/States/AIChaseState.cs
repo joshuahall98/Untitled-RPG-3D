@@ -25,7 +25,7 @@ public class AIChaseState : AIState
     {
 
         //return to idle
-        if (Vector3.Distance(this.transform.position, player.transform.position) > 20)
+        if (Vector3.Distance(this.transform.position, player.transform.position) > controller.stats.sightDistance * 2)
         {
             controller.anim.SetBool("isChasing", false);
             state.SwitchToTheNextState(state.IdleState);
@@ -35,11 +35,11 @@ public class AIChaseState : AIState
         //chase player
         controller.agent.isStopped = false;
         controller.anim.SetBool("isChasing", true);
-        controller.agent.speed = 4;
+        controller.agent.speed = controller.stats.speed;
         this.controller.agent.SetDestination(player.transform.position);
 
         //attack state
-        if (Vector3.Distance(this.transform.position, player.transform.position) < 1.5f)
+        if (Vector3.Distance(this.transform.position, player.transform.position) < controller.stats.attackRange)
         {
             state.SwitchToTheNextState(state.AttackState);
         }

@@ -40,6 +40,8 @@ public class AIStaggerState : AIState
   
     }
 
+
+    // called at end of animation so AI can transition to next state
     public void StaggerFin()
     {
         staggerFin = true;

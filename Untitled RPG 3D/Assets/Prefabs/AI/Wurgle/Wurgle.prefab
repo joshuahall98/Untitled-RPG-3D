@@ -5026,7 +5026,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21156994effab8843abd9bb3579e3df7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy: {fileID: 11400000, guid: 146bc623fb956674885408e3cf3c3b7d, type: 2}
+  controller: {fileID: 5314328230555930770}
 --- !u!1 &4972291264201376926
 GameObject:
   m_ObjectHideFlags: 0
@@ -5586,6 +5586,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 5314328230555930776}
   agent: {fileID: 5314328230555930777}
+  stats: {fileID: 11400000, guid: 146bc623fb956674885408e3cf3c3b7d, type: 2}
   isHit: 0
 --- !u!114 &5314328230555930769
 MonoBehaviour:

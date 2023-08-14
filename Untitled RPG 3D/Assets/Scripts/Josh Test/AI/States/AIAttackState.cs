@@ -33,6 +33,7 @@ public class AIAttackState : AIState
         attackFin = false;
     }
 
+    //call this when an the attack is finished so the AI can enter the next state
     public void AttackFin()
     {
         attackFin = true;

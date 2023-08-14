@@ -41,13 +41,14 @@ public class AIIdle : AIState
         else if (stateManager.GetComponent<AIHealth>().currentHealth < stateManager.GetComponent<AIHealth>().maxHealth / 2)
         {
             state.SwitchToTheNextState(state.FleeState);
+            controller.anim.SetBool("isChasing", false);//stop animtor going to chase by accident
         }
     }
 
     public override void UpdateState(AIStateManager state)
     {
         //idle movement
-        controller.agent.speed = 2;
+        controller.agent.speed = controller.stats.speed / 2;
 
         if (!walkPointSet)
         {
@@ -72,7 +73,7 @@ public class AIIdle : AIState
 
 
         //switch to chase state
-        if (Vector3.Distance(this.transform.position, player.transform.position) < 10 || stateManager.angry == true)
+        if (Vector3.Distance(this.transform.position, player.transform.position) < controller.stats.sightDistance || stateManager.angry == true)
         {
             state.SwitchToTheNextState(state.ChaseState);
             stateManager.angry = true;

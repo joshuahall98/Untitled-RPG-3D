@@ -8,6 +8,7 @@ public class AIController : MonoBehaviour
 
     public Animator anim;
     public NavMeshAgent agent;
+    public EnemyScriptableObject stats;
 
     float tempStrength;
     public bool isHit;

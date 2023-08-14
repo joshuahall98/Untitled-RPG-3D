@@ -30,11 +30,11 @@ public class AIFleeState : AIState
 
         controller.agent.destination = this.transform.position + playerDirection;
 
-        //return to idle
-        if (Vector3.Distance(this.transform.position, player.transform.position) > 20)
+        //hide state
+        if (Vector3.Distance(this.transform.position, player.transform.position) > controller.stats.sightDistance * 2)
         {
             controller.anim.SetBool("isFleeing", false);
-            state.SwitchToTheNextState(state.HideState);
+             state.SwitchToTheNextState(state.HideState);
             stateManager.angry = false;
         }
     }
