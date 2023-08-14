@@ -10,6 +10,8 @@ public class AIHideState : AIState
     public override void EnterState(AIStateManager state)
     {
         controller.anim.SetBool("isHiding", true);
+        controller.agent.velocity = Vector3.zero;
+        controller.agent.isStopped = true;
     }
 
     public override void UpdateState(AIStateManager state)
@@ -20,6 +22,7 @@ public class AIHideState : AIState
     public override void ExitState(AIStateManager state)
     {
         controller.anim.SetBool("isHiding", false);
+        controller.agent.isStopped = false;
     }
 
    

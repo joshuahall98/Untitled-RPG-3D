@@ -54,7 +54,7 @@ public class AIChasePlayerState : AiState
 
           // If in attack radius switch to attack state
 
-        if (distFromPlayer <= agent.config.attackRadius)
+        if (distFromPlayer <= agent.config.attackRange)
         {
             agent.stateMachine.ChangeState(AIStateID.Attack);
             

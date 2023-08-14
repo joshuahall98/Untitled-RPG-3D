@@ -75,6 +75,18 @@ ModelImporter:
   - first:
       74: -5097121600575731516
     second: walk.001
+  - first:
+      74: -3984315113064639286
+    second: Cower.001
+  - first:
+      74: -7867935475582248300
+    second: Cower loop.001
+  - first:
+      74: 2385194333865041345
+    second: rig_deform|Cower loop.001
+  - first:
+      74: -7056640389810919882
+    second: rig_deform|Cower.001
   externalObjects: {}
   materials:
     materialImportMode: 2
