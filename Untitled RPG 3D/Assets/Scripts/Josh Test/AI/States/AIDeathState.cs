@@ -13,6 +13,9 @@ public class AIDeathState : AIState
         controller.agent.velocity = Vector3.zero;
         controller.agent.isStopped = true;
         controller.GetComponent<CapsuleCollider>().enabled = false;
+
+        controller.RotateToPlayer();
+
     }
 
     public override void UpdateState(AIStateManager state)
@@ -24,5 +27,5 @@ public class AIDeathState : AIState
     {
 
     }
-    
+
 }

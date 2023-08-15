@@ -9,13 +9,6 @@ public class AIChaseState : AIState
     [SerializeField] AIStateManager stateManager;
     [SerializeField] AIController controller;
 
-    GameObject player;
-
-    private void Start()
-    {
-        player = GameObject.Find("Player");
-    }
-
     public override void EnterState(AIStateManager state)
     {
         //unused
@@ -25,7 +18,7 @@ public class AIChaseState : AIState
     {
 
         //return to idle
-        if (Vector3.Distance(this.transform.position, player.transform.position) > controller.stats.sightDistance * 2)
+        if (Vector3.Distance(this.transform.position, controller.player.transform.position) > controller.stats.sightDistance * 2)
         {
             controller.anim.SetBool("isChasing", false);
             state.SwitchToTheNextState(state.IdleState);
@@ -36,10 +29,10 @@ public class AIChaseState : AIState
         controller.agent.isStopped = false;
         controller.anim.SetBool("isChasing", true);
         controller.agent.speed = controller.stats.speed;
-        this.controller.agent.SetDestination(player.transform.position);
+        this.controller.agent.SetDestination(controller.player.transform.position);
 
         //attack state
-        if (Vector3.Distance(this.transform.position, player.transform.position) < controller.stats.attackRange)
+        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < controller.stats.attackRange)
         {
             state.SwitchToTheNextState(state.AttackState);
         }

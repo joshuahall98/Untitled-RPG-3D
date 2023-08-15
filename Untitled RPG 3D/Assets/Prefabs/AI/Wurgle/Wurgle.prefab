@@ -5569,9 +5569,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be51521993dda1943b5ef054a6e30771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  controller: {fileID: 5314328230555930770}
   currentHealth: 0
-  agent: {fileID: 0}
 --- !u!114 &5314328230555930770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5587,6 +5586,7 @@ MonoBehaviour:
   anim: {fileID: 5314328230555930776}
   agent: {fileID: 5314328230555930777}
   stats: {fileID: 11400000, guid: 146bc623fb956674885408e3cf3c3b7d, type: 2}
+  player: {fileID: 0}
   isHit: 0
 --- !u!114 &5314328230555930769
 MonoBehaviour:

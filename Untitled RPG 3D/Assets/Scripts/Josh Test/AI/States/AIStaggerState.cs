@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.PeerToPeer.Collaboration;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.ProBuilder.AutoUnwrapSettings;
 
 public class AIStaggerState : AIState
 {
@@ -14,7 +16,7 @@ public class AIStaggerState : AIState
     {
         staggerFin = false;
         controller.agent.isStopped = true;
-        controller.anim.SetTrigger("Hit");
+        
 
         if (stateManager.GetComponent<AIHealth>().currentHealth <= 0)
         {
@@ -46,5 +48,7 @@ public class AIStaggerState : AIState
     {
         staggerFin = true;
     }
+
+    
     
 }

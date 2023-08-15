@@ -6,21 +6,17 @@ using UnityEngine.UI;
 // Conor 
 
 public class AIHealth : MonoBehaviour
-{   
-  
-    public float maxHealth = 100;
+{
+
+    [SerializeField]AIController controller;
+
     public float currentHealth;
-
     bool canTakeDamage;
-
-    // public Slider healthBar;
-    [SerializeField]
-    AIAgent agent;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentHealth = maxHealth;
+        currentHealth = controller.stats.maxHP;
         canTakeDamage = true;
     }
 
@@ -36,6 +32,8 @@ public class AIHealth : MonoBehaviour
     }
 
     //should stop enemy taking damage twice on the same frame for collisions
+
+    //MOVE THIS TO THE END OF THE PLAYER ATTACK ANIM
     private IEnumerator Reset()
     {
         yield return new WaitForEndOfFrame();

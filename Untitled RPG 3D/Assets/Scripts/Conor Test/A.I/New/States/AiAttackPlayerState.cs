@@ -23,10 +23,10 @@ public class AiAttackPlayerState : AiState
         agent.stateMachine.ChangeState(AIStateID.ChasePlayer);
 
         //Less than 80%
-         if(agent.aiHealth.currentHealth <= agent.aiHealth.maxHealth * 80/100){
+         /*if(agent.aiHealth.currentHealth <= agent.aiHealth.maxHealth * 80/100){
 
                 agent.stateMachine.ChangeState(AIStateID.Flee);
-        }
+        }*/
 
     
     }

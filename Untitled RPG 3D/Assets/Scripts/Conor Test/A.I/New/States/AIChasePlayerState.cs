@@ -61,10 +61,10 @@ public class AIChasePlayerState : AiState
         }
 
         //Flee if less than 20%
-        if(agent.aiHealth.currentHealth <= agent.aiHealth.maxHealth * 80/100){
+        /*if(agent.aiHealth.currentHealth <= agent.aiHealth.maxHealth * 80/100){
 
                 agent.stateMachine.ChangeState(AIStateID.Flee);
-        }
+        }*/
         
     }
 

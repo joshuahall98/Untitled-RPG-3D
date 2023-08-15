@@ -17,9 +17,9 @@ MonoBehaviour:
   damage: 10
   sightDistance: 10
   knockBackForce: 10
+  attackRange: 1.5
   maxTime: 0.1
   maxDistance: 0
   maxSightDistance: 30
-  attackRadius: 2
   AvoidancePredictionTime: 2
   PathfindingIterationsPerFrame: 5000

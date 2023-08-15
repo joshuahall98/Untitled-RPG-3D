@@ -15,30 +15,18 @@ public class AIIdle : AIState
     [SerializeField]LayerMask groundLayer;
     bool walkPointSet;
     bool canWalk;
-
-    GameObject player;
-
-    private void Start()
-    {
-        player = GameObject.Find("Player");    
-
-    }
-
-    void IdleZone()
-    {
-        idleZone = this.transform.position;
-    }
+    
 
     public override void EnterState(AIStateManager state)
     {
-        IdleZone();
+        idleZone = this.transform.position;//create the idle zone starting point
 
         //calling this to allow for mutiple stagger hits
-        if(controller.isHit == true)
+        if (controller.isHit == true)
         {
             stateManager.IsHit();
         }
-        else if (stateManager.GetComponent<AIHealth>().currentHealth < stateManager.GetComponent<AIHealth>().maxHealth / 2)
+        else if (stateManager.GetComponent<AIHealth>().currentHealth < controller.stats.maxHP / 2)
         {
             state.SwitchToTheNextState(state.FleeState);
             controller.anim.SetBool("isChasing", false);//stop animtor going to chase by accident
@@ -73,7 +61,7 @@ public class AIIdle : AIState
 
 
         //switch to chase state
-        if (Vector3.Distance(this.transform.position, player.transform.position) < controller.stats.sightDistance || stateManager.angry == true)
+        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < controller.stats.sightDistance || stateManager.angry == true)
         {
             state.SwitchToTheNextState(state.ChaseState);
             stateManager.angry = true;
@@ -103,5 +91,4 @@ public class AIIdle : AIState
         }
     }
 
-    
 }
