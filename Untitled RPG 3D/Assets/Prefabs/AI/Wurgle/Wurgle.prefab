@@ -5076,6 +5076,9 @@ MonoBehaviour:
   ignoreTheseLayers:
     serializedVersion: 2
     m_Bits: 264
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &4975883640491218274
 GameObject:
   m_ObjectHideFlags: 0

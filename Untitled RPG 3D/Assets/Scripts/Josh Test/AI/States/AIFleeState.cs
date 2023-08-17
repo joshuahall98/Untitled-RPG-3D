@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using UnityEngine;
 using UnityEngine.AI;
 
+//Joshua
 public class AIFleeState : AIState
 {
 
@@ -11,9 +12,10 @@ public class AIFleeState : AIState
     [SerializeField]AIController controller;
 
     [SerializeField]LayerMask ignoreTheseLayers;
+    [SerializeField] LayerMask groundLayer;
 
-    bool timeToHide;
-    Vector3 destPoint;
+    [SerializeField]bool timeToHide;
+    [SerializeField]Vector3 destPoint;
 
     public override void EnterState(AIStateManager state)
     {
@@ -24,69 +26,61 @@ public class AIFleeState : AIState
 
     public override void UpdateState(AIStateManager state)
     {
-        
 
-        //hide state
-        /*if (Vector3.Distance(this.transform.position, player.transform.position) > controller.stats.sightDistance * 2)
-        {
-            controller.anim.SetBool("isFleeing", false);
-             state.SwitchToTheNextState(state.HideState);
-            stateManager.angry = false;
-        }*/
-
-        if(Vector3.Distance(transform.position, controller.player.transform.position) > controller.stats.sightDistance)
+        //check to see if AI has moved far enough away from player to look for hiding spot
+        if (Vector3.Distance(transform.position, controller.player.transform.position) > controller.stats.sightDistance)
         {
 
             if(timeToHide == false)
             {
-                float z = Random.Range(-10f, 10f);
-                float x = Random.Range(-10f, 10f);
+                float range = 10f;
 
-                destPoint = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+                float z = Random.Range(-range, range);
+                float x = Random.Range(-range, range);
+
+                destPoint = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);//select random point
 
                 RaycastHit hit;
 
+                //confirm random point is hidden from player
                 if (Physics.Linecast(transform.position, destPoint, out hit, ~ignoreTheseLayers))
                 {
-                    Debug.Log("blocked");
+                    NavMeshPath navMeshPath = new NavMeshPath();
+                    controller.agent.CalculatePath(destPoint, navMeshPath);
+
+                    //make sure destination can be reached via navmesh
+                    if (navMeshPath.status != NavMeshPathStatus.PathInvalid && Vector3.Distance(destPoint, controller.player.transform.position) > controller.stats.sightDistance)
+                    {
+                        timeToHide = true;
+                    }
+
+                    /*Debug.Log("blocked");
                     Debug.Log(hit.collider);
-                    Debug.DrawLine(transform.position, controller.player.transform.position, Color.red);
-                    timeToHide = true;
-                    
+                    Debug.DrawLine(transform.position, controller.player.transform.position, Color.red);*/
+
                 }
                 
             }
+            //run to detination and switch to hide state
             else
             {
                 controller.agent.isStopped = false;
                 controller.agent.SetDestination(destPoint);
+
+                Debug.DrawLine(transform.position, destPoint, Color.red);
+                Debug.DrawLine(controller.player.transform.position, destPoint, Color.blue);
+
+                if (Vector3.Distance(transform.position, destPoint) < 1f)
+                {
+
+                    controller.anim.SetBool("isFleeing", false);
+                    state.SwitchToTheNextState(state.HideState);
+                    stateManager.angry = false;
+
+                }
             }
-
-            if (Vector3.Distance(transform.position, destPoint) < 1)
-            {
-
-                controller.anim.SetBool("isFleeing", false);
-                state.SwitchToTheNextState(state.HideState);
-                stateManager.angry = false;
-
-            }
-
-
-
-
-            /*RaycastHit hit;
-            if (Physics.Linecast(transform.position, controller.player.transform.position, out hit, ~ignoreTheseLayers))
-            {
-                //all this stuff helps with debugging
-                Debug.Log("blocked");
-                Debug.Log(hit.collider);
-                Debug.DrawLine(transform.position, controller.player.transform.position, Color.red);
-
-                controller.anim.SetBool("isFleeing", false);
-                state.SwitchToTheNextState(state.HideState);
-                stateManager.angry = false;
-            }*/
         }
+        //if AI within range of player run away
         else
         {
             Vector3 playerDirection = this.transform.position - controller.player.transform.position;
@@ -99,6 +93,6 @@ public class AIFleeState : AIState
 
     public override void ExitState(AIStateManager state)
     {
-
+        //unused
     }
 }
