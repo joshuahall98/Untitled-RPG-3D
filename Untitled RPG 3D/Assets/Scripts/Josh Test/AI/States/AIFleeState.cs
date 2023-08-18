@@ -1,3 +1,4 @@
+using FullscreenEditor;
 using System.Collections;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -26,6 +27,7 @@ public class AIFleeState : AIState
 
     public override void UpdateState(AIStateManager state)
     {
+        Debug.DrawLine(controller.player.transform.position, destPoint, Color.blue);
 
         //check to see if AI has moved far enough away from player to look for hiding spot
         if (Vector3.Distance(transform.position, controller.player.transform.position) > controller.stats.sightDistance)
@@ -33,26 +35,35 @@ public class AIFleeState : AIState
 
             if(timeToHide == false)
             {
-                float range = 10f;
+                float range = 20f;
 
                 float z = Random.Range(-range, range);
                 float x = Random.Range(-range, range);
 
                 destPoint = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);//select random point
 
-                RaycastHit hit;
-
                 //confirm random point is hidden from player
-                if (Physics.Linecast(transform.position, destPoint, out hit, ~ignoreTheseLayers))
+                if (Physics.Linecast(controller.player.transform.position, destPoint, ~ignoreTheseLayers))
                 {
-                    NavMeshPath navMeshPath = new NavMeshPath();
-                    controller.agent.CalculatePath(destPoint, navMeshPath);
 
-                    //make sure destination can be reached via navmesh
-                    if (navMeshPath.status != NavMeshPathStatus.PathInvalid && Vector3.Distance(destPoint, controller.player.transform.position) > controller.stats.sightDistance)
+                    //this runs a line from desired hiding point towards the player, hits the first object, then decides to run closer to the object
+                    RaycastHit hit;
+                    if (Physics.Linecast(destPoint, controller.player.transform.position, out hit, ~ignoreTheseLayers) && Vector3.Distance(destPoint, hit.transform.position) > 3)
                     {
-                        timeToHide = true;
+                        destPoint = Vector3.Lerp(destPoint, hit.transform.position, 0.8f);// new destination is close towards object
+
+                        //set up for seeing if destination is on navmesh
+                        NavMeshPath navMeshPath = new NavMeshPath();
+                        controller.agent.CalculatePath(destPoint, navMeshPath);
+
+                        //make sure destination can be reached via navmesh
+                        if (navMeshPath.status != NavMeshPathStatus.PathInvalid && Vector3.Distance(destPoint, controller.player.transform.position) > controller.stats.sightDistance)
+                        {
+                            timeToHide = true;
+                        }
                     }
+
+                    
 
                     /*Debug.Log("blocked");
                     Debug.Log(hit.collider);
@@ -68,7 +79,7 @@ public class AIFleeState : AIState
                 controller.agent.SetDestination(destPoint);
 
                 Debug.DrawLine(transform.position, destPoint, Color.red);
-                Debug.DrawLine(controller.player.transform.position, destPoint, Color.blue);
+                
 
                 if (Vector3.Distance(transform.position, destPoint) < 1f)
                 {
