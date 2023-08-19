@@ -1,7 +1,6 @@
 using FullscreenEditor;
 using System.Collections;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -35,7 +34,7 @@ public class AIFleeState : AIState
 
             if(timeToHide == false)
             {
-                float range = 20f;
+                float range = 20f;//keeping this number high will prevent wurgle from running into walls
 
                 float z = Random.Range(-range, range);
                 float x = Random.Range(-range, range);
@@ -48,38 +47,30 @@ public class AIFleeState : AIState
 
                     //this runs a line from desired hiding point towards the player, hits the first object, then decides to run closer to the object
                     RaycastHit hit;
-                    if (Physics.Linecast(destPoint, controller.player.transform.position, out hit, ~ignoreTheseLayers) && Vector3.Distance(destPoint, hit.transform.position) > 3)
+                    if (Physics.Linecast(destPoint, controller.player.transform.position, out hit, ~ignoreTheseLayers) && Vector3.Distance(destPoint, hit.transform.position) > 2)
                     {
-                        destPoint = Vector3.Lerp(destPoint, hit.transform.position, 0.8f);// new destination is close towards object
+                        destPoint = Vector3.Lerp(destPoint, hit.transform.position, 0.9f);// new destination is close towards object
 
                         //set up for seeing if destination is on navmesh
-                        NavMeshPath navMeshPath = new NavMeshPath();
-                        controller.agent.CalculatePath(destPoint, navMeshPath);
+                        NavMeshPath path = new NavMeshPath();
+                        NavMesh.CalculatePath(transform.position, destPoint, NavMesh.AllAreas, path);
 
                         //make sure destination can be reached via navmesh
-                        if (navMeshPath.status != NavMeshPathStatus.PathInvalid && Vector3.Distance(destPoint, controller.player.transform.position) > controller.stats.sightDistance)
+                        if (path.status == NavMeshPathStatus.PathComplete && Vector3.Distance(destPoint, controller.player.transform.position) > controller.stats.sightDistance)
                         {
                             timeToHide = true;
                         }
                     }
-
-                    
-
-                    /*Debug.Log("blocked");
-                    Debug.Log(hit.collider);
-                    Debug.DrawLine(transform.position, controller.player.transform.position, Color.red);*/
-
-                }
-                
+                }   
             }
             //run to detination and switch to hide state
             else
             {
+                
                 controller.agent.isStopped = false;
                 controller.agent.SetDestination(destPoint);
 
                 Debug.DrawLine(transform.position, destPoint, Color.red);
-                
 
                 if (Vector3.Distance(transform.position, destPoint) < 1f)
                 {
@@ -89,6 +80,7 @@ public class AIFleeState : AIState
                     stateManager.angry = false;
 
                 }
+                
             }
         }
         //if AI within range of player run away
