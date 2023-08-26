@@ -33,10 +33,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField]float gravity;
     [SerializeField]private LayerMask groundMask;
 
-    public string hello;
+    /*public string hello;
 
     float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
+    float turnSmoothVelocity;*/
 
     //used for turning camera, need to move this off the player controller
     [SerializeField]int isometricRotation = 45;
@@ -113,20 +113,19 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         
-
-        //make this object appear at top of heirarchy
+        //make this object appear at top of heirarchy in scene
         transform.SetSiblingIndex(0);
 
         //finding gameobjects and components
         gameManager = GameObject.Find("GameManager");
         camera = GameObject.Find("Camera");
         sideCharacter = GameObject.Find("SideCharacter");
-        anim = GetComponent<Animator>();
-        playerInput = new PlayerInputActions();
-        controller = GetComponent<CharacterController>();
         aiSpawner = GameObject.Find("TestArenaSpawner");
         dizzyAffect = GameObject.Find("DizzyAffect");
-        dizzyAffect.SetActive(false);
+        anim = GetComponent<Animator>();
+        controller = GetComponent<CharacterController>();
+
+        playerInput = new PlayerInputActions();
 
         //calling all the inputs
         playerInput.Player.Roll.performed += rollPerformed => RollAnimation();
@@ -147,14 +146,12 @@ public class PlayerController : MonoBehaviour
         heavyAtkCharge = playerInput.Player.HeavyAtkCharge;
         rewind = playerInput.Player.Rewind;
 
-        //weapons
+        //weapons  MOVE THIS TO ANOTHER SCRIPT
         sword.GetComponent<MeshRenderer>().enabled = false;
         sword.GetComponent<BoxCollider>().enabled = false;
         sheathedSword.SetActive(true);
         swordCollider = sword.GetComponent<Collider>();
         swordCollider.enabled = false;
-
-        state = PlayerState.IDLE;
 
         baseSpeed = speed;
     }
@@ -163,13 +160,15 @@ public class PlayerController : MonoBehaviour
     #region - START -
     private void Start()
     {
+        state = PlayerState.IDLE;
+
+        dizzyAffect.SetActive(false);
+
         //this is called so the rotation is checked so player doesn't roll on the spot
         rollDirection = transform.rotation * Vector3.forward;
 
         //create the last device container
         LastDevice();
-
-
     }
 
     #endregion
@@ -189,21 +188,18 @@ public class PlayerController : MonoBehaviour
 
                // Debug.Log(lastDeviceStr);
 
-               // Debug.Log($"device: {lastDevice.displayName}");
-
-            
+               // Debug.Log($"device: {lastDevice.displayName}");  
             }
         };
     }
     #endregion
 
     //what does this code do?
-    private void CameraRight_performed(InputAction.CallbackContext obj)
+    /*private void CameraRight_performed(InputAction.CallbackContext obj)
     {
         throw new NotImplementedException();
-
-        
-    }
+ 
+    }*/
 
     #region - UPDATE - 
     void Update()
@@ -214,7 +210,6 @@ public class PlayerController : MonoBehaviour
             LastDevice();
         }
         
-
         //to see state in inspector
         visibleState = state;
 
@@ -222,22 +217,8 @@ public class PlayerController : MonoBehaviour
 
         PlayerFalling();
 
-        //this prevents you from rolling too much
-        if (rollCDTimer > 0)
-        {
-            rollCDTimer -= Time.deltaTime;
-        }
-        else if (rollCDTimer <= 0)
-        {
-            rollUsed = 0;
-            rollCDTimer = 0;
-        }
+        RollTimer();
 
-        //animation checks
-        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("Roll") && state == PlayerState.ROLLING)
-        {
-            RollEndAnim();
-        }
     }
 
     #endregion
@@ -324,6 +305,8 @@ public class PlayerController : MonoBehaviour
     //movement while dizzy, randomized
     void DizzyMovement()
     {
+        speed = baseSpeed;
+
         currentMoveInput = move.ReadValue<Vector2>();
         actualMovement = new Vector3();
         //Condensed movement -- Converted y to z axis
@@ -371,7 +354,6 @@ public class PlayerController : MonoBehaviour
     //movement speed while you are falling
     void FallingMovement()
     {
-
         speed = baseSpeed / 4;
 
         currentMoveInput = move.ReadValue<Vector2>();
@@ -473,7 +455,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region - ROLL -
-    //rolling animation, CREATED IENUMERAOTR TO STOP bug?
+    //rolling animation
     void RollAnimation()
     {
         if (state == PlayerState.MOVING || state == PlayerState.IDLE)
@@ -484,14 +466,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //call this from other classes to make sure character knows rotation for rolling
+    //call this from other classes after a movement action occurs to make sure character knows rotation for rolling
     public void Rotation(Quaternion quaternion)
     {
         rollDirection = quaternion * Vector3.forward;
     }
 
-    //running the below function on the second frame of the animation to prevent the character from dashing before rolling, running it on the second instead of the first frame seems to prevent the bug where the roll happens twice
-    IEnumerator RollAnimEvent()
+    //calling this from animation state machine so it activates on state enter
+    public void RollStartAnim()
+    {
+        StartCoroutine(RollAnim());
+    }
+
+    IEnumerator RollAnim()
     {
 
         rewind.Disable();
@@ -505,16 +492,17 @@ public class PlayerController : MonoBehaviour
         controller.height = 1f;
         while (Time.time < startTime + rollTime)
         {
-
             controller.Move(rollDirection * rollSpeed * Time.deltaTime);
             yield return null;
 
         }
         controller.center = new Vector3(0, 0, 0);
         controller.height = 2;
+
     }
 
-    void RollEndAnim()
+    //calling this on animtion exit
+    public void RollEndAnim()
     {
 
         //isRolling = false;
@@ -526,9 +514,9 @@ public class PlayerController : MonoBehaviour
         else
         {
             rewind.Enable();
-            anim.ResetTrigger("Roll");
+            //anim.ResetTrigger("Roll");
             state = PlayerState.IDLE;
-            StartCoroutine(EndRollWait());
+            //StartCoroutine(EndRollWait());
         }
 
         //this prevents issue where attack after roll are clunky, this line prevents users from being able to instantly attack after rolling
@@ -541,14 +529,14 @@ public class PlayerController : MonoBehaviour
     }
 
     //temporary fix for the animation stutter when you try to roll instantly after rolling, funnily enough you don't even notice the coroutine delay
-    IEnumerator EndRollWait()
+    /*IEnumerator EndRollWait()
     {
         DisableRoll();
 
         yield return new WaitForSeconds(0.25f);
 
         EnableRoll();
-    }
+    }*/
 
     public void RollDirection()
     {
@@ -557,6 +545,20 @@ public class PlayerController : MonoBehaviour
         //{
             rollDirection = transform.rotation * Vector3.forward;
         //}
+    }
+
+    void RollTimer()
+    {
+        //this prevents you from rolling too much
+        if (rollCDTimer > 0)
+        {
+            rollCDTimer -= Time.deltaTime;
+        }
+        else if (rollCDTimer <= 0)
+        {
+            rollUsed = 0;
+            rollCDTimer = 0;
+        }
     }
 
     #endregion

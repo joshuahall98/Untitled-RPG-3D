@@ -33103,13 +33103,6 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0
-    functionName: DashAction
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
   - time: 0.16666667
     functionName: LightAttackSwordColliderOn
     data: 
@@ -33124,8 +33117,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.5833333
-    functionName: LightAttackEndAnimEvent
+  - time: 0.5
+    functionName: LightAttackEndAnimAE
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

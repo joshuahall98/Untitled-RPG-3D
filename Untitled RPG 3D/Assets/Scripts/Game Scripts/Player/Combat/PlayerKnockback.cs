@@ -70,7 +70,7 @@ public class PlayerKnockback : MonoBehaviour
     }
 
     //this wouldn't run at the end of the animation, had to create an animation event
-    public void KnockdownAnimEvent()
+    public void KnockdownEndAnim()
     {
         GetComponent<PlayerController>().EnableRewind();
 

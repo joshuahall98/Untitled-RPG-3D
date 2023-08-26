@@ -13,18 +13,19 @@ public class AttackDash : MonoBehaviour
     [SerializeField]float dashTime = 0.5f;
     Vector3 dashDirection;
 
-    public GameObject sword;
-
-
     void Awake()
     {
-
         controller = GetComponent<CharacterController>();
+    }
 
+    //called on animation start
+    public void DashActionAnimStart()
+    {
+        StartCoroutine(DashAction());
     }
 
     //called by anim event on attack
-    public IEnumerator DashAction()
+    private IEnumerator DashAction()
     {
         dashDirection = transform.rotation * Vector3.forward;
 

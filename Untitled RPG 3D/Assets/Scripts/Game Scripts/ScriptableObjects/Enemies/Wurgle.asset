@@ -15,7 +15,8 @@ MonoBehaviour:
   maxHP: 100
   speed: 4
   damage: 10
-  sightDistance: 10
+  agroRange: 10
+  deagroRange: 25
   knockBackForce: 10
   attackRange: 1.5
   maxTime: 0.1

@@ -153,7 +153,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         PlayerController.state = PlayerState.REWINDING;
 
-
+        //should probably change this to animation behaviour, they run better, works for now
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerRewindStart"))
         {
             anim.SetBool("isRewinding", false);
@@ -190,7 +190,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         hourGlass.SetActive(true);
 
-        PlayerController.state = PlayerState.REWINDING;
+        //PlayerController.state = PlayerState.REWINDING;
 
         //call the UI update when you rewind
         rewindUI.GetComponent<RewindUI>().Rewind();
@@ -210,6 +210,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         GetComponent<PlayerHealth>().DeathRewind();
 
+        
     }
 
     //Rewind button function
@@ -248,12 +249,11 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     }
 
     //using animation event
-    public void EndRewindAnimEvent()
+    public void EndRewindAnim()
     {
         if(PlayerController.state == PlayerState.DEAD) 
         {
-            anim.SetBool("isRewinding", false);
-
+            anim.SetBool("isRewinding", false);//this shouold stop rewind animtion bug from death rewind
             //empty rewind array to start fresh
             pointsInTime.Clear();
             Rewinding = false;
@@ -266,6 +266,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         //so character controller knows player rotation
         GetComponent<PlayerController>().Rotation(transform.rotation);
+
+        
 
         PlayerController.state = PlayerState.IDLE;
 

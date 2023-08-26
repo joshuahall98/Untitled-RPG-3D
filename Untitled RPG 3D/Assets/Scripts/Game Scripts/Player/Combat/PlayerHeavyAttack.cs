@@ -22,6 +22,7 @@ public class PlayerHeavyAttack : MonoBehaviour
         swordCollider = sword.GetComponent<Collider>();
 
         sparkle.SetActive(false);
+
     }
 
     private void Update()
@@ -74,8 +75,8 @@ public class PlayerHeavyAttack : MonoBehaviour
             swordCollider.enabled = true;
             releaseReady = false;
             GetComponent<AttackIndicator>().Aim();
-            FindObjectOfType<SoundManager>().SelectAudioClass("Player");
-            FindObjectOfType<SoundManager>().PlaySound("Sword Swing");
+            SoundManager.SoundManagerInstance.SelectAudioClass("Player");
+            SoundManager.SoundManagerInstance.PlaySound("Sword Swing");
         }
         else
         {
@@ -98,7 +99,7 @@ public class PlayerHeavyAttack : MonoBehaviour
         }
     }
 
-    void HeavyAttackEndAnimEvent()
+    public void HeavyAttackEndAnim()
     {
         sword.GetComponent<MeshRenderer>().enabled = false;
         sword.GetComponent<BoxCollider>().enabled = false;

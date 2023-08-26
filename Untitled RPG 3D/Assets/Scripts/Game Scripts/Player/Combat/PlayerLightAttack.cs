@@ -55,8 +55,6 @@ public class PlayerLightAttack : MonoBehaviour
     public void LightAtk()
     {
 
-        
-
         if (atkNum == 0 || atkNum == 2)
         {
             sword.GetComponent<WeaponDamage>().LightAttackDamage();
@@ -88,8 +86,14 @@ public class PlayerLightAttack : MonoBehaviour
         }
     }
 
-    //ending the attack animation as an animation event
-    IEnumerator LightAttackEndAnimEvent()
+    //animation event called during animtion for smooth attack transition
+    public void LightAttackEndAnimAE()
+    {
+        StartCoroutine(LightAttackEnd());
+    }
+
+
+    private IEnumerator LightAttackEnd()
     {
         
         WeaponDamage.isAttacking = false;
