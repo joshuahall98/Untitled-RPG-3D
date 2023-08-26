@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Web.Mvc;
 using UnityEngine;
 
 
 public class AIStateManager : MonoBehaviour
 {
+
     //states scripts
     public AIState currentState;
     public AIIdle IdleState;
@@ -14,6 +16,8 @@ public class AIStateManager : MonoBehaviour
     public AIDeathState DeathState;
     public AIFleeState FleeState;
     public AIHideState HideState;
+
+    [SerializeField]AIController controller;
 
     public bool angry; // to control whether AI is angry
     bool delayDone = false;
@@ -53,11 +57,15 @@ public class AIStateManager : MonoBehaviour
         currentState.EnterState(this);
     }
 
+    
+
     public void IsHit()
     {
         if(currentState != StaggerState)
         {
             currentState.ExitState(this);
+            controller.anim.Rebind();
+            controller.RepeatAnimationState(AIController.AnimState.Stagger, 0, 0);//this has to be called here for looping animation
             currentState = StaggerState;
             currentState.EnterState(this);
         }

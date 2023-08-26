@@ -13,7 +13,8 @@ public class AIAttackState : AIState
 
     public override void EnterState(AIStateManager state)
     {
-        controller.anim.SetTrigger("Attack");
+        controller.ChangeAnimationState(AIController.AnimState.Attack, 0.1f, 0);
+       // controller.anim.SetTrigger("Attack");
         controller.agent.velocity = Vector3.zero;
         controller.agent.isStopped = true;
         
@@ -21,7 +22,12 @@ public class AIAttackState : AIState
 
     public override void UpdateState(AIStateManager state)
     {
-        if(attackFin ==  true)
+        /*if(attackFin ==  true)
+        {
+            state.SwitchToTheNextState(state.IdleState);
+        }*/
+
+        if (controller.IsAnimationDone(controller.anim, AIController.AnimState.Attack))
         {
             state.SwitchToTheNextState(state.IdleState);
         }

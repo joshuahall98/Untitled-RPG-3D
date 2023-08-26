@@ -19,6 +19,12 @@ public class AIIdle : AIState
 
     public override void EnterState(AIStateManager state)
     {
+
+        //string nextState = AIController.AnimState.Chase.ToString();
+        //Debug.Log(nextState);
+       // controller.ChangeAnimationState(nextState);
+        controller.ChangeAnimationState(AIController.AnimState.Idle, 0.2f, 0);
+
         idleZone = this.transform.position;//create the idle zone starting point
 
         //calling this to allow for mutiple stagger hits
@@ -43,7 +49,7 @@ public class AIIdle : AIState
 
     public override void ExitState(AIStateManager state)
     {
-        controller.anim.SetBool("isWalking", false);
+       // controller.anim.SetBool("isWalking", false);
     }
 
     //search for new location to walk
@@ -78,13 +84,15 @@ public class AIIdle : AIState
         {
             controller.agent.isStopped = false;
             controller.agent.SetDestination(destPoint);
-            controller.anim.SetBool("isWalking", true);
+            controller.ChangeAnimationState(AIController.AnimState.IdleWalk, 0.1f, 0);
+            //controller.anim.SetBool("isWalking", true);
         }
         if (Vector3.Distance(this.transform.position, destPoint) < 1)
         {
             walkPointSet = false;
             canWalk = false;
-            controller.anim.SetBool("isWalking", false);
+            controller.ChangeAnimationState(AIController.AnimState.Idle, 0.2f, 0);
+            //controller.anim.SetBool("isWalking", false);
             controller.agent.velocity = Vector3.zero;
             controller.agent.isStopped = true;
 

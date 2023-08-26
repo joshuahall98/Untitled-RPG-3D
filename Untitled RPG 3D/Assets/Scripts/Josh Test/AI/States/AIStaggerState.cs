@@ -14,6 +14,7 @@ public class AIStaggerState : AIState
 
     public override void EnterState(AIStateManager state)
     {
+
         staggerFin = false;
         controller.agent.isStopped = true;
 
@@ -27,13 +28,19 @@ public class AIStaggerState : AIState
 
     public override void UpdateState(AIStateManager state)
     {
-
+/*
         if (staggerFin == true)
         {
             state.SwitchToTheNextState(state.IdleState);
+        }*/
+
+        if (controller.IsAnimationDone(controller.anim, AIController.AnimState.Stagger))
+        {
+            //controller.ChangeAnimationState(AIController.AnimState.Idle, 0f, 0);//so we can transition back to stagger
+            state.SwitchToTheNextState(state.IdleState);
         }
 
-        controller.anim.ResetTrigger("Attack");//to stop animator transitioning to wrong animation
+        //  controller.anim.ResetTrigger("Attack");//to stop animator transitioning to wrong animation
     }
 
     public override void ExitState(AIStateManager state)

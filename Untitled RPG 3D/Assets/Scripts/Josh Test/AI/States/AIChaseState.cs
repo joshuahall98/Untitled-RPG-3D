@@ -12,7 +12,8 @@ public class AIChaseState : AIState
     public override void EnterState(AIStateManager state)
     {
         controller.agent.isStopped = false;
-        controller.anim.SetBool("isChasing", true);
+        controller.ChangeAnimationState(AIController.AnimState.Chase, 0.1f, 0);
+        //controller.anim.SetBool("isChasing", true);
         controller.agent.speed = controller.stats.speed;
     }
 
@@ -38,7 +39,7 @@ public class AIChaseState : AIState
 
     public override void ExitState(AIStateManager state)
     {
-        controller.anim.SetBool("isChasing", false);
+       // controller.anim.SetBool("isChasing", false);
         this.controller.agent.SetDestination(this.transform.position);
     }
     

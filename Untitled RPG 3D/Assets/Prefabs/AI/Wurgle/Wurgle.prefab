@@ -5075,10 +5075,12 @@ MonoBehaviour:
   controller: {fileID: 5314328230555930770}
   ignoreTheseLayers:
     serializedVersion: 2
-    m_Bits: 264
+    m_Bits: 776
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
+  timeToHide: 0
+  destPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &4975883640491218274
 GameObject:
   m_ObjectHideFlags: 0
@@ -5480,7 +5482,7 @@ Animator:
   m_GameObject: {fileID: 5314328230555930775}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: d88637be8f649ff4eb943fe30ba63ee0, type: 2}
-  m_Controller: {fileID: 9100000, guid: c8dcfba9964b39648b7137c2309bbf8d, type: 2}
+  m_Controller: {fileID: 9100000, guid: e9820830d7cd87f43abe10b58f85e534, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5510,6 +5512,7 @@ MonoBehaviour:
   DeathState: {fileID: 3052186771914415335}
   FleeState: {fileID: 4972291264201376920}
   HideState: {fileID: 4972291262740318950}
+  controller: {fileID: 5314328230555930770}
   angry: 0
 --- !u!195 &5314328230555930777
 NavMeshAgent:
@@ -5593,6 +5596,7 @@ MonoBehaviour:
   agent: {fileID: 5314328230555930777}
   stats: {fileID: 11400000, guid: 146bc623fb956674885408e3cf3c3b7d, type: 2}
   player: {fileID: 0}
+  animState: 0
   isHit: 0
 --- !u!114 &5314328230555930769
 MonoBehaviour:

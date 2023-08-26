@@ -9,7 +9,8 @@ public class AIDeathState : AIState
 
     public override void EnterState(AIStateManager state)
     {
-        controller.GetComponent<Animator>().SetBool("isDead", true);
+        controller.ChangeAnimationState(AIController.AnimState.Death, 0f, 0);
+        // controller.GetComponent<Animator>().SetBool("isDead", true);
         controller.agent.velocity = Vector3.zero;
         controller.agent.isStopped = true;
         controller.GetComponent<CapsuleCollider>().enabled = false;
