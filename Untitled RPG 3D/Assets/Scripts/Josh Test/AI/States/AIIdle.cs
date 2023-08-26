@@ -29,11 +29,42 @@ public class AIIdle : AIState
         else if (stateManager.GetComponent<AIHealth>().currentHealth < controller.stats.maxHP / 2)
         {
             state.SwitchToTheNextState(state.FleeState);
-            controller.anim.SetBool("isChasing", false);//stop animtor going to chase by accident
+            
         }
     }
 
     public override void UpdateState(AIStateManager state)
+    {
+        IdleMovement();
+
+        SwitchToChase(state);
+        
+    }
+
+    public override void ExitState(AIStateManager state)
+    {
+        controller.anim.SetBool("isWalking", false);
+    }
+
+    //search for new location to walk
+    IEnumerator SearchForLocation()
+    {
+        float z = Random.Range(-10f, 10f);
+        float x = Random.Range(-10f, 10f);
+
+        destPoint = new Vector3(idleZone.x + x, idleZone.y, idleZone.z + z);
+
+        if(Physics.Raycast(destPoint, Vector3.down, groundLayer))
+        {
+            walkPointSet = true;
+
+            yield return new WaitForSeconds(Random.Range(2f, 5f));
+
+            canWalk = true;
+        }
+    }
+
+    private void IdleMovement()
     {
         //idle movement
         controller.agent.speed = controller.stats.speed / 2;
@@ -58,37 +89,21 @@ public class AIIdle : AIState
             controller.agent.isStopped = true;
 
         }
+    }
 
-
-        //switch to chase state
-        if (Vector3.Distance(this.transform.position, controller.player.transform.position) < controller.stats.sightDistance || stateManager.angry == true)
+    private void SwitchToChase(AIStateManager state)
+    {
+        //when the player returns to idle after attacking, they need to first check to make sure the player is still within chasing range, if not stay in idle
+        if(Vector3.Distance(this.transform.position, controller.player.transform.position) > controller.stats.deagroRange)
+        {
+            stateManager.angry = false;
+        }
+        else if(Vector3.Distance(this.transform.position, controller.player.transform.position) < controller.stats.agroRange || stateManager.angry == true)
         {
             state.SwitchToTheNextState(state.ChaseState);
             stateManager.angry = true;
         }
-    }
 
-    public override void ExitState(AIStateManager state)
-    {
-        controller.anim.SetBool("isWalking", false);
-    }
-
-    //search for new location to walk
-    IEnumerator SearchForLocation()
-    {
-        float z = Random.Range(-10f, 10f);
-        float x = Random.Range(-10f, 10f);
-
-        destPoint = new Vector3(idleZone.x + x, idleZone.y, idleZone.z + z);
-
-        if(Physics.Raycast(destPoint, Vector3.down, groundLayer))
-        {
-            walkPointSet = true;
-
-            yield return new WaitForSeconds(Random.Range(2f, 5f));
-
-            canWalk = true;
-        }
     }
 
 }

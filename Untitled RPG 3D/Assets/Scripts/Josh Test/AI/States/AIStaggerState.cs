@@ -16,7 +16,8 @@ public class AIStaggerState : AIState
     {
         staggerFin = false;
         controller.agent.isStopped = true;
-        
+
+        controller.RotateToPlayer();
 
         if (stateManager.GetComponent<AIHealth>().currentHealth <= 0)
         {

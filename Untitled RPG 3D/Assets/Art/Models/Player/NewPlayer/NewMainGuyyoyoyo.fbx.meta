@@ -1,0 +1,179 @@
+fileFormatVersion: 2
+guid: 67cdddd218d8ad34497e2757fe9f30bd
+ModelImporter:
+  serializedVersion: 22102
+  internalIDToNameTable:
+  - first:
+      74: 2788708581886206802
+    second: Death.001
+  - first:
+      74: -2171048134347961341
+    second: Falling.001
+  - first:
+      74: -3495226469887214404
+    second: Heavy attack hold.001
+  - first:
+      74: 6586124080465215990
+    second: Heavy attack strike.001
+  - first:
+      74: 6517714258327031822
+    second: Idle.001
+  - first:
+      74: -2930536840982008638
+    second: Rewind End.001
+  - first:
+      74: 7875520570423231275
+    second: Rewind start.001
+  - first:
+      74: -8967437178350921373
+    second: Roll.001
+  - first:
+      74: -8308225709584384391
+    second: Run1.001
+  - first:
+      74: 2285833668452434993
+    second: Run2.001
+  - first:
+      74: 4390835092498219369
+    second: rig_deform|Death.001
+  - first:
+      74: -7847288255823707631
+    second: rig_deform|Falling.001
+  - first:
+      74: 4030590171804594872
+    second: rig_deform|Heavy attack hold.001
+  - first:
+      74: -159090989068894048
+    second: rig_deform|Heavy attack strike.001
+  - first:
+      74: -4060166278859458296
+    second: rig_deform|Idle.001
+  - first:
+      74: -3136987511390888777
+    second: rig_deform|MaskAction
+  - first:
+      74: 8618216607994555166
+    second: rig_deform|Rewind End.001
+  - first:
+      74: 2938756990281030366
+    second: rig_deform|Rewind start.001
+  - first:
+      74: -2115093450577912685
+    second: rig_deform|Roll.001
+  - first:
+      74: -3699817049878368934
+    second: rig_deform|Run1.001
+  - first:
+      74: -8389592831283948769
+    second: rig_deform|Run2.001
+  - first:
+      74: -1395183636762503180
+    second: rig_deform|strike 2.001
+  - first:
+      74: 5292844827131358153
+    second: rig_deform|Strike1 fast.001
+  - first:
+      74: 3765110895027432105
+    second: rig_deform|Strike1 slow.001
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

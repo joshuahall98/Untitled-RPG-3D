@@ -21,18 +21,29 @@ public class AIFleeState : AIState
     {
         controller.anim.SetBool("isFleeing", true);
         controller.anim.ResetTrigger("Hit");
+        controller.agent.speed = controller.stats.speed;
         timeToHide = false;
     }
 
     public override void UpdateState(AIStateManager state)
     {
+        FleeBehaviour(state);
+    }
+
+    public override void ExitState(AIStateManager state)
+    {
+        controller.anim.SetBool("isFleeing", false);
+    }
+
+    private void FleeBehaviour(AIStateManager state)
+    {
         Debug.DrawLine(controller.player.transform.position, destPoint, Color.blue);
 
         //check to see if AI has moved far enough away from player to look for hiding spot
-        if (Vector3.Distance(transform.position, controller.player.transform.position) > controller.stats.sightDistance)
+        if (Vector3.Distance(transform.position, controller.player.transform.position) > controller.stats.agroRange)
         {
 
-            if(timeToHide == false)
+            if (timeToHide == false)
             {
                 float range = 20f;//keeping this number high will prevent wurgle from running into walls
 
@@ -56,17 +67,16 @@ public class AIFleeState : AIState
                         NavMesh.CalculatePath(transform.position, destPoint, NavMesh.AllAreas, path);
 
                         //make sure destination can be reached via navmesh
-                        if (path.status == NavMeshPathStatus.PathComplete && Vector3.Distance(destPoint, controller.player.transform.position) > controller.stats.sightDistance)
+                        if (path.status == NavMeshPathStatus.PathComplete && Vector3.Distance(destPoint, controller.player.transform.position) > controller.stats.agroRange)
                         {
                             timeToHide = true;
                         }
                     }
-                }   
+                }
             }
             //run to detination and switch to hide state
             else
             {
-                
                 controller.agent.isStopped = false;
                 controller.agent.SetDestination(destPoint);
 
@@ -74,13 +84,9 @@ public class AIFleeState : AIState
 
                 if (Vector3.Distance(transform.position, destPoint) < 1f)
                 {
-
-                    controller.anim.SetBool("isFleeing", false);
                     state.SwitchToTheNextState(state.HideState);
-                    stateManager.angry = false;
-
                 }
-                
+
             }
         }
         //if AI within range of player run away
@@ -92,10 +98,5 @@ public class AIFleeState : AIState
 
             timeToHide = false;
         }
-    }
-
-    public override void ExitState(AIStateManager state)
-    {
-        //unused
     }
 }

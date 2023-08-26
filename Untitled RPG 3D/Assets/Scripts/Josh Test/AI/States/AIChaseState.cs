@@ -11,24 +11,22 @@ public class AIChaseState : AIState
 
     public override void EnterState(AIStateManager state)
     {
-        //unused
+        controller.agent.isStopped = false;
+        controller.anim.SetBool("isChasing", true);
+        controller.agent.speed = controller.stats.speed;
     }
 
     public override void UpdateState(AIStateManager state)
     {
 
         //return to idle
-        if (Vector3.Distance(this.transform.position, controller.player.transform.position) > controller.stats.sightDistance * 2)
+        if (Vector3.Distance(this.transform.position, controller.player.transform.position) > controller.stats.deagroRange)
         {
-            controller.anim.SetBool("isChasing", false);
             state.SwitchToTheNextState(state.IdleState);
             stateManager.angry = false;
         }
 
         //chase player
-        controller.agent.isStopped = false;
-        controller.anim.SetBool("isChasing", true);
-        controller.agent.speed = controller.stats.speed;
         this.controller.agent.SetDestination(controller.player.transform.position);
 
         //attack state
@@ -40,6 +38,7 @@ public class AIChaseState : AIState
 
     public override void ExitState(AIStateManager state)
     {
+        controller.anim.SetBool("isChasing", false);
         this.controller.agent.SetDestination(this.transform.position);
     }
     
