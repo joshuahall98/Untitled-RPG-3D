@@ -99,7 +99,7 @@ public class AIController : MonoBehaviour
         isHit = false;
         isHit = true;
         weight = knockbackStrength / 25;
-        playerPos = playerPosition;
+        playerPos = playerPosition; 
         // anim.SetTrigger("Hit");
 
     }

@@ -9,12 +9,9 @@ public class AIAttackState : AIState
     [SerializeField]AIStateManager stateManager;
     [SerializeField]AIController controller;
 
-    bool attackFin = false;
-
     public override void EnterState(AIStateManager state)
     {
         controller.ChangeAnimationState(AIController.AnimState.Attack, 0.1f, 0);
-       // controller.anim.SetTrigger("Attack");
         controller.agent.velocity = Vector3.zero;
         controller.agent.isStopped = true;
         
@@ -22,28 +19,21 @@ public class AIAttackState : AIState
 
     public override void UpdateState(AIStateManager state)
     {
-        /*if(attackFin ==  true)
-        {
-            state.SwitchToTheNextState(state.IdleState);
-        }*/
-
-        if (controller.IsAnimationDone(controller.anim, AIController.AnimState.Attack))
-        {
-            state.SwitchToTheNextState(state.IdleState);
-        }
+        CheckAnimationFinished(state);
     }
 
     public override void ExitState(AIStateManager state)
     {
         //this has to be called after otherwise animator bugs
         controller.agent.isStopped = false;
-        attackFin = false;
     }
 
-    //call this when an the attack is finished so the AI can enter the next state
-    public void AttackFin()
+    void CheckAnimationFinished(AIStateManager state)
     {
-        attackFin = true;
+        if (controller.IsAnimationDone(controller.anim, AIController.AnimState.Attack))
+        {
+            state.SwitchToTheNextState(state.IdleState);
+        }
     }
     
 }

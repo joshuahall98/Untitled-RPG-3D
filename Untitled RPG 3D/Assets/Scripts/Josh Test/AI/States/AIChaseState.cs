@@ -13,34 +13,47 @@ public class AIChaseState : AIState
     {
         controller.agent.isStopped = false;
         controller.ChangeAnimationState(AIController.AnimState.Chase, 0.1f, 0);
-        //controller.anim.SetBool("isChasing", true);
         controller.agent.speed = controller.stats.speed;
     }
 
     public override void UpdateState(AIStateManager state)
     {
 
+        ReturnToIdle(state);
+
+        ChasePlayer();
+
+        AttackState(state);
+    }
+
+    public override void ExitState(AIStateManager state)
+    {
+        this.controller.agent.SetDestination(this.transform.position);
+    }
+
+    void ReturnToIdle(AIStateManager state)
+    {
         //return to idle
         if (Vector3.Distance(this.transform.position, controller.player.transform.position) > controller.stats.deagroRange)
         {
             state.SwitchToTheNextState(state.IdleState);
             stateManager.angry = false;
         }
+    }
 
+    void ChasePlayer()
+    {
         //chase player
         this.controller.agent.SetDestination(controller.player.transform.position);
+    }
 
+    void AttackState(AIStateManager state)
+    {
         //attack state
         if (Vector3.Distance(this.transform.position, controller.player.transform.position) < controller.stats.attackRange)
         {
             state.SwitchToTheNextState(state.AttackState);
         }
-    }
-
-    public override void ExitState(AIStateManager state)
-    {
-       // controller.anim.SetBool("isChasing", false);
-        this.controller.agent.SetDestination(this.transform.position);
     }
     
 }

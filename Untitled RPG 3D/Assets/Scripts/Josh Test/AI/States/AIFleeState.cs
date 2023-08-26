@@ -20,8 +20,6 @@ public class AIFleeState : AIState
     public override void EnterState(AIStateManager state)
     {
         controller.ChangeAnimationState(AIController.AnimState.Flee, 0.1f, 0);
-        //  controller.anim.SetBool("isFleeing", true);
-        //  controller.anim.ResetTrigger("Hit");
         controller.agent.speed = controller.stats.speed;
         timeToHide = false;
     }
@@ -33,7 +31,7 @@ public class AIFleeState : AIState
 
     public override void ExitState(AIStateManager state)
     {
-       // controller.anim.SetBool("isFleeing", false);
+
     }
 
     private void FleeBehaviour(AIStateManager state)

@@ -19,10 +19,6 @@ public class AIIdle : AIState
 
     public override void EnterState(AIStateManager state)
     {
-
-        //string nextState = AIController.AnimState.Chase.ToString();
-        //Debug.Log(nextState);
-       // controller.ChangeAnimationState(nextState);
         controller.ChangeAnimationState(AIController.AnimState.Idle, 0.2f, 0);
 
         idleZone = this.transform.position;//create the idle zone starting point
@@ -34,8 +30,7 @@ public class AIIdle : AIState
         }
         else if (stateManager.GetComponent<AIHealth>().currentHealth < controller.stats.maxHP / 2)
         {
-            state.SwitchToTheNextState(state.FleeState);
-            
+            state.SwitchToTheNextState(state.FleeState);    
         }
     }
 
@@ -49,7 +44,7 @@ public class AIIdle : AIState
 
     public override void ExitState(AIStateManager state)
     {
-       // controller.anim.SetBool("isWalking", false);
+
     }
 
     //search for new location to walk
@@ -60,7 +55,12 @@ public class AIIdle : AIState
 
         destPoint = new Vector3(idleZone.x + x, idleZone.y, idleZone.z + z);
 
-        if(Physics.Raycast(destPoint, Vector3.down, groundLayer))
+        //set up for seeing if destination is on navmesh
+        NavMeshPath path = new NavMeshPath();
+        NavMesh.CalculatePath(transform.position, destPoint, NavMesh.AllAreas, path);
+
+        //make sure destination can be reached via navmesh
+        if (Physics.Raycast(destPoint, Vector3.down, groundLayer) && path.status == NavMeshPathStatus.PathComplete)
         {
             walkPointSet = true;
 
@@ -75,24 +75,24 @@ public class AIIdle : AIState
         //idle movement
         controller.agent.speed = controller.stats.speed / 2;
 
+        //check to see if AI has a destination
         if (!walkPointSet)
         {
             StartCoroutine(SearchForLocation());
-
         }
+        //send AI to destination
         if (canWalk)
         {
             controller.agent.isStopped = false;
             controller.agent.SetDestination(destPoint);
             controller.ChangeAnimationState(AIController.AnimState.IdleWalk, 0.1f, 0);
-            //controller.anim.SetBool("isWalking", true);
         }
+        //when destination is reached
         if (Vector3.Distance(this.transform.position, destPoint) < 1)
         {
             walkPointSet = false;
             canWalk = false;
             controller.ChangeAnimationState(AIController.AnimState.Idle, 0.2f, 0);
-            //controller.anim.SetBool("isWalking", false);
             controller.agent.velocity = Vector3.zero;
             controller.agent.isStopped = true;
 
