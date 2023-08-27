@@ -13,11 +13,13 @@ using Random = UnityEngine.Random;
 //using UnityEngine.iOS;
 using System.Web.Mvc;
 using UnityEngine.InputSystem.Utilities;
+using static AIController;
 
 //Joshua
 
 //THIS SCRIPT CONTROLS THE PLAYER STATES AND ALL PLAYER CONTROLS
 public enum PlayerState { IDLE, MOVING, ROLLING, ATTACKING, DEAD, REWINDING, DIZZY, KNOCKEDDOWN, FALLING, INTERACTING}
+
 public class PlayerController : MonoBehaviour
 {
     #region - VARIABLES -
@@ -42,7 +44,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]int isometricRotation = 45;
 
     //Animation
-    Animator anim;
+    //Animator anim;
+    PlayerAnimController anim;
 
     //States
     public static PlayerState state;
@@ -122,7 +125,8 @@ public class PlayerController : MonoBehaviour
         sideCharacter = GameObject.Find("SideCharacter");
         aiSpawner = GameObject.Find("TestArenaSpawner");
         dizzyAffect = GameObject.Find("DizzyAffect");
-        anim = GetComponent<Animator>();
+        // anim = GetComponent<Animator>();
+        anim = this.GetComponent<PlayerAnimController>();
         controller = GetComponent<CharacterController>();
 
         playerInput = new PlayerInputActions();
@@ -194,13 +198,6 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    //what does this code do?
-    /*private void CameraRight_performed(InputAction.CallbackContext obj)
-    {
-        throw new NotImplementedException();
- 
-    }*/
-
     #region - UPDATE - 
     void Update()
     {
@@ -219,6 +216,8 @@ public class PlayerController : MonoBehaviour
 
         RollTimer();
 
+        RollEndAnim();
+
     }
 
     #endregion
@@ -228,21 +227,40 @@ public class PlayerController : MonoBehaviour
     {
 
         //walking animation
-        if(state == PlayerState.MOVING || state == PlayerState.DIZZY)
+        /*if(state == PlayerState.MOVING || state == PlayerState.DIZZY)
         {
             //stop moving animation while dizzy
             if(isMoving == true)
             {
-                anim.SetBool("isMoving", true);
+                ChangeAnimationState(PlayerAnimState.Run, 0.1f, 0);
+                //anim.SetBool("isMoving", true);
             }
             else
             {
-                anim.SetBool("isMoving", false);
+                //ChangeAnimationState(PlayerAnimState.Idle, 0.1f, 0);
+                // anim.SetBool("isMoving", false);
             }   
         }
         else
         {
-            anim.SetBool("isMoving", false);
+           // anim.SetBool("isMoving", false);
+        }*/
+
+        if(state == PlayerState.MOVING || state == PlayerState.DIZZY)
+        {
+            if(isMoving)
+            {
+                anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Run, 0.1f, 0);
+            }
+            else
+            {
+                anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Idle, 0.1f, 0);
+            }
+            
+        }
+        else if (state == PlayerState.IDLE)
+        {
+            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Idle, 0.1f, 0);
         }
 
         if (state == PlayerState.IDLE || state == PlayerState.MOVING)
@@ -416,7 +434,8 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.CapsuleCast(transform.position - new Vector3(0f, 0f, 0f), transform.position + new Vector3(0f, 0f, 0f), controller.radius, transform.TransformDirection(Vector3.down), out RaycastHit hit, touchGround, groundMask))
         {
-            anim.SetBool("isGrounded", true);
+            
+            //anim.SetBool("isGrounded", true);
             isGrounded = true;
             Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * hit.distance, Color.red);
 
@@ -432,9 +451,9 @@ public class PlayerController : MonoBehaviour
             //this if statement exist to stop the player from being knocked up and entering another state while in knockdown anim
             if(state != PlayerState.KNOCKEDDOWN)
             {
+                anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Falling, 0.1f, 0);
+                // anim.SetBool("isGrounded", false);
 
-                anim.SetBool("isGrounded", false);
-                
                 Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * 1f, Color.green);
 
                 StartCoroutine(FallDelay());
@@ -462,7 +481,8 @@ public class PlayerController : MonoBehaviour
         {
             state = PlayerState.ROLLING;
 
-            anim.SetTrigger("Roll");
+            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Roll, 0.1f, 0);
+            //anim.SetTrigger("Roll");
         }
     }
 
@@ -504,20 +524,22 @@ public class PlayerController : MonoBehaviour
     //calling this on animtion exit
     public void RollEndAnim()
     {
-
-        //isRolling = false;
-        if ((rollCDTimer > 0) && (rollUsed >= 3))
+        if(anim.IsAnimationDone(PlayerAnimController.PlayerAnimState.Roll))
         {
-            StartCoroutine(Dizzy());
-
+            //isRolling = false;
+            if ((rollCDTimer > 0) && (rollUsed >= 3))
+            {
+                StartCoroutine(Dizzy());
+            }
+            else
+            {
+                rewind.Enable();
+                //anim.ResetTrigger("Roll");
+                state = PlayerState.IDLE;
+                //StartCoroutine(EndRollWait());
+            }
         }
-        else
-        {
-            rewind.Enable();
-            //anim.ResetTrigger("Roll");
-            state = PlayerState.IDLE;
-            //StartCoroutine(EndRollWait());
-        }
+        
 
         //this prevents issue where attack after roll are clunky, this line prevents users from being able to instantly attack after rolling
         //instead of this we added a skip state to the animation to allow for better flow of attacking
@@ -567,7 +589,8 @@ public class PlayerController : MonoBehaviour
     //this affect occurs when you roll too much
     IEnumerator Dizzy()
     {
-        anim.SetTrigger("Dizzy");
+        anim.ChangeAnimationAffectState(PlayerAnimController.PlayerAnimAffectState.Dizzy, 0.1f, 1);
+        //anim.SetTrigger("Dizzy");
         dizzyAffect.SetActive(true);
 
         //dizzy direction changes so it's harder to learn lmao
@@ -579,16 +602,19 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(3);
 
+        anim.ChangeAnimationAffectState(PlayerAnimController.PlayerAnimAffectState.None, 0.1f, 1);
+
         isDizzy = false;
 
         dizzyAffect.SetActive(false);
 
         rewind.Enable();
-        anim.ResetTrigger("Roll");
-        anim.SetTrigger("StopDizzy");
+       // anim.ResetTrigger("Roll");
+       // anim.SetTrigger("StopDizzy");
 
         if(state != PlayerState.FALLING)
         {
+            anim.anim.Rebind();
             state = PlayerState.IDLE;
         }
         
@@ -727,7 +753,7 @@ public class PlayerController : MonoBehaviour
     //Pause game 
     void PressPause(InputAction.CallbackContext PauseInput)
     {
-        Debug.Log("pause");
+        //Debug.Log("pause");
         gameManager.GetComponent<GameManager>().PauseAndUnpause();
        // gameManager.GetComponent<MenuManager>().MenuUIPauseUnpause();
         

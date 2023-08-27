@@ -191,6 +191,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1689940224852358949, guid: d3a6362d2dff6f944ab0422baf23a927, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 893d3c607720a9a41b09f537941025ba, type: 2}
     - target: {fileID: 1689940224852358950, guid: d3a6362d2dff6f944ab0422baf23a927, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -548,6 +552,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &176002451 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1689940224852359003, guid: d3a6362d2dff6f944ab0422baf23a927, type: 3}
+  m_PrefabInstance: {fileID: 72900319}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &210556603
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,6 +1105,10 @@ PrefabInstance:
     - target: {fileID: 5314328230555930775, guid: 2365fb1b5183af14ca18fa5ba581f093, type: 3}
       propertyPath: m_Name
       value: Wurgle
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314328230555930775, guid: 2365fb1b5183af14ca18fa5ba581f093, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -8053,6 +8066,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1689940224852358950, guid: d3a6362d2dff6f944ab0422baf23a927, type: 3}
   m_PrefabInstance: {fileID: 72900319}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1929893932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176002451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beeba572d1c6f8f4f806dcde68de4c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAnimState: 0
+  playerAnimAffectState: 0
+  anim: {fileID: 0}
 --- !u!1001 &1980950674
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -141,7 +141,7 @@ Transform:
   - {fileID: 3883778077081460889}
   - {fileID: 3883778076425773843}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8015287883803367778
 MonoBehaviour:
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b1fbce872defa4aad52429c24bb90f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 3883778076425773840}
+  cinemachineCamera: {fileID: 3883778076425773840}
   nextRotate: 0
 --- !u!1 &3883778076425773842
 GameObject:

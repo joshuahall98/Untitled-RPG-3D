@@ -8,7 +8,7 @@ using Cinemachine;
 public class CameraControls : MonoBehaviour
 {
     public CinemachineVirtualCamera cinemachineCamera;
-    public Camera camera;
+    //public Camera camera;
 
     GameObject sideCharacter;
     GameObject player;
@@ -24,17 +24,17 @@ public class CameraControls : MonoBehaviour
     private void Awake()
     {
         //this sets the clipping pain at the start of the scene so that the camera doesn't clip through object
-       // camera.m_Lens.NearClipPlane = -20f;
-        camera.nearClipPlane = -50f;
+        //camera.m_Lens.NearClipPlane = -20f;
+        cinemachineCamera.m_Lens.NearClipPlane = -50f;
 
-        player = GameObject.Find("Player");
+        /*player = GameObject.Find("Player");
         distanceCheckerObj = GameObject.Find("DistanceChecker");
         sideCharacter = GameObject.Find("SideCharacter");
 
-        lookAt = LookAt.Player;
+        lookAt = LookAt.Player;*/
 
         //transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 135, transform.eulerAngles.z);
-        
+
     }
 
     //allows camera to switch between characters
@@ -60,7 +60,7 @@ public class CameraControls : MonoBehaviour
     }
 
     //this allows for far objects to appear small in the ortho camera based off distance from player to object
-    void AdjustableClippingPlane()
+    /*void AdjustableClippingPlane()
     {
         distance = Vector3.Distance(distanceCheckerObj.transform.position, player.transform.position);
 
@@ -68,7 +68,7 @@ public class CameraControls : MonoBehaviour
 
         cinemachineCamera.m_Lens.NearClipPlane = distance;
         camera.farClipPlane = distance;
-    }
+    }*/
 
     void Rotation()
     {

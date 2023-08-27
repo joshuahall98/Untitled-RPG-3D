@@ -43,11 +43,6 @@ public class AIController : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
-    }
-
     public void ChangeAnimationState(AnimState nextState, float transitionTime, int layer)
     {
 
