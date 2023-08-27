@@ -19,6 +19,7 @@ using static AIController;
 
 //THIS SCRIPT CONTROLS THE PLAYER STATES AND ALL PLAYER CONTROLS
 public enum PlayerState { IDLE, MOVING, ROLLING, ATTACKING, DEAD, REWINDING, DIZZY, KNOCKEDDOWN, FALLING, INTERACTING}
+public enum PlayerStateAffect { Dizzy }
 
 public class PlayerController : MonoBehaviour
 {
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour
 
     //these bools are helpful for animations and state control
     [SerializeField]bool isMoving;
+    public bool canMove;
     bool isGrounded;
     bool isDizzy;
 
@@ -173,6 +175,8 @@ public class PlayerController : MonoBehaviour
 
         //create the last device container
         LastDevice();
+
+        canMove = true;
     }
 
     #endregion
@@ -246,20 +250,40 @@ public class PlayerController : MonoBehaviour
            // anim.SetBool("isMoving", false);
         }*/
 
-        if(state == PlayerState.MOVING || state == PlayerState.DIZZY)
+        /*if(state == PlayerState.MOVING || state == PlayerState.DIZZY)
         {
-            if(isMoving)
+            if(isMoving )
             {
                 anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Run, 0.1f, 0);
             }
-            else
+            
+        }
+        else if (state == PlayerState.IDLE || state == PlayerState.DIZZY)
+        {
+            if(!isMoving)
             {
                 anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Idle, 0.1f, 0);
             }
             
-        }
-        else if (state == PlayerState.IDLE)
+        }*/
+
+        if (state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
+            canMove = true;
+        }
+        else
+        {
+            canMove = false;
+        }
+
+        if (isMoving && canMove && (state != PlayerState.MOVING || state == PlayerState.MOVING))
+        {
+            state = PlayerState.MOVING;
+            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Run, 0.1f, 0);
+        }
+        else if(!isMoving && (state == PlayerState.MOVING || state == PlayerState.IDLE))
+        {
+            state = PlayerState.IDLE;
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Idle, 0.1f, 0);
         }
 
@@ -284,7 +308,7 @@ public class PlayerController : MonoBehaviour
         speed = baseSpeed;
  
         //this code makes sure the idle state is correctly utilised
-        if (isMoving == false && state == PlayerState.MOVING)
+        /*if (isMoving == false && state == PlayerState.MOVING)
         {
             state = PlayerState.IDLE;
 
@@ -293,7 +317,7 @@ public class PlayerController : MonoBehaviour
         {
             state = PlayerState.MOVING;
 
-        }
+        }*/
 
         currentMoveInput = move.ReadValue<Vector2>();
         actualMovement = new Vector3();
@@ -308,7 +332,7 @@ public class PlayerController : MonoBehaviour
 
         //move the character controller
         controller.Move(isometric * speed * Time.deltaTime);
-        isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+        isMoving = (currentMoveInput.x != 0 || currentMoveInput.y != 0);
 
         //Character Rotation
         Vector3 currentPos = transform.position;
@@ -482,6 +506,8 @@ public class PlayerController : MonoBehaviour
             state = PlayerState.ROLLING;
 
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Roll, 0.1f, 0);
+            RollStartAnim();
+            //canMove = false;
             //anim.SetTrigger("Roll");
         }
     }
@@ -526,6 +552,7 @@ public class PlayerController : MonoBehaviour
     {
         if(anim.IsAnimationDone(PlayerAnimController.PlayerAnimState.Roll))
         {
+            //canMove = true;
             //isRolling = false;
             if ((rollCDTimer > 0) && (rollUsed >= 3))
             {
@@ -614,7 +641,7 @@ public class PlayerController : MonoBehaviour
 
         if(state != PlayerState.FALLING)
         {
-            anim.anim.Rebind();
+            //anim.anim.Rebind();
             state = PlayerState.IDLE;
         }
         
@@ -629,6 +656,7 @@ public class PlayerController : MonoBehaviour
     {
         if(state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
+            canMove = false;
             state = PlayerState.ATTACKING;
             GetComponent<PlayerLightAttack>().LightAtk();
         }
@@ -644,6 +672,7 @@ public class PlayerController : MonoBehaviour
     {
         if (state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
+            canMove = false;
             state = PlayerState.ATTACKING;
             GetComponent<PlayerHeavyAttack>().HeavyAtkCharge();
         }
@@ -744,6 +773,7 @@ public class PlayerController : MonoBehaviour
     {
         if(state == PlayerState.IDLE || state == PlayerState.MOVING || state == PlayerState.FALLING || state == PlayerState.DEAD) 
         { 
+            canMove = false;
             GetComponent<PlayerRewind>().PlsRewind();
         }  
     }

@@ -13,7 +13,7 @@ public class AIStaggerState : AIState
     public override void EnterState(AIStateManager state)
     {
         controller.agent.isStopped = true;
-        controller.RotateToPlayer();
+        controller.RotateToPlayer(100);
 
         this.GetComponentInParent<AIAnimationEvents>().AEWeaponColliderOff();//make sure collider is off as attack can be interrupted
 

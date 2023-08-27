@@ -52,6 +52,7 @@ public class AIChaseState : AIState
         //attack state
         if (Vector3.Distance(this.transform.position, controller.player.transform.position) < controller.stats.attackRange)
         {
+            controller.RotateToPlayer(0.1f);
             state.SwitchToTheNextState(state.AttackState);
         }
     }

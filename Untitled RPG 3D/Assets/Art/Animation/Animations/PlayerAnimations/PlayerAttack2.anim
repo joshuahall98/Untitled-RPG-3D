@@ -30489,7 +30489,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.5416667
+  - time: 0.625
     functionName: LightAttackEndAnimAE
     data: 
     objectReferenceParameter: {fileID: 0}

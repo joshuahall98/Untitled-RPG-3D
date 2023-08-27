@@ -32,6 +32,7 @@ public class AIAttackState : AIState
     {
         if (controller.IsAnimationDone(controller.anim, AIController.AnimState.Attack))
         {
+            controller.anim.Rebind();
             state.SwitchToTheNextState(state.IdleState);
         }
     }

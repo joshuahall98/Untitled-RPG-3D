@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerLightAttack : MonoBehaviour
 {
     //Animation
-    Animator anim;
+    PlayerAnimController anim;
 
     //weapons
     public GameObject sword;
@@ -18,7 +18,7 @@ public class PlayerLightAttack : MonoBehaviour
 
     private void Awake()
     {
-        anim = GetComponent<Animator>();
+        anim = GetComponent<PlayerAnimController>();
 
         swordCollider = sword.GetComponent<Collider>();
 
@@ -67,7 +67,9 @@ public class PlayerLightAttack : MonoBehaviour
             swingCDTimer = 1;
             SoundManager.SoundManagerInstance.SelectAudioClass("Player");
             SoundManager.SoundManagerInstance.PlaySound("Sword Swing");
-            anim.SetTrigger("LightAttack1");
+            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Attack1, 0.1f, 0);
+            GetComponent<AttackDash>().DashActionAnimStart();
+            //anim.SetTrigger("LightAttack1");
 
         }
         else
@@ -82,7 +84,9 @@ public class PlayerLightAttack : MonoBehaviour
             swingCDTimer = 1;
             SoundManager.SoundManagerInstance.SelectAudioClass("Player");
             SoundManager.SoundManagerInstance.PlaySound("Sword Swing");
-            anim.SetTrigger("LightAttack2");
+            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Attack2, 0.1f, 0);
+            GetComponent<AttackDash>().DashActionAnimStart();
+            //anim.SetTrigger("LightAttack2");
         }
     }
 
@@ -104,6 +108,7 @@ public class PlayerLightAttack : MonoBehaviour
         //If player were to be knockeddown during an attack the idle would trigger overidiing knockdown
         if(PlayerController.state != PlayerState.KNOCKEDDOWN)
         {
+            GetComponent<PlayerController>().canMove = true;
             PlayerController.state = PlayerState.IDLE;
         }
 

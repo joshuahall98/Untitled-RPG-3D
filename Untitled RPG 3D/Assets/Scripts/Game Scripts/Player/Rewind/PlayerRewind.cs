@@ -37,7 +37,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public GameObject rewindUI;
 
     //animation variables
-    Animator anim;
+    PlayerAnimController anim;
     public GameObject hourGlass;
 
     //rewind ghost
@@ -53,9 +53,7 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     {
         rewindUI = GameObject.Find("PlayerUI");
 
-        anim = GetComponent<Animator>();
-
-        hourGlass.SetActive(false);
+        anim = GetComponent<PlayerAnimController>();
 
         rewindGhost = GameObject.Find("RewindGhost");
     }
@@ -63,6 +61,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     void Start()
     {
         pointsInTime = new List<PointInTime>();
+
+        hourGlass.SetActive(false);
     }
 
     // Update is called once per frame
@@ -80,16 +80,11 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             {
                 Rewind(); 
             }
-
-
         }
         else
         {
             Record();
-
         }
-
-
 
         void Record()
         {
@@ -142,21 +137,28 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         {
             rewindFillXPAmount = 0;
         }
+
+        if(anim.IsAnimationDone(PlayerAnimController.PlayerAnimState.RewindEnd) && PlayerController.state == PlayerState.REWINDING)
+        {
+            EndRewindAnim();
+        }
     }
 
     //rewind player to point x seconds ago
     void Rewind()
     {
-        anim.SetBool("isRewinding", true);
+        anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.RewindStart, 0.1f, 0);
+      //  anim.SetBool("isRewinding", true);
 
         hourGlass.SetActive(true);
 
         PlayerController.state = PlayerState.REWINDING;
 
         //should probably change this to animation behaviour, they run better, works for now
-        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerRewindStart"))
+        if (anim.IsAnimationDone(PlayerAnimController.PlayerAnimState.RewindStart))
         {
-            anim.SetBool("isRewinding", false);
+            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.RewindEnd, 0.1f, 0);
+          //  anim.SetBool("isRewinding", false);
 
             //call the UI update when you rewind
             rewindUI.GetComponent<RewindUI>().Rewind();
@@ -186,7 +188,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //allow player to rewind after death, as of rn it takes away the neccesary capsules, I don't know if it work if we have more capsules
     public void DeathRewind()
     {
-        anim.SetBool("isRewinding", true);
+        anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.RewindEnd, 0.1f, 0);
+      //  anim.SetBool("isRewinding", true);
 
         hourGlass.SetActive(true);
 
@@ -210,7 +213,15 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
 
         GetComponent<PlayerHealth>().DeathRewind();
 
-        
+        //exit out once rewinds have hit 0
+        if(rewindsLeft <= 0)
+        {
+            PlayerController.state = PlayerState.REWINDING;
+            //empty rewind array to start fresh
+            pointsInTime.Clear();
+            Rewinding = false;
+            hourGlass.SetActive(false);
+        }
     }
 
     //Rewind button function
@@ -251,24 +262,15 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     //using animation event
     public void EndRewindAnim()
     {
-        if(PlayerController.state == PlayerState.DEAD) 
-        {
-            anim.SetBool("isRewinding", false);//this shouold stop rewind animtion bug from death rewind
-            //empty rewind array to start fresh
-            pointsInTime.Clear();
-            Rewinding = false;
-            hourGlass.SetActive(false);
-
-        }
-
+        
         //prevents the player from taking damage
         StartCoroutine(GetComponent<PlayerController>().Immunity(immunityTimer));
 
         //so character controller knows player rotation
         GetComponent<PlayerController>().Rotation(transform.rotation);
 
-        
-
+        //  anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Idle, 0.1f, 0);
+        GetComponent<PlayerController>().canMove = true;
         PlayerController.state = PlayerState.IDLE;
 
         //StartCoroutine(ActionDelay());

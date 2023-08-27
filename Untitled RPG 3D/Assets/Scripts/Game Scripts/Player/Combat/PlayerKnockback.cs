@@ -12,13 +12,13 @@ public class PlayerKnockback : MonoBehaviour
     Vector3 playerY;
 
     private CharacterController character;
-    Animator anim;
+    PlayerAnimController anim;
 
     // Use this for initialization
     void Start()
     {
         character = GetComponent<CharacterController>();
-        anim = GetComponent<Animator>();
+        anim = GetComponent<PlayerAnimController>();
     }
 
     // Update is called once per frame
@@ -30,6 +30,11 @@ public class PlayerKnockback : MonoBehaviour
         // consumes the impact energy each cycle:
         //this line seems to stop the player being knockedback into oblivion
         impact = Vector3.Lerp(impact, Vector3.zero, 5 * Time.deltaTime);
+
+        if(anim.IsAnimationDone(PlayerAnimController.PlayerAnimState.Knockdown) && PlayerController.state == PlayerState.KNOCKEDDOWN)
+        {
+            KnockdownEndAnim();
+        }
          
     }
     // call this function to add an impact force:
@@ -40,6 +45,8 @@ public class PlayerKnockback : MonoBehaviour
         {
             if(PlayerController.immune == false)
             {
+                GetComponent<PlayerController>().canMove = false;
+
                 //cancel interact
                 if (PlayerController.state == PlayerState.INTERACTING)
                 {
@@ -51,7 +58,8 @@ public class PlayerKnockback : MonoBehaviour
 
                 PlayerController.state = PlayerState.KNOCKEDDOWN;
 
-                anim.SetTrigger("Knockdown");
+                anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Knockdown, 0.1f, 0);
+               // anim.SetTrigger("Knockdown");
                 transform.LookAt(lookAtEnemy);
                 GetComponent<PlayerController>().DisableRewind(); //this prevents rewind bug
                 dir = dir.normalized;
@@ -74,6 +82,7 @@ public class PlayerKnockback : MonoBehaviour
     {
         GetComponent<PlayerController>().EnableRewind();
 
+        GetComponent<PlayerController>().canMove = true;
         PlayerController.state = PlayerState.IDLE;
 
         //StartCoroutine(ActionDelay());

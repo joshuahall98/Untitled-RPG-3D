@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerHeavyAttack : MonoBehaviour
 {
     //Animation
-    Animator anim;
+    PlayerAnimController anim;
 
     //weapons
     public GameObject sword;
@@ -17,7 +17,7 @@ public class PlayerHeavyAttack : MonoBehaviour
 
     private void Awake()
     {
-        anim = GetComponent<Animator>();
+        anim = GetComponent<PlayerAnimController>();
 
         swordCollider = sword.GetComponent<Collider>();
 
@@ -28,14 +28,19 @@ public class PlayerHeavyAttack : MonoBehaviour
     private void Update()
     {
         Knockeddown();
+
+        if(anim.IsAnimationDone(PlayerAnimController.PlayerAnimState.HeavyRelease) && PlayerController.state == PlayerState.ATTACKING)
+        {
+            HeavyAttackEndAnim();
+        }
     }
 
 
     public void HeavyAtkCharge()
     {
-        
-        anim.SetTrigger("HeavyAttackHold");
-        anim.ResetTrigger("HeavyAttackFail");
+        anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.HeavyHold, 0.1f, 0);
+        //anim.SetTrigger("HeavyAttackHold");
+      //  anim.ResetTrigger("HeavyAttackFail");
         sword.GetComponent<MeshRenderer>().enabled = true;
         sword.GetComponent<BoxCollider>().enabled = true;
         sheathedSword.SetActive(false);
@@ -70,7 +75,9 @@ public class PlayerHeavyAttack : MonoBehaviour
         {
             sparkle.SetActive(false);
             sword.GetComponent<WeaponDamage>().HeavyAttackDamage();
-            anim.SetTrigger("HeavyAttackRelease");
+            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.HeavyRelease, 0.1f, 0);
+            GetComponent<AttackDash>().DashActionAnimStart();
+            // anim.SetTrigger("HeavyAttackRelease");
             WeaponDamage.isAttacking = true;
             swordCollider.enabled = true;
             releaseReady = false;
@@ -84,11 +91,13 @@ public class PlayerHeavyAttack : MonoBehaviour
             SoundManager.SoundManagerInstance.SelectAudioClass("Player");
             SoundManager.SoundManagerInstance.StopSound("Heavy Attack Charge");
             releaseReady = false;
-            anim.SetTrigger("HeavyAttackFail");
+            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Idle, 0.1f, 0);
+            // anim.SetTrigger("HeavyAttackFail");
 
             //If player were to be knockeddown during an attack the idle would trigger overidiing knockdown
             if (PlayerController.state != PlayerState.KNOCKEDDOWN)
             {
+                GetComponent<PlayerController>().canMove = true;
                 PlayerController.state = PlayerState.IDLE;
             }
 
@@ -110,6 +119,7 @@ public class PlayerHeavyAttack : MonoBehaviour
         //If player were to be knockeddown during an attack the idle would trigger overidiing knockdown
         if (PlayerController.state != PlayerState.KNOCKEDDOWN)
         {
+            GetComponent<PlayerController>().canMove = true;
             PlayerController.state = PlayerState.IDLE;
         }
 
@@ -125,7 +135,7 @@ public class PlayerHeavyAttack : MonoBehaviour
             SoundManager.SoundManagerInstance.SelectAudioClass("Player");
             SoundManager.SoundManagerInstance.StopSound("Heavy Attack Charge");
             releaseReady = false;
-            anim.SetTrigger("HeavyAttackFail");
+          //  anim.SetTrigger("HeavyAttackFail");
             sword.GetComponent<MeshRenderer>().enabled = false;
             sword.GetComponent<BoxCollider>().enabled = false;
             sheathedSword.SetActive(true);

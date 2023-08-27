@@ -96,5 +96,6 @@ public class AIFleeState : AIState
 
             timeToHide = false;
         }
+
     }
 }

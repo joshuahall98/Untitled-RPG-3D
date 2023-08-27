@@ -59,7 +59,7 @@ public class PlayerAnimController : MonoBehaviour
 
     public bool IsAnimationDone(PlayerAnimState stateName)
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName(stateName.ToString()) && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName(stateName.ToString()) && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
         {
             return true;
         }
@@ -103,7 +103,7 @@ public class PlayerAnimController : MonoBehaviour
 
     public bool IsAnimationAffectDone(PlayerAnimAffectState stateName)
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName(stateName.ToString()) && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName(stateName.ToString()) && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
         {
             return true;
         }

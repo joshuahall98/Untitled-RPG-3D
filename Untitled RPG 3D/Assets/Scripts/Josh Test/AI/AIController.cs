@@ -99,12 +99,12 @@ public class AIController : MonoBehaviour
 
     }
 
-    public void RotateToPlayer()
+    public void RotateToPlayer(float speed)
     {
         Vector3 lookPos = player.transform.position - transform.position;
         lookPos.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookPos);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 100);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, speed);
     }
 
 

@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     //Animation
-    Animator anim;
+    PlayerAnimController anim;
 
     public static int maxHP = 100;
     public static int currentHP = 0;
@@ -20,7 +20,7 @@ public class PlayerHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        anim = GetComponent<Animator>();
+        anim = GetComponent<PlayerAnimController>();
 
         menuUI = GameObject.Find("PlayerUI");
 
@@ -70,8 +70,8 @@ public class PlayerHealth : MonoBehaviour
         {
             Debug.Log("I am dead");
 
-
-            anim.SetTrigger("Dead");
+            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Death, 0.1f, 0);
+           // anim.SetTrigger("Dead");
             menuUI.GetComponent<MenuUI>().EnableDeathText();
             
             //die while interacting
@@ -82,7 +82,7 @@ public class PlayerHealth : MonoBehaviour
 
             }
 
-            
+            GetComponent<PlayerController>().canMove = false;
             PlayerController.state = PlayerState.DEAD;
         }
     }
