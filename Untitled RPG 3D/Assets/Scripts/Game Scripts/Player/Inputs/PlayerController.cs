@@ -18,8 +18,8 @@ using static AIController;
 //Joshua
 
 //THIS SCRIPT CONTROLS THE PLAYER STATES AND ALL PLAYER CONTROLS
-public enum PlayerState { IDLE, MOVING, ROLLING, ATTACKING, DEAD, REWINDING, DIZZY, KNOCKEDDOWN, FALLING, INTERACTING}
-public enum PlayerStateAffect { Dizzy }
+public enum PlayerState { IDLE, MOVING, ROLLING, ATTACKING, DEAD, REWINDING, KNOCKEDDOWN, FALLING, INTERACTING}
+public enum PlayerStateAffect { NONE, DIZZY }
 
 public class PlayerController : MonoBehaviour
 {
@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
 
     //States
     public static PlayerState state;
+    public static PlayerStateAffect stateAffect;
     [SerializeField]PlayerState visibleState;
 
     //these bools are helpful for animations and state control
@@ -167,6 +168,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         state = PlayerState.IDLE;
+        stateAffect = PlayerStateAffect.NONE;
 
         dizzyAffect.SetActive(false);
 
@@ -230,43 +232,7 @@ public class PlayerController : MonoBehaviour
     void PlayerMovement()
     {
 
-        //walking animation
-        /*if(state == PlayerState.MOVING || state == PlayerState.DIZZY)
-        {
-            //stop moving animation while dizzy
-            if(isMoving == true)
-            {
-                ChangeAnimationState(PlayerAnimState.Run, 0.1f, 0);
-                //anim.SetBool("isMoving", true);
-            }
-            else
-            {
-                //ChangeAnimationState(PlayerAnimState.Idle, 0.1f, 0);
-                // anim.SetBool("isMoving", false);
-            }   
-        }
-        else
-        {
-           // anim.SetBool("isMoving", false);
-        }*/
-
-        /*if(state == PlayerState.MOVING || state == PlayerState.DIZZY)
-        {
-            if(isMoving )
-            {
-                anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Run, 0.1f, 0);
-            }
-            
-        }
-        else if (state == PlayerState.IDLE || state == PlayerState.DIZZY)
-        {
-            if(!isMoving)
-            {
-                anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Idle, 0.1f, 0);
-            }
-            
-        }*/
-
+        //check if player can move
         if (state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
             canMove = true;
@@ -276,6 +242,7 @@ public class PlayerController : MonoBehaviour
             canMove = false;
         }
 
+        //switch state if player is moving or not
         if (isMoving && canMove && (state != PlayerState.MOVING || state == PlayerState.MOVING))
         {
             state = PlayerState.MOVING;
@@ -287,37 +254,32 @@ public class PlayerController : MonoBehaviour
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Idle, 0.1f, 0);
         }
 
-        if (state == PlayerState.IDLE || state == PlayerState.MOVING)
+        //correct movement type
+        if ((state == PlayerState.IDLE || state == PlayerState.MOVING || state == PlayerState.FALLING) && stateAffect != PlayerStateAffect.DIZZY)
         {
             IsometricMovement();
         }
-
-        if(state == PlayerState.DIZZY) 
+        else if((state == PlayerState.IDLE || state == PlayerState.MOVING || state == PlayerState.FALLING) && stateAffect == PlayerStateAffect.DIZZY) 
         {
             DizzyMovement();            
         }
-
-        if (state == PlayerState.FALLING)
+        /*else if (state == PlayerState.FALLING)
         {
             FallingMovement();
-        }
+        }*/
     }
 
     void IsometricMovement()
     {
-        speed = baseSpeed;
- 
-        //this code makes sure the idle state is correctly utilised
-        /*if (isMoving == false && state == PlayerState.MOVING)
-        {
-            state = PlayerState.IDLE;
 
+        if(state == PlayerState.IDLE || state == PlayerState.MOVING)
+        {
+            speed = baseSpeed;
         }
-        else if (isMoving == true && state != PlayerState.MOVING)
+        else if (state == PlayerState.FALLING)
         {
-            state = PlayerState.MOVING;
-
-        }*/
+            speed = baseSpeed / 4;
+        }
 
         currentMoveInput = move.ReadValue<Vector2>();
         actualMovement = new Vector3();
@@ -332,8 +294,8 @@ public class PlayerController : MonoBehaviour
 
         //move the character controller
         controller.Move(isometric * speed * Time.deltaTime);
-        isMoving = (currentMoveInput.x != 0 || currentMoveInput.y != 0);
-
+        if(state != PlayerState.FALLING) { isMoving = (currentMoveInput.x != 0 || currentMoveInput.y != 0); }
+        
         //Character Rotation
         Vector3 currentPos = transform.position;
         Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
@@ -347,7 +309,14 @@ public class PlayerController : MonoBehaviour
     //movement while dizzy, randomized
     void DizzyMovement()
     {
-        speed = baseSpeed;
+        if (state == PlayerState.IDLE || state == PlayerState.MOVING)
+        {
+            speed = baseSpeed;
+        }
+        else if (state == PlayerState.FALLING)
+        {
+            speed = baseSpeed / 4;
+        }
 
         currentMoveInput = move.ReadValue<Vector2>();
         actualMovement = new Vector3();
@@ -355,12 +324,13 @@ public class PlayerController : MonoBehaviour
         actualMovement.z = currentMoveInput.x;
         actualMovement.x = currentMoveInput.y;
 
+        //randomise the dizzy movement
         if (rollRandomGen > 50)
         {
 
             //move charachter controller
             controller.Move(actualMovement * speed * Time.deltaTime);
-            isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+            if (state != PlayerState.FALLING) { isMoving = (currentMoveInput.x != 0 || currentMoveInput.y != 0); }
 
             //Character Rotation
             Vector3 currentPos = transform.position;
@@ -381,7 +351,7 @@ public class PlayerController : MonoBehaviour
 
             //move the character controller
             controller.Move(isometric * speed * Time.deltaTime);
-            isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
+            if (state != PlayerState.FALLING) { isMoving = (currentMoveInput.x != 0 || currentMoveInput.y != 0); }
 
             //Character Rotation
             Vector3 currentPos = transform.position;
@@ -394,7 +364,7 @@ public class PlayerController : MonoBehaviour
     }
 
     //movement speed while you are falling
-    void FallingMovement()
+    /*void FallingMovement()
     {
         speed = baseSpeed / 4;
 
@@ -421,7 +391,7 @@ public class PlayerController : MonoBehaviour
 
 
         RollDirection();
-    }
+    }*/
     #endregion
 
     #region - FALLING -
@@ -466,7 +436,7 @@ public class PlayerController : MonoBehaviour
             // little check to return to dizzy state when you land if you should be dizzy
             if(isDizzy == true)
             {
-                state = PlayerState.DIZZY;
+                stateAffect = PlayerStateAffect.DIZZY;
             }
         }
         else
@@ -616,6 +586,13 @@ public class PlayerController : MonoBehaviour
     //this affect occurs when you roll too much
     IEnumerator Dizzy()
     {
+        if (state != PlayerState.FALLING)
+        {
+            //anim.anim.Rebind();
+
+            state = PlayerState.IDLE;
+        }
+
         anim.ChangeAnimationAffectState(PlayerAnimController.PlayerAnimAffectState.Dizzy, 0.1f, 1);
         //anim.SetTrigger("Dizzy");
         dizzyAffect.SetActive(true);
@@ -623,7 +600,7 @@ public class PlayerController : MonoBehaviour
         //dizzy direction changes so it's harder to learn lmao
         rollRandomGen = Random.Range(0, 101);
 
-        state = PlayerState.DIZZY;
+        stateAffect = PlayerStateAffect.DIZZY;
 
         isDizzy = true;
 
@@ -636,14 +613,12 @@ public class PlayerController : MonoBehaviour
         dizzyAffect.SetActive(false);
 
         rewind.Enable();
-       // anim.ResetTrigger("Roll");
-       // anim.SetTrigger("StopDizzy");
+        // anim.ResetTrigger("Roll");
+        // anim.SetTrigger("StopDizzy");
 
-        if(state != PlayerState.FALLING)
-        {
-            //anim.anim.Rebind();
-            state = PlayerState.IDLE;
-        }
+        stateAffect = PlayerStateAffect.NONE;
+
+        
         
     }
 
