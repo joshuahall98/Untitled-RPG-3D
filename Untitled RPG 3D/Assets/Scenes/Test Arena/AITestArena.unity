@@ -191,6 +191,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1689940224852358947, guid: d3a6362d2dff6f944ab0422baf23a927, type: 3}
+      propertyPath: rollSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1689940224852358949, guid: d3a6362d2dff6f944ab0422baf23a927, type: 3}
       propertyPath: m_Controller
       value: 
@@ -1108,7 +1112,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5314328230555930775, guid: 2365fb1b5183af14ca18fa5ba581f093, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -8079,7 +8083,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimState: 0
-  playerAnimAffectState: 0
+  playerAnimAffect: 0
   anim: {fileID: 0}
 --- !u!1001 &1980950674
 PrefabInstance:

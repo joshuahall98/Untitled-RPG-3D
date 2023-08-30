@@ -7,8 +7,8 @@ public class PlayerAnimController : MonoBehaviour
 {
     public enum PlayerAnimState { Idle, Run, Roll, Falling, Attack1, Attack2, HeavyHold, HeavyRelease, RewindStart, RewindEnd, Knockdown, Death }
     public PlayerAnimState playerAnimState;
-    public enum PlayerAnimAffectState { None, Dizzy }
-    public PlayerAnimAffectState playerAnimAffectState;
+    public enum PlayerAnimAffect { None, Dizzy }
+    public PlayerAnimAffect playerAnimAffect;
 
     public Animator anim;
 
@@ -16,7 +16,7 @@ public class PlayerAnimController : MonoBehaviour
     void Start()
     {
         anim = this.GetComponent<Animator>();
-        playerAnimAffectState = PlayerAnimAffectState.None;
+        playerAnimAffect = PlayerAnimAffect.None;
     }
 
     // Update is called once per frame
@@ -47,7 +47,7 @@ public class PlayerAnimController : MonoBehaviour
 
     public bool IsAnimationPlaying(PlayerAnimState stateName)
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName(stateName.ToString()) && anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName(stateName.ToString()) && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0f)
         {
             return true;
         }
@@ -69,27 +69,27 @@ public class PlayerAnimController : MonoBehaviour
         }
     }
 
-    public void ChangeAnimationAffectState(PlayerAnimAffectState nextState, float transitionTime, int layer)
+    public void ChangeAnimationAffectState(PlayerAnimAffect nextState, float transitionTime, int layer)
     {
 
-        if (nextState == playerAnimAffectState)
+        if (nextState == playerAnimAffect)
         {
             return;
         }
 
         anim.CrossFade(nextState.ToString(), transitionTime, layer);
 
-        playerAnimAffectState = nextState;
+        playerAnimAffect = nextState;
     }
 
-    public void RepeatAnimationAffectState(PlayerAnimAffectState nextState, float transitionTime, int layer)
+    public void RepeatAnimationAffectState(PlayerAnimAffect nextState, float transitionTime, int layer)
     {
         anim.CrossFade(nextState.ToString(), transitionTime, layer);
 
-        playerAnimAffectState = nextState;
+        playerAnimAffect = nextState;
     }
 
-    public bool IsAnimationAffectPlaying(PlayerAnimAffectState stateName)
+    public bool IsAnimationAffectPlaying(PlayerAnimAffect stateName)
     {
         if (anim.GetCurrentAnimatorStateInfo(0).IsName(stateName.ToString()) && anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
         {
@@ -101,7 +101,7 @@ public class PlayerAnimController : MonoBehaviour
         }
     }
 
-    public bool IsAnimationAffectDone(PlayerAnimAffectState stateName)
+    public bool IsAnimationAffectDone(PlayerAnimAffect stateName)
     {
         if (anim.GetCurrentAnimatorStateInfo(0).IsName(stateName.ToString()) && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
         {

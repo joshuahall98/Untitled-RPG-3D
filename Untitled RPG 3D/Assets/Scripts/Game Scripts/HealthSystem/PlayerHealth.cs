@@ -46,7 +46,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         //everything but rewinding, rolling, dead
-        if(PlayerController.state == PlayerState.IDLE || PlayerController.stateAffect == PlayerStateAffect.DIZZY || PlayerController.state == PlayerState.MOVING 
+        if(PlayerController.state == PlayerState.IDLE || PlayerController.affect == PlayerAffect.DIZZY || PlayerController.state == PlayerState.MOVING 
             || PlayerController.state == PlayerState.ATTACKING || PlayerController.state == PlayerState.INTERACTING)
         {
             if(PlayerController.immune == false) 

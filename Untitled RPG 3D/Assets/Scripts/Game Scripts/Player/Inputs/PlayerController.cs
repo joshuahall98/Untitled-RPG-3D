@@ -19,7 +19,7 @@ using static AIController;
 
 //THIS SCRIPT CONTROLS THE PLAYER STATES AND ALL PLAYER CONTROLS
 public enum PlayerState { IDLE, MOVING, ROLLING, ATTACKING, DEAD, REWINDING, KNOCKEDDOWN, FALLING, INTERACTING}
-public enum PlayerStateAffect { NONE, DIZZY }
+public enum PlayerAffect { NONE, DIZZY }
 
 public class PlayerController : MonoBehaviour
 {
@@ -36,21 +36,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField]float gravity;
     [SerializeField]private LayerMask groundMask;
 
-    /*public string hello;
-
-    float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;*/
-
     //used for turning camera, need to move this off the player controller
     [SerializeField]int isometricRotation = 45;
 
-    //Animation
-    //Animator anim;
+    //Animator
     PlayerAnimController anim;
 
     //States
     public static PlayerState state;
-    public static PlayerStateAffect stateAffect;
+    public static PlayerAffect affect;
     [SerializeField]PlayerState visibleState;
 
     //these bools are helpful for animations and state control
@@ -58,6 +52,7 @@ public class PlayerController : MonoBehaviour
     public bool canMove;
     bool isGrounded;
     bool isDizzy;
+    [SerializeField] bool isRolling;
 
     //to check whether or not an object is within range for interaction
     public static bool inRange =  false;
@@ -89,9 +84,6 @@ public class PlayerController : MonoBehaviour
 
     //Game Manager
     GameObject gameManager;
-
-    //audio
-    bool runningAudio;
 
     //camera
     GameObject camera;
@@ -128,13 +120,11 @@ public class PlayerController : MonoBehaviour
         sideCharacter = GameObject.Find("SideCharacter");
         aiSpawner = GameObject.Find("TestArenaSpawner");
         dizzyAffect = GameObject.Find("DizzyAffect");
-        // anim = GetComponent<Animator>();
         anim = this.GetComponent<PlayerAnimController>();
         controller = GetComponent<CharacterController>();
 
-        playerInput = new PlayerInputActions();
-
         //calling all the inputs
+        playerInput = new PlayerInputActions();
         playerInput.Player.Roll.performed += rollPerformed => RollAnimation();
         playerInput.Player.SwitchCharacters.performed += spawnPerformed => SpawnAIButton();
         playerInput.Player.CameraRight.performed += CameraRight_performed => CameraRight();
@@ -160,7 +150,7 @@ public class PlayerController : MonoBehaviour
         swordCollider = sword.GetComponent<Collider>();
         swordCollider.enabled = false;
 
-        baseSpeed = speed;
+        
     }
     #endregion
 
@@ -168,7 +158,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         state = PlayerState.IDLE;
-        stateAffect = PlayerStateAffect.NONE;
+        affect = PlayerAffect.NONE;
 
         dizzyAffect.SetActive(false);
 
@@ -179,6 +169,8 @@ public class PlayerController : MonoBehaviour
         LastDevice();
 
         canMove = true;
+
+        baseSpeed = speed;
     }
 
     #endregion
@@ -222,8 +214,11 @@ public class PlayerController : MonoBehaviour
 
         RollTimer();
 
-        RollEndAnim();
-
+        if(state == PlayerState.ROLLING)
+        {
+            StartCoroutine(RollEndAnim());
+        }
+        
     }
 
     #endregion
@@ -254,19 +249,15 @@ public class PlayerController : MonoBehaviour
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Idle, 0.1f, 0);
         }
 
-        //correct movement type
-        if ((state == PlayerState.IDLE || state == PlayerState.MOVING || state == PlayerState.FALLING) && stateAffect != PlayerStateAffect.DIZZY)
+        //correct movement type based off different affects
+        if ((state == PlayerState.IDLE || state == PlayerState.MOVING || state == PlayerState.FALLING) && affect != PlayerAffect.DIZZY)
         {
             IsometricMovement();
         }
-        else if((state == PlayerState.IDLE || state == PlayerState.MOVING || state == PlayerState.FALLING) && stateAffect == PlayerStateAffect.DIZZY) 
+        else if((state == PlayerState.IDLE || state == PlayerState.MOVING || state == PlayerState.FALLING) && affect == PlayerAffect.DIZZY) 
         {
             DizzyMovement();            
         }
-        /*else if (state == PlayerState.FALLING)
-        {
-            FallingMovement();
-        }*/
     }
 
     void IsometricMovement()
@@ -362,36 +353,6 @@ public class PlayerController : MonoBehaviour
             RollDirection();
         }
     }
-
-    //movement speed while you are falling
-    /*void FallingMovement()
-    {
-        speed = baseSpeed / 4;
-
-        currentMoveInput = move.ReadValue<Vector2>();
-        actualMovement = new Vector3();
-        //Condensed movement -- Converted y to z axis
-        actualMovement.x = currentMoveInput.x;
-        actualMovement.z = currentMoveInput.y;
-
-        //magic code that converts the basic player movement into isometric
-        isometric = new Vector3();
-        var matrix = Matrix4x4.Rotate(Quaternion.Euler(0, isometricRotation, 0));
-        isometric = matrix.MultiplyPoint3x4(actualMovement);
-
-        //move the character controller
-        controller.Move(isometric * speed * Time.deltaTime);
-        //isMoving = currentMoveInput.x != 0 || currentMoveInput.y != 0;
-
-        //Character Rotation
-        Vector3 currentPos = transform.position;
-        Vector3 newPos = new Vector3(isometric.x, 0, isometric.z);
-        Vector3 posLookAt = currentPos + newPos;
-        transform.LookAt(posLookAt);
-
-
-        RollDirection();
-    }*/
     #endregion
 
     #region - FALLING -
@@ -436,7 +397,7 @@ public class PlayerController : MonoBehaviour
             // little check to return to dizzy state when you land if you should be dizzy
             if(isDizzy == true)
             {
-                stateAffect = PlayerStateAffect.DIZZY;
+                affect = PlayerAffect.DIZZY;
             }
         }
         else
@@ -471,14 +432,56 @@ public class PlayerController : MonoBehaviour
     //rolling animation
     void RollAnimation()
     {
-        if (state == PlayerState.MOVING || state == PlayerState.IDLE)
+        roll.Disable();
+
+        if ((state == PlayerState.MOVING || state == PlayerState.IDLE) && affect == PlayerAffect.NONE)
         {
             state = PlayerState.ROLLING;
-
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Roll, 0.1f, 0);
-            RollStartAnim();
-            //canMove = false;
-            //anim.SetTrigger("Roll");
+            StartCoroutine(RollAnim());    
+        }
+        else
+        {
+            roll.Enable();
+        }
+    }
+
+    IEnumerator RollAnim()
+    {
+        rewind.Disable();
+        float startTime = Time.fixedTime;
+
+        //these variables are used for the roll timer if you roll too much you get dizzy
+        rollUsed++;
+        rollCDTimer = 2;
+
+        controller.center = new Vector3(0, -0.5f, 0);
+        controller.height = 1f;
+        while (Time.fixedTime < startTime + rollTime)
+        {
+            controller.Move(rollDirection * rollSpeed * Time.fixedDeltaTime);
+            yield return null;
+        }
+        controller.center = new Vector3(0, 0, 0);
+        controller.height = 2;
+    }
+
+    //calling this when animation finishes playing
+    IEnumerator RollEndAnim()
+    {
+        if(anim.IsAnimationDone(PlayerAnimController.PlayerAnimState.Roll))
+        {
+            if ((rollCDTimer > 0) && (rollUsed >= 3))
+            {
+                StartCoroutine(Dizzy());
+            }
+            else
+            {
+                rewind.Enable();
+                state = PlayerState.IDLE;
+                yield return new WaitForSeconds(0.1f);
+                roll.Enable();
+            }
         }
     }
 
@@ -488,82 +491,10 @@ public class PlayerController : MonoBehaviour
         rollDirection = quaternion * Vector3.forward;
     }
 
-    //calling this from animation state machine so it activates on state enter
-    public void RollStartAnim()
-    {
-        StartCoroutine(RollAnim());
-    }
-
-    IEnumerator RollAnim()
-    {
-
-        rewind.Disable();
-        float startTime = Time.time;
-
-        //these variables are used for the roll timer if you roll too much you get dizzy
-        rollUsed++;
-        rollCDTimer = 2;
-
-        controller.center = new Vector3(0, -0.5f, 0);
-        controller.height = 1f;
-        while (Time.time < startTime + rollTime)
-        {
-            controller.Move(rollDirection * rollSpeed * Time.deltaTime);
-            yield return null;
-
-        }
-        controller.center = new Vector3(0, 0, 0);
-        controller.height = 2;
-
-    }
-
-    //calling this on animtion exit
-    public void RollEndAnim()
-    {
-        if(anim.IsAnimationDone(PlayerAnimController.PlayerAnimState.Roll))
-        {
-            //canMove = true;
-            //isRolling = false;
-            if ((rollCDTimer > 0) && (rollUsed >= 3))
-            {
-                StartCoroutine(Dizzy());
-            }
-            else
-            {
-                rewind.Enable();
-                //anim.ResetTrigger("Roll");
-                state = PlayerState.IDLE;
-                //StartCoroutine(EndRollWait());
-            }
-        }
-        
-
-        //this prevents issue where attack after roll are clunky, this line prevents users from being able to instantly attack after rolling
-        //instead of this we added a skip state to the animation to allow for better flow of attacking
-        //yield return new WaitForSeconds(0.2f);
-
-        //EnableLightAttack();
-        //EnableHeavyAttackCharge();
-
-    }
-
-    //temporary fix for the animation stutter when you try to roll instantly after rolling, funnily enough you don't even notice the coroutine delay
-    /*IEnumerator EndRollWait()
-    {
-        DisableRoll();
-
-        yield return new WaitForSeconds(0.25f);
-
-        EnableRoll();
-    }*/
 
     public void RollDirection()
     {
-        //set rotation for roll
-       // if (isometric.magnitude >= 0.1f)
-        //{
-            rollDirection = transform.rotation * Vector3.forward;
-        //}
+        rollDirection = transform.rotation * Vector3.forward;
     }
 
     void RollTimer()
@@ -578,6 +509,8 @@ public class PlayerController : MonoBehaviour
             rollUsed = 0;
             rollCDTimer = 0;
         }
+
+        
     }
 
     #endregion
@@ -593,20 +526,20 @@ public class PlayerController : MonoBehaviour
             state = PlayerState.IDLE;
         }
 
-        anim.ChangeAnimationAffectState(PlayerAnimController.PlayerAnimAffectState.Dizzy, 0.1f, 1);
+        anim.ChangeAnimationAffectState(PlayerAnimController.PlayerAnimAffect.Dizzy, 0.1f, 1);
         //anim.SetTrigger("Dizzy");
         dizzyAffect.SetActive(true);
 
         //dizzy direction changes so it's harder to learn lmao
         rollRandomGen = Random.Range(0, 101);
 
-        stateAffect = PlayerStateAffect.DIZZY;
+        affect = PlayerAffect.DIZZY;
 
         isDizzy = true;
 
         yield return new WaitForSeconds(3);
 
-        anim.ChangeAnimationAffectState(PlayerAnimController.PlayerAnimAffectState.None, 0.1f, 1);
+        anim.ChangeAnimationAffectState(PlayerAnimController.PlayerAnimAffect.None, 0.1f, 1);
 
         isDizzy = false;
 
@@ -616,7 +549,7 @@ public class PlayerController : MonoBehaviour
         // anim.ResetTrigger("Roll");
         // anim.SetTrigger("StopDizzy");
 
-        stateAffect = PlayerStateAffect.NONE;
+        affect = PlayerAffect.NONE;
 
         
         

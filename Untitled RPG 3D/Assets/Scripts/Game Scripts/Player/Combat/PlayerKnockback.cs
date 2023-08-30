@@ -41,7 +41,7 @@ public class PlayerKnockback : MonoBehaviour
     public void AddImpact(Vector3 dir, Vector3 lookAtEnemy, float force)
     {
 
-        if (PlayerController.state == PlayerState.IDLE || PlayerController.state == PlayerState.MOVING || PlayerController.state == PlayerState.ATTACKING || PlayerController.stateAffect == PlayerStateAffect.DIZZY  || PlayerController.state == PlayerState.INTERACTING)
+        if (PlayerController.state == PlayerState.IDLE || PlayerController.state == PlayerState.MOVING || PlayerController.state == PlayerState.ATTACKING || PlayerController.affect == PlayerAffect.DIZZY  || PlayerController.state == PlayerState.INTERACTING)
         {
             if(PlayerController.immune == false)
             {
