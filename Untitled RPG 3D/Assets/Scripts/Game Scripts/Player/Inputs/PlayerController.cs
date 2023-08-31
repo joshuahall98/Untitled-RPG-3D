@@ -168,8 +168,6 @@ public class PlayerController : MonoBehaviour
         //create the last device container
         LastDevice();
 
-        canMove = true;
-
         baseSpeed = speed;
     }
 
@@ -388,9 +386,7 @@ public class PlayerController : MonoBehaviour
         float touchGround = 1.5f;
 
         if (Physics.CapsuleCast(transform.position - new Vector3(0f, 0f, 0f), transform.position + new Vector3(0f, 0f, 0f), controller.radius, transform.TransformDirection(Vector3.down), out RaycastHit hit, touchGround, groundMask))
-        {
-            
-            //anim.SetBool("isGrounded", true);
+        { 
             isGrounded = true;
             Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * hit.distance, Color.red);
 
@@ -402,28 +398,25 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-
             //this if statement exist to stop the player from being knocked up and entering another state while in knockdown anim
-            if(state != PlayerState.KNOCKEDDOWN)
+            if(state != PlayerState.REWINDING && state != PlayerState.KNOCKEDDOWN)
             {
                 anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Falling, 0.1f, 0);
-                // anim.SetBool("isGrounded", false);
 
                 Debug.DrawRay(transform.position + new Vector3(0f, 0f, 0f), transform.TransformDirection(Vector3.down) * 1f, Color.green);
 
                 StartCoroutine(FallDelay());
-                
+
+                state = PlayerState.FALLING;
             }
         }   
     }
 
     IEnumerator FallDelay()
-    {
+    { 
         yield return new WaitForSeconds(0.2f);
 
         isGrounded = false;
-
-        state = PlayerState.FALLING;
     }
 
     #endregion
@@ -452,7 +445,7 @@ public class PlayerController : MonoBehaviour
         float startTime = Time.fixedTime;
 
         //these variables are used for the roll timer if you roll too much you get dizzy
-        rollUsed++;
+      //  rollUsed++;
         rollCDTimer = 2;
 
         controller.center = new Vector3(0, -0.5f, 0);
@@ -551,8 +544,7 @@ public class PlayerController : MonoBehaviour
 
         affect = PlayerAffect.NONE;
 
-        
-        
+        roll.Enable();
     }
 
     #endregion
@@ -564,7 +556,6 @@ public class PlayerController : MonoBehaviour
     {
         if(state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
-            canMove = false;
             state = PlayerState.ATTACKING;
             GetComponent<PlayerLightAttack>().LightAtk();
         }
@@ -580,7 +571,6 @@ public class PlayerController : MonoBehaviour
     {
         if (state == PlayerState.IDLE || state == PlayerState.MOVING)
         {
-            canMove = false;
             state = PlayerState.ATTACKING;
             GetComponent<PlayerHeavyAttack>().HeavyAtkCharge();
         }
@@ -681,7 +671,6 @@ public class PlayerController : MonoBehaviour
     {
         if(state == PlayerState.IDLE || state == PlayerState.MOVING || state == PlayerState.FALLING || state == PlayerState.DEAD) 
         { 
-            canMove = false;
             GetComponent<PlayerRewind>().PlsRewind();
         }  
     }

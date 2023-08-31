@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AIDeathState : AIState
 {
@@ -13,6 +14,7 @@ public class AIDeathState : AIState
         controller.agent.velocity = Vector3.zero;
         controller.agent.isStopped = true;
         controller.GetComponent<CapsuleCollider>().enabled = false;
+        controller.GetComponent<NavMeshAgent>().enabled = false;
         controller.RotateToPlayer(100);
 
     }

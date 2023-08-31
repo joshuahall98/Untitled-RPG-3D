@@ -4877,7 +4877,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateManager: {fileID: 5314328230555930783}
   controller: {fileID: 5314328230555930770}
-  staggerFin: 0
 --- !u!1 &4972291263696594591
 GameObject:
   m_ObjectHideFlags: 0

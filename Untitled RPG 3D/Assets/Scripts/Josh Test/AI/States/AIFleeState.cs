@@ -21,6 +21,8 @@ public class AIFleeState : AIState
         controller.ChangeAnimationState(AIController.AnimState.Flee, 0.1f, 0);
         controller.agent.speed = controller.stats.speed;
         timeToHide = false;
+        SoundManager.SoundManagerInstance.SelectAudioClass("Wurgle");
+        SoundManager.SoundManagerInstance.PlaySound("SCREAM");
     }
 
     public override void UpdateState(AIStateManager state)
@@ -30,7 +32,8 @@ public class AIFleeState : AIState
 
     public override void ExitState(AIStateManager state)
     {
-
+        SoundManager.SoundManagerInstance.SelectAudioClass("Wurgle");
+        SoundManager.SoundManagerInstance.StopSound("SCREAM");
     }
 
     private void FleeBehaviour(AIStateManager state)
@@ -75,21 +78,32 @@ public class AIFleeState : AIState
             //run to detination and switch to hide state
             else
             {
-                controller.agent.isStopped = false;
-                controller.agent.SetDestination(destPoint);
-
-                Debug.DrawLine(transform.position, destPoint, Color.red);
-
-                if (Vector3.Distance(transform.position, destPoint) < 1f)
+                //make sure player still can't see location  **NOT FULLY TESTED**
+                if (Physics.Linecast(controller.player.transform.position, destPoint, ~ignoreTheseLayers))
                 {
-                    state.SwitchToTheNextState(state.HideState);
-                }
 
+                    
+
+                    controller.agent.isStopped = false;
+                    controller.agent.SetDestination(destPoint);
+
+                    Debug.DrawLine(transform.position, destPoint, Color.red);
+
+                    if (Vector3.Distance(transform.position, destPoint) < 1f)
+                    {
+                        state.SwitchToTheNextState(state.HideState);
+                    }
+                }
+                else
+                {
+                    timeToHide = false;
+                }
             }
         }
         //if AI within range of player run away
         else
         {
+
             Vector3 playerDirection = this.transform.position - controller.player.transform.position;
 
             controller.agent.destination = this.transform.position + playerDirection;

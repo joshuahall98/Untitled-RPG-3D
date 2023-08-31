@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1719a2c40d9f27942a1ba7d28ed84173, type: 3}
-  m_Name: Test
+  m_Name: SCREAM
   m_EditorClassIdentifier: 
-  name: Test
-  clip: {fileID: 8300000, guid: e09f7f05e4444be4a9da895d1d5aeb49, type: 3}
+  name: SCREAM
+  clip: {fileID: 8300000, guid: ab40eb11b36b36f4b9bffa1e7443819b, type: 3}
   group: {fileID: 6017482611226594319, guid: 8d1a2a42e38ffe7478fea62c6e2434b7, type: 2}
-  volume: 0.576
-  pitch: 0.91
+  volume: 0.389
+  pitch: 1
   pan: 0
-  loop: 0
+  loop: 1
   source: {fileID: 0}

@@ -40,16 +40,6 @@ public class PlayerLightAttack : MonoBehaviour
                 swingCDTimer = 0;
             } 
         }
-
-        //an attempt to refine combat
-        /*if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerAttack1"))
-        {
-            StartCoroutine(LightAttackEndAnimEvent());
-        }
-        else if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerAttack2"))
-        {
-            StartCoroutine(LightAttackEndAnimEvent());
-        }*/
     }
 
     public void LightAtk()
@@ -67,9 +57,8 @@ public class PlayerLightAttack : MonoBehaviour
             swingCDTimer = 1;
             SoundManager.SoundManagerInstance.SelectAudioClass("Player");
             SoundManager.SoundManagerInstance.PlaySound("Sword Swing");
-            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Attack1, 0.1f, 0);
+            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Attack1, 0f, 0);
             GetComponent<AttackDash>().DashActionAnimStart();
-            //anim.SetTrigger("LightAttack1");
 
         }
         else
@@ -84,9 +73,8 @@ public class PlayerLightAttack : MonoBehaviour
             swingCDTimer = 1;
             SoundManager.SoundManagerInstance.SelectAudioClass("Player");
             SoundManager.SoundManagerInstance.PlaySound("Sword Swing");
-            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Attack2, 0.1f, 0);
+            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Attack2, 0f, 0);
             GetComponent<AttackDash>().DashActionAnimStart();
-            //anim.SetTrigger("LightAttack2");
         }
     }
 

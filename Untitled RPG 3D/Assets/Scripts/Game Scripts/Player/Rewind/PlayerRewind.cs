@@ -148,7 +148,6 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     void Rewind()
     {
         anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.RewindStart, 0.1f, 0);
-      //  anim.SetBool("isRewinding", true);
 
         hourGlass.SetActive(true);
 
@@ -158,7 +157,6 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
         if (anim.IsAnimationDone(PlayerAnimController.PlayerAnimState.RewindStart))
         {
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.RewindEnd, 0.1f, 0);
-          //  anim.SetBool("isRewinding", false);
 
             //call the UI update when you rewind
             rewindUI.GetComponent<RewindUI>().Rewind();
@@ -189,11 +187,8 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     public void DeathRewind()
     {
         anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.RewindEnd, 0.1f, 0);
-      //  anim.SetBool("isRewinding", true);
 
         hourGlass.SetActive(true);
-
-        //PlayerController.state = PlayerState.REWINDING;
 
         //call the UI update when you rewind
         rewindUI.GetComponent<RewindUI>().Rewind();
@@ -232,17 +227,13 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
             if (rewindsLeft > 0)
             {
                 Rewinding = true;
-                
             }
             else
             {
                 PlayerController.state = PlayerState.IDLE;
             }
-
-
             cooldownSystem.PutOnCooldown(this);
         }
-
     }
 
     //increase the amount of rewinds you have
@@ -256,41 +247,17 @@ public class PlayerRewind : MonoBehaviour, CooldownActive
     {
         float random = Random.Range(0.1f, 0.4f);
         rewindFillXPAmount = rewindFillXPAmount + random;
-
     }
 
     //using animation event
     public void EndRewindAnim()
     {
-        
         //prevents the player from taking damage
         StartCoroutine(GetComponent<PlayerController>().Immunity(immunityTimer));
-
         //so character controller knows player rotation
         GetComponent<PlayerController>().Rotation(transform.rotation);
-
-        //  anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Idle, 0.1f, 0);
-        GetComponent<PlayerController>().canMove = true;
         PlayerController.state = PlayerState.IDLE;
 
-        //StartCoroutine(ActionDelay());
     }
-
-    //work around to prevent buggy interaction when the character uses actions after rewinding
-    /*IEnumerator ActionDelay()
-    {
-        GetComponent<PlayerController>().DisableRoll();
-        GetComponent<PlayerController>().DisableLightAttack();
-        GetComponent<PlayerController>().DisableHeavyAttackCharge();
-
-        yield return new WaitForSeconds(0.3f);
-
-        GetComponent<PlayerController>().EnableRoll();
-        GetComponent<PlayerController>().EnableLightAttack();
-        GetComponent<PlayerController>().EnableHeavyAttackCharge();
-
-
-    }*/
-
 }
 
