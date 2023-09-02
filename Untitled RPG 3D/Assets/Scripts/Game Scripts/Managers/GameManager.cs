@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
         }
         else if(gameState == GameState.PLAY)
         {
-            this.GetComponent<SoundManager>().StopAllAudio();
+            SoundManager.SoundManagerInstance.StopAllAudio();
             gameState = GameState.PAUSE;
             Time.timeScale = 0;
             player.GetComponent<PlayerController>().DisablePlayerActionMap();

@@ -7,13 +7,7 @@ using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.SceneManagement;
-using ClipperLib;
-using Unity.Mathematics;
 using Random = UnityEngine.Random;
-//using UnityEngine.iOS;
-using System.Web.Mvc;
-using UnityEngine.InputSystem.Utilities;
-using static AIController;
 
 //Joshua
 
@@ -25,13 +19,15 @@ public class PlayerController : MonoBehaviour
 {
 
     #region - VARIABLES -
+
+    [SerializeField] PlayerScriptableObject stats;
+
     //inputs and movement
     private CharacterController controller;
-    [SerializeField] private float speed = 8;
-    float baseSpeed;
+    [SerializeField] private float speed;
     Vector2 currentMoveInput;
     Vector3 actualMovement;
-    [SerializeField]Vector3 isometric;
+    Vector3 isometric;
     Vector3 posLookAt;
     public PlayerInputActions playerInput;
     [SerializeField]float gravity;
@@ -53,7 +49,6 @@ public class PlayerController : MonoBehaviour
     public bool canMove;
     bool isGrounded;
     bool isDizzy;
-    [SerializeField] bool isRolling;
 
     //to check whether or not an object is within range for interaction
     public static bool inRange =  false;
@@ -64,8 +59,6 @@ public class PlayerController : MonoBehaviour
     //Roll
     float rollCDTimer = 0;
     [SerializeField]int rollUsed = 0;
-    [SerializeField]float rollSpeed = 2;
-    [SerializeField]float rollTime = 0.5f;
     public GameObject dizzyAffect;
     Vector3 rollDirection;
     
@@ -76,7 +69,6 @@ public class PlayerController : MonoBehaviour
     InputAction lightAtk;
     InputAction heavyAtkCharge;
     InputAction rewind;
-
 
     //weapons
     public GameObject sword;
@@ -101,7 +93,6 @@ public class PlayerController : MonoBehaviour
 
     //random variable 
     int rollRandomGen;
-
 
     //for testing AI
     GameObject aiSpawner;
@@ -169,7 +160,7 @@ public class PlayerController : MonoBehaviour
         //create the last device container
         LastDevice();
 
-        baseSpeed = speed;
+        speed = stats.speed;
     }
 
     #endregion
@@ -241,6 +232,7 @@ public class PlayerController : MonoBehaviour
         {
             state = PlayerState.MOVING;
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Run, 0.1f, 0);
+            speed = stats.speed;
         }
         else if(!isMoving && (state == PlayerState.MOVING || state == PlayerState.IDLE))
         {
@@ -261,15 +253,6 @@ public class PlayerController : MonoBehaviour
 
     void IsometricMovement()
     {
-
-        if(state == PlayerState.IDLE || state == PlayerState.MOVING)
-        {
-            speed = baseSpeed;
-        }
-        else if (state == PlayerState.FALLING)
-        {
-            speed = baseSpeed / 4;
-        }
 
         currentMoveInput = move.ReadValue<Vector2>();
         actualMovement = new Vector3();
@@ -299,14 +282,6 @@ public class PlayerController : MonoBehaviour
     //movement while dizzy, randomized
     void DizzyMovement()
     {
-        if (state == PlayerState.IDLE || state == PlayerState.MOVING)
-        {
-            speed = baseSpeed;
-        }
-        else if (state == PlayerState.FALLING)
-        {
-            speed = baseSpeed / 4;
-        }
 
         currentMoveInput = move.ReadValue<Vector2>();
         actualMovement = new Vector3();
@@ -358,7 +333,6 @@ public class PlayerController : MonoBehaviour
     //falling animation and detection, currently there are two sets of detection so the player can check if they're falling mutiple times
     void PlayerFalling()
     {
-
         //this resets when player touches ground
         if (isGrounded == true && state == PlayerState.FALLING)
         {
@@ -409,6 +383,8 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(FallDelay());
 
                 state = PlayerState.FALLING;
+
+                speed = stats.speed / 4;
             }
         }   
     }
@@ -451,9 +427,9 @@ public class PlayerController : MonoBehaviour
 
         controller.center = new Vector3(0, -0.5f, 0);
         controller.height = 1f;
-        while (Time.time < startTime + rollTime)
+        while (Time.time < startTime + stats.rollTime)
         {
-            controller.Move(rollDirection * rollSpeed * Time.deltaTime);//don't use fixed dealt time in coroutine
+            controller.Move(rollDirection * stats.rollSpeed * Time.deltaTime);//don't use fixed dealt time in coroutine
             yield return null;
         }
         controller.center = new Vector3(0, 0, 0);
