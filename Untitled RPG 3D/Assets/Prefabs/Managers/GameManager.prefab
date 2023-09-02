@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 283530613241129080}
   - component: {fileID: 681578067}
   - component: {fileID: 283530613241129081}
-  - component: {fileID: 3449360487711987382}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -32,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &681578067
 MonoBehaviour:
@@ -61,20 +60,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e5ef5800609d248ad7406095c4c321, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3449360487711987382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 283530613241129062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfeb61f9e865b0d4e8e32a31e4c39416, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player:
-  - {fileID: 11400000, guid: 735c18f2768f95f4582a8d14a784db8a, type: 2}
-  - {fileID: 11400000, guid: 33d9afe4b36cb364394e0b74536cebc7, type: 2}
-  - {fileID: 11400000, guid: 591064f022630424c9d333e611399a37, type: 2}
-  wurgle: []

@@ -3,13 +3,14 @@ using System;
 using UnityEngine;
 using System.Web.UI;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 //Joshua
 
 public class SoundManager : MonoBehaviour
 {
 
-    public static SoundManager SoundManagerInstance;
+    /*public static SoundManager SoundManagerInstance;
 
     [Header("PLAYER")]
     [SerializeField] AudioScriptableObject[] player;
@@ -111,7 +112,62 @@ public class SoundManager : MonoBehaviour
         //AI
         arrayStorage.Add(wurgle);
 
+    }*/
+
+    public static SoundManager SoundManagerInstance;
+
+    //for storing currently used sounds
+    AudioScriptableObject[] sounds;
+
+    private AudioSource[] allAudio;
+
+    public void GenerateAudioComponentList(AudioScriptableObject[] audioList)
+    {
+        foreach (AudioScriptableObject s in audioList)
+        {
+            s.source = this.gameObject.AddComponent<AudioSource>();
+            s.source.clip = s.clip;
+
+            s.source.outputAudioMixerGroup = s.group;
+            s.source.volume = s.volume;
+            s.source.pitch = s.pitch;
+            s.source.loop = s.loop;
+            s.source.panStereo = s.pan;
+        }
     }
 
-    
+    //stops all audio when called
+    public void StopAllAudio()
+    {
+        allAudio = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
+        foreach (AudioSource audioSource in allAudio)
+        {
+            audioSource.Stop();
+        }
+    }
+
+    public void PlaySound(string name)
+    {
+        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
+        if (s == null)
+            return;
+        s.source.Play();
+    }
+
+    public void PlayOneShotSound(string name)
+    {
+        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
+        if (s == null)
+            return;
+        //use oneshot so the audio clips don't cancel each other out
+        s.source.PlayOneShot(s.clip, s.volume);
+    }
+
+    public void StopSound(string name)
+    {
+        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
+        if (s == null)
+            return;
+        s.source.Stop();
+    }
 }

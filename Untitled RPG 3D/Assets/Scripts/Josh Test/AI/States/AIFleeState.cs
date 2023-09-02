@@ -21,8 +21,8 @@ public class AIFleeState : AIState
         controller.ChangeAnimationState(AIController.AnimState.Flee, 0.1f, 0);
         controller.agent.speed = controller.stats.speed;
         timeToHide = false;
-        SoundManager.SoundManagerInstance.SelectAudioClass("Wurgle");
-        SoundManager.SoundManagerInstance.PlaySound("SCREAM");
+      //  SoundManager.SoundManagerInstance.SelectAudioClass("Wurgle");
+        SoundManager.SoundManagerInstance.PlayOneShotSound("SCREAM");
     }
 
     public override void UpdateState(AIStateManager state)
@@ -32,7 +32,7 @@ public class AIFleeState : AIState
 
     public override void ExitState(AIStateManager state)
     {
-        SoundManager.SoundManagerInstance.SelectAudioClass("Wurgle");
+     //   SoundManager.SoundManagerInstance.SelectAudioClass("Wurgle");
         SoundManager.SoundManagerInstance.StopSound("SCREAM");
     }
 

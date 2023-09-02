@@ -23,6 +23,7 @@ public enum PlayerAffect { NONE, DIZZY }
 
 public class PlayerController : MonoBehaviour
 {
+
     #region - VARIABLES -
     //inputs and movement
     private CharacterController controller;
@@ -442,17 +443,17 @@ public class PlayerController : MonoBehaviour
     IEnumerator RollAnim()
     {
         rewind.Disable();
-        float startTime = Time.fixedTime;
+        float startTime = Time.time;
 
         //these variables are used for the roll timer if you roll too much you get dizzy
-      //  rollUsed++;
+        rollUsed++;
         rollCDTimer = 2;
 
         controller.center = new Vector3(0, -0.5f, 0);
         controller.height = 1f;
-        while (Time.fixedTime < startTime + rollTime)
+        while (Time.time < startTime + rollTime)
         {
-            controller.Move(rollDirection * rollSpeed * Time.fixedDeltaTime);
+            controller.Move(rollDirection * rollSpeed * Time.deltaTime);//don't use fixed dealt time in coroutine
             yield return null;
         }
         controller.center = new Vector3(0, 0, 0);

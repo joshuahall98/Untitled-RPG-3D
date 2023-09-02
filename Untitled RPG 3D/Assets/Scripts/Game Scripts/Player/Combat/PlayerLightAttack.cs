@@ -55,8 +55,8 @@ public class PlayerLightAttack : MonoBehaviour
             sheathedSword.SetActive(false);
             atkNum++;
             swingCDTimer = 1;
-            SoundManager.SoundManagerInstance.SelectAudioClass("Player");
-            SoundManager.SoundManagerInstance.PlaySound("Sword Swing");
+         //   SoundManager.SoundManagerInstance.SelectAudioClass("Player");
+            SoundManager.SoundManagerInstance.PlayOneShotSound("Sword Swing");
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Attack1, 0f, 0);
             GetComponent<AttackDash>().DashActionAnimStart();
 
@@ -71,8 +71,8 @@ public class PlayerLightAttack : MonoBehaviour
             sheathedSword.SetActive(false);
             atkNum++;
             swingCDTimer = 1;
-            SoundManager.SoundManagerInstance.SelectAudioClass("Player");
-            SoundManager.SoundManagerInstance.PlaySound("Sword Swing");
+        //    SoundManager.SoundManagerInstance.SelectAudioClass("Player");
+            SoundManager.SoundManagerInstance.PlayOneShotSound("Sword Swing");
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Attack2, 0f, 0);
             GetComponent<AttackDash>().DashActionAnimStart();
         }
