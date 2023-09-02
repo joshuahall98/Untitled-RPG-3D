@@ -8,4 +8,6 @@ public class PlayerScriptableObject : ScriptableObject
     public float speed;
     public float rollSpeed;
     public float rollTime;
+    public float dashSpeed;
+    public float dashTime;
 }

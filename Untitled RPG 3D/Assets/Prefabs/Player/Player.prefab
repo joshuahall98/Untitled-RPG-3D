@@ -5447,7 +5447,7 @@ GameObject:
   - component: {fileID: 1689940224852358944}
   - component: {fileID: 1689940224852359006}
   - component: {fileID: 1689940224852359005}
-  - component: {fileID: 1689940224852359004}
+  - component: {fileID: 2070205737833004844}
   - component: {fileID: 3556720918372886034}
   - component: {fileID: 3556720918703039568}
   - component: {fileID: 1929893932}
@@ -5525,8 +5525,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ca44be5e239714b9b572ac14733389, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: 47fd596aedfbebb42bcc155a3c6a0d19, type: 2}
   speed: 8
-  isometric: {x: 0, y: 0, z: 0}
   gravity: 0
   groundMask:
     serializedVersion: 2
@@ -5535,10 +5535,7 @@ MonoBehaviour:
   visibleState: 0
   isMoving: 0
   canMove: 0
-  isRolling: 0
   rollUsed: 0
-  rollSpeed: 3
-  rollTime: 0.5
   dizzyAffect: {fileID: 1689940225372480533}
   sword: {fileID: 1995858245669972044}
   sheathedSword: {fileID: 1995858245555271080}
@@ -5617,20 +5614,19 @@ MonoBehaviour:
   sheathedSword: {fileID: 1995858245555271080}
   sparkle: {fileID: 1689940224417204382}
   releaseReady: 0
---- !u!114 &1689940224852359004
+--- !u!114 &2070205737833004844
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1689940224852359003}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1097e68fab4b522478c8923801d8729e, type: 3}
+  m_Script: {fileID: 11500000, guid: a5c6d0637d35d9848904f135b94e2a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  dashTime: 0.25
+  stats: {fileID: 11400000, guid: 47fd596aedfbebb42bcc155a3c6a0d19, type: 2}
 --- !u!114 &3556720918372886034
 MonoBehaviour:
   m_ObjectHideFlags: 0

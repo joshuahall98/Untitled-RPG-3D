@@ -78,7 +78,7 @@ public class PlayerHeavyAttack : MonoBehaviour
             swordCollider.enabled = true;
             releaseReady = false;
             GetComponent<AttackIndicator>().Aim();
-            GetComponent<AttackDash>().DashActionAnimStart();
+            GetComponent<PlayerDash>().DashActionAnimStart();
           //  SoundManager.SoundManagerInstance.SelectAudioClass("Player");
             SoundManager.SoundManagerInstance.PlayOneShotSound("Sword Swing");
         }

@@ -131,14 +131,6 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1689940224852358947, guid: d3a6362d2dff6f944ab0422baf23a927, type: 3}
-      propertyPath: stats
-      value: 
-      objectReference: {fileID: 11400000, guid: 47fd596aedfbebb42bcc155a3c6a0d19, type: 2}
-    - target: {fileID: 1689940224852358947, guid: d3a6362d2dff6f944ab0422baf23a927, type: 3}
-      propertyPath: rollSpeed
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 1689940224852358950, guid: d3a6362d2dff6f944ab0422baf23a927, type: 3}
       propertyPath: m_RootOrder
       value: 1
