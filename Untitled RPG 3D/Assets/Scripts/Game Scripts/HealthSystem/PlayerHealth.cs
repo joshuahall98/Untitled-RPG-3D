@@ -82,7 +82,7 @@ public class PlayerHealth : MonoBehaviour
 
             }
 
-            GetComponent<PlayerController>().canMove = false;
+         //   GetComponent<PlayerController>().canMove = false;
             PlayerController.state = PlayerState.DEAD;
         }
     }

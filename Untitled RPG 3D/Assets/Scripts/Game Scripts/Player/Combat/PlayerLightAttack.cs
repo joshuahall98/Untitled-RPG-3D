@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerLightAttack : MonoBehaviour
 {
+
+   [SerializeField] PlayerScriptableObject stats;
+
     //Animation
     PlayerAnimController anim;
 
@@ -15,6 +18,8 @@ public class PlayerLightAttack : MonoBehaviour
 
     public float swingCDTimer = 0;
     public int atkNum = 0;
+
+
 
     private void Awake()
     {
@@ -58,7 +63,7 @@ public class PlayerLightAttack : MonoBehaviour
          //   SoundManager.SoundManagerInstance.SelectAudioClass("Player");
             SoundManager.SoundManagerInstance.PlayOneShotSound("Sword Swing");
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Attack1, 0f, 0);
-            GetComponent<PlayerDash>().DashActionAnimStart();
+            GetComponent<PlayerDash>().DashActionAnimStart(stats.dashSpeed);
 
         }
         else
@@ -74,7 +79,7 @@ public class PlayerLightAttack : MonoBehaviour
         //    SoundManager.SoundManagerInstance.SelectAudioClass("Player");
             SoundManager.SoundManagerInstance.PlayOneShotSound("Sword Swing");
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Attack2, 0f, 0);
-            GetComponent<PlayerDash>().DashActionAnimStart();
+            GetComponent<PlayerDash>().DashActionAnimStart(stats.dashSpeed);
         }
     }
 
@@ -96,7 +101,7 @@ public class PlayerLightAttack : MonoBehaviour
         //If player were to be knockeddown during an attack the idle would trigger overidiing knockdown
         if(PlayerController.state != PlayerState.KNOCKEDDOWN)
         {
-            GetComponent<PlayerController>().canMove = true;
+          //  GetComponent<PlayerController>().canMove = true;
             PlayerController.state = PlayerState.IDLE;
         }
 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerHeavyAttack : MonoBehaviour
 {
+    [SerializeField]PlayerScriptableObject stats;
+
     //Animation
     PlayerAnimController anim;
 
@@ -73,12 +75,12 @@ public class PlayerHeavyAttack : MonoBehaviour
         {
             sparkle.SetActive(false);
             sword.GetComponent<WeaponDamage>().HeavyAttackDamage();
-            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.HeavyRelease, 0.1f, 0);
+            anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.HeavyRelease, 0f, 0);
             WeaponDamage.isAttacking = true;
             swordCollider.enabled = true;
             releaseReady = false;
             GetComponent<AttackIndicator>().Aim();
-            GetComponent<PlayerDash>().DashActionAnimStart();
+            GetComponent<PlayerDash>().DashActionAnimStart(stats.dashSpeed * 2);
           //  SoundManager.SoundManagerInstance.SelectAudioClass("Player");
             SoundManager.SoundManagerInstance.PlayOneShotSound("Sword Swing");
         }
@@ -93,7 +95,7 @@ public class PlayerHeavyAttack : MonoBehaviour
             //If player were to be knockeddown during an attack the idle would trigger overidiing knockdown
             if (PlayerController.state != PlayerState.KNOCKEDDOWN)
             {
-                GetComponent<PlayerController>().canMove = true;
+             //   GetComponent<PlayerController>().canMove = true;
                 PlayerController.state = PlayerState.IDLE;
             }
 
@@ -115,7 +117,7 @@ public class PlayerHeavyAttack : MonoBehaviour
         //If player were to be knockeddown during an attack the idle would trigger overidiing knockdown
         if (PlayerController.state != PlayerState.KNOCKEDDOWN)
         {
-            GetComponent<PlayerController>().canMove = true;
+          //  GetComponent<PlayerController>().canMove = true;
             PlayerController.state = PlayerState.IDLE;
         }
 

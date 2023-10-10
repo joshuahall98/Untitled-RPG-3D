@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 //Josh
@@ -11,6 +12,8 @@ public class PlayerDash : MonoBehaviour
 
     private CharacterController controller;
 
+    float dashSpeed;
+
     Vector3 dashDirection;
 
     void Awake()
@@ -19,8 +22,9 @@ public class PlayerDash : MonoBehaviour
     }
 
     //called on animation start
-    public void DashActionAnimStart()
+    public void DashActionAnimStart(float dashSpeedVar)
     {
+        dashSpeed = dashSpeedVar;
         StartCoroutine(DashAction());
     }
 
@@ -33,7 +37,7 @@ public class PlayerDash : MonoBehaviour
 
         while (Time.time < startTime + stats.dashTime)
         {
-            controller.Move(dashDirection * stats.dashSpeed * Time.deltaTime);
+            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
             yield return null;
 
         }

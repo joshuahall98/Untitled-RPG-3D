@@ -45,7 +45,7 @@ public class PlayerKnockback : MonoBehaviour
         {
             if(PlayerController.immune == false)
             {
-                GetComponent<PlayerController>().canMove = false;
+               // GetComponent<PlayerController>().canMove = false;
 
                 //cancel interact
                 if (PlayerController.state == PlayerState.INTERACTING)
@@ -82,7 +82,7 @@ public class PlayerKnockback : MonoBehaviour
     {
         GetComponent<PlayerController>().EnableRewind();
 
-        GetComponent<PlayerController>().canMove = true;
+     //   GetComponent<PlayerController>().canMove = true;
         PlayerController.state = PlayerState.IDLE;
 
         //StartCoroutine(ActionDelay());

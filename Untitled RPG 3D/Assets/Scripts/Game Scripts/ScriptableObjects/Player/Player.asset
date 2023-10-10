@@ -15,5 +15,5 @@ MonoBehaviour:
   speed: 8
   rollSpeed: 15
   rollTime: 0.5
-  dashSpeed: 3
+  dashSpeed: 4
   dashTime: 0.25

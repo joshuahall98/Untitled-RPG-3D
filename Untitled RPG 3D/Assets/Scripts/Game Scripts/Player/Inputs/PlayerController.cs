@@ -24,17 +24,17 @@ public class PlayerController : MonoBehaviour
 
     //inputs and movement
     private CharacterController controller;
-    [SerializeField] private float speed;
+    private float speed;
     Vector2 currentMoveInput;
     Vector3 actualMovement;
     Vector3 isometric;
     Vector3 posLookAt;
     public PlayerInputActions playerInput;
-    [SerializeField]float gravity;
-    [SerializeField]private LayerMask groundMask;
+    float gravity;
+    [SerializeField] private LayerMask groundMask;
 
     //used for turning camera, need to move this off the player controller
-    [SerializeField]int isometricRotation = 45;
+    int isometricRotation = 45;
 
     //Animator
     PlayerAnimController anim;
@@ -45,8 +45,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]PlayerState visibleState;
 
     //these bools are helpful for animations and state control
-    [SerializeField]bool isMoving;
-    public bool canMove;
+    bool isMoving;
+    bool canMove;
     bool isGrounded;
     bool isDizzy;
 
@@ -58,8 +58,8 @@ public class PlayerController : MonoBehaviour
 
     //Roll
     float rollCDTimer = 0;
-    [SerializeField]int rollUsed = 0;
-    public GameObject dizzyAffect;
+    int rollUsed = 0;
+    [SerializeField]GameObject dizzyAffect;
     Vector3 rollDirection;
     
 
@@ -71,8 +71,8 @@ public class PlayerController : MonoBehaviour
     InputAction rewind;
 
     //weapons
-    public GameObject sword;
-    public GameObject sheathedSword;
+    [SerializeField] GameObject sword;
+    [SerializeField] GameObject sheathedSword;
     Collider swordCollider;
 
     //Game Manager
