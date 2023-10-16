@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SoundController : MonoBehaviour
 {
+    [SerializeField] GameObject audioSources;
 
     [SerializeField] AudioScriptableObject[] sounds;
 
@@ -16,7 +17,7 @@ public class SoundController : MonoBehaviour
 
         SoundManager.stopAllAudio += StopAudio;
 
-        allAudio = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];//store all audio sources in array
+        allAudio = GetComponentsInChildren<AudioSource>();
     }
 
     void GenerateAudioComponentList()
@@ -24,7 +25,7 @@ public class SoundController : MonoBehaviour
         //create all the audio sources
         foreach (AudioScriptableObject s in sounds)
         {
-            s.source = this.gameObject.AddComponent<AudioSource>();
+            s.source = audioSources.gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
             s.source.outputAudioMixerGroup = s.group;
             s.source.volume = s.volume;
@@ -35,7 +36,7 @@ public class SoundController : MonoBehaviour
     }
 
     //stop all audio event
-    private void StopAudio()
+    public void StopAudio()
     {
         foreach (AudioSource audioSource in allAudio)
         {
@@ -43,30 +44,29 @@ public class SoundController : MonoBehaviour
         }
     }
 
-    //plays single instance of Audio
-    public void PlaySound(string name)
+    //https://forum.unity.com/threads/solved-c-when-does-an-array-become-too-big.606955/
+
+    //plays Audio
+    public void PlaySound(int index)
     {
-        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
+        if (allAudio[index] == null)
             return;
-        s.source.Play();
+        allAudio[index].Play();  
     }
 
-    //Stops single instance of Audio
-    public void StopSound(string name)
+    //Stops  Audio
+    public void StopSound(int index)
     {
-        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
+        if (allAudio[index] == null)
             return;
-        s.source.Stop();
+        allAudio[index].Stop();
     }
 
     //play a one shot that does not need to be interrupted, can have mutiple instances
-    public void PlayOneShotSound(string name)
+    public void PlayOneShotSound(int index)
     {
-        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
+        if (allAudio[index] == null)
             return;
-        s.source.PlayOneShot(s.clip, s.volume);
+        allAudio[index].PlayOneShot(allAudio[index].clip, allAudio[index].volume);
     }
 }

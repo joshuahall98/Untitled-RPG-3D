@@ -21,7 +21,7 @@ public class AIFleeState : AIState
         controller.ChangeAnimationState(AIController.AnimState.Flee, 0.1f, 0);
         controller.agent.speed = controller.stats.speed;
         timeToHide = false;
-        SoundManager.SoundManagerInstance.PlaySoundOnObject("SCREAM", transform.root.gameObject);
+        this.GetComponentInParent<SoundController>().PlaySound(0);
     }
 
     public override void UpdateState(AIStateManager state)
@@ -31,8 +31,7 @@ public class AIFleeState : AIState
 
     public override void ExitState(AIStateManager state)
     {
-        //SoundManager.SoundManagerInstance.StopSound("SCREAM");
-        SoundManager.SoundManagerInstance.StopSoundOnObject("SCREAM", transform.root.gameObject);
+        this.GetComponentInParent<SoundController>().StopSound(0);
     }
 
     private void FleeBehaviour(AIStateManager state)
@@ -99,7 +98,7 @@ public class AIFleeState : AIState
                 }
             }
         }
-        //if AI within range of player run away
+        //if AI within range of player, run away
         else
         {
 

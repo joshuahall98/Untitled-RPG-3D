@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1447624531
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1447624532}
+  m_Layer: 8
+  m_Name: AudioSources
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1447624532
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447624531}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4795095493341186605}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &98573010579397983
 GameObject:
   m_ObjectHideFlags: 0
@@ -5444,6 +5475,7 @@ GameObject:
   - component: {fileID: 5314328230555930770}
   - component: {fileID: 5314328230555930769}
   - component: {fileID: 5314328230555930768}
+  - component: {fileID: 1986098563}
   m_Layer: 8
   m_Name: Wurgle
   m_TagString: Enemy
@@ -5468,6 +5500,7 @@ Transform:
   - {fileID: 3963750900157113221}
   - {fileID: 4838107624307077431}
   - {fileID: 4972291263696594584}
+  - {fileID: 1447624532}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5623,6 +5656,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 4972291264018647140}
+--- !u!114 &1986098563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5314328230555930775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c61a8958c9b7549834216fa861ffeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSources: {fileID: 1447624531}
+  sounds:
+  - {fileID: 11400000, guid: bacf6895bfa87d341a86eb26ca8f458c, type: 2}
+  - {fileID: 11400000, guid: 746645c7c513fc142b384f3bcf044c77, type: 2}
 --- !u!1 &5350773644510111029
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   name: SCREAM
   clip: {fileID: 8300000, guid: ab40eb11b36b36f4b9bffa1e7443819b, type: 3}
   group: {fileID: 6017482611226594319, guid: 8d1a2a42e38ffe7478fea62c6e2434b7, type: 2}
-  volume: 0.389
+  volume: 0.204
   pitch: 1
   pan: 0
   loop: 1
