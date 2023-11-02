@@ -16,12 +16,16 @@ public class AIFleeState : AIState
     [SerializeField]bool timeToHide;
     [SerializeField]Vector3 destPoint;
 
+    [Header ("Sound Storage")]
+    int scream;
+
     public override void EnterState(AIStateManager state)
     {
         controller.ChangeAnimationState(AIController.AnimState.Flee, 0.1f, 0);
         controller.agent.speed = controller.stats.speed;
         timeToHide = false;
-        this.GetComponentInParent<SoundController>().PlaySound(0);
+        scream = AudioManager.AudioManagerInstance.PlaySound("SCREAM");
+       // this.GetComponentInParent<SoundController>().PlaySound(0);
     }
 
     public override void UpdateState(AIStateManager state)
@@ -31,7 +35,8 @@ public class AIFleeState : AIState
 
     public override void ExitState(AIStateManager state)
     {
-        this.GetComponentInParent<SoundController>().StopSound(0);
+        AudioManager.AudioManagerInstance.StopSound(scream);
+       // this.GetComponentInParent<SoundController>().StopSound(0);
     }
 
     private void FleeBehaviour(AIStateManager state)

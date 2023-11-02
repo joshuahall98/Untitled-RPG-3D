@@ -55,6 +55,7 @@ public class SoundManager : MonoBehaviour
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
             s.source.panStereo = s.pan;
+            s.source.spatialBlend = s.spatialBlend;
         }
     }
 

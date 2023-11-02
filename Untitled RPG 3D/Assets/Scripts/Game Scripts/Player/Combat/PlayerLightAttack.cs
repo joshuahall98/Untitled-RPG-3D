@@ -19,7 +19,8 @@ public class PlayerLightAttack : MonoBehaviour
     public float swingCDTimer = 0;
     public int atkNum = 0;
 
-
+    [Header("SoundStorage")]
+    int swordSwing;
 
     private void Awake()
     {
@@ -60,8 +61,10 @@ public class PlayerLightAttack : MonoBehaviour
             sheathedSword.SetActive(false);
             atkNum++;
             swingCDTimer = 1;
-         //   SoundManager.SoundManagerInstance.SelectAudioClass("Player");
-            SoundManager.SoundManagerInstance.PlayOneShotSound("Sword Swing");
+            //   SoundManager.SoundManagerInstance.SelectAudioClass("Player");
+            //    SoundManager.SoundManagerInstance.PlayOneShotSound("Sword Swing");
+            AudioManager.AudioManagerInstance.PlayOneShotSound("Sword Swing");
+
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Attack1, 0f, 0);
             GetComponent<PlayerDash>().DashActionAnimStart(stats.dashSpeed);
 
@@ -76,8 +79,9 @@ public class PlayerLightAttack : MonoBehaviour
             sheathedSword.SetActive(false);
             atkNum++;
             swingCDTimer = 1;
-        //    SoundManager.SoundManagerInstance.SelectAudioClass("Player");
-            SoundManager.SoundManagerInstance.PlayOneShotSound("Sword Swing");
+            //    SoundManager.SoundManagerInstance.SelectAudioClass("Player");
+            //  SoundManager.SoundManagerInstance.PlayOneShotSound("Sword Swing");
+            AudioManager.AudioManagerInstance.PlayOneShotSound("Sword Swing");
             anim.ChangeAnimationState(PlayerAnimController.PlayerAnimState.Attack2, 0f, 0);
             GetComponent<PlayerDash>().DashActionAnimStart(stats.dashSpeed);
         }

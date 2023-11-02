@@ -18,8 +18,18 @@ public class WeaponDamage : MonoBehaviour
         {
             if (other.gameObject.tag == "Enemy")
             {
-                other.gameObject.GetComponent<AIHealth>().TakeDamage(damage);
-                
+                other.gameObject.GetComponent<AIHealth>().TakeDamage(damage);   
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (PlayerController.state == PlayerState.ATTACKING)
+        {
+            if (other.gameObject.tag == "Enemy")
+            {
+               // other.gameObject.GetComponent<AIHealth>().CanTakeDamage();
             }
         }
     }

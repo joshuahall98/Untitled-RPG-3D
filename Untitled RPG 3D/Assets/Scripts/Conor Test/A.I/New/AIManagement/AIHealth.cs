@@ -22,24 +22,20 @@ public class AIHealth : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
-        if (canTakeDamage == true)
-        {
+        /*if (canTakeDamage == true)
+        {*/
             currentHealth -= damageAmount;
-            canTakeDamage = false;
-            StartCoroutine(Reset());
-        }
-          
-    }
+            canTakeDamage = false; 
 
-    //should stop enemy taking damage twice on the same frame for collisions
-
-    //MOVE THIS TO THE END OF THE PLAYER ATTACK ANIM
-    private IEnumerator Reset()
+      //  }     
+    }   
+    
+    /*public IEnumerator CanTakeDamage()
     {
-        yield return new WaitForEndOfFrame();
-
+        Debug.Log("take damage");
+        yield return new WaitForSeconds(2f);
         canTakeDamage = true;
-    }
+    }*/
 
     /*public void CheckIfDead()
     {

@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Joshua 2023/11/02
+//deprecated
+
 public class SoundController : MonoBehaviour
 {
     [SerializeField] GameObject audioSources;
@@ -32,6 +35,7 @@ public class SoundController : MonoBehaviour
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
             s.source.panStereo = s.pan;
+            s.source.spatialBlend = s.spatialBlend;
         }
     }
 

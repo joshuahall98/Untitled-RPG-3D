@@ -18,6 +18,8 @@ public class AudioScriptableObject : ScriptableObject
     public float pitch;
     [Range(-1f, 1f)]
     public float pan;
+    [Range(0f, 1f)]
+    public float spatialBlend;
 
     public bool loop;
 

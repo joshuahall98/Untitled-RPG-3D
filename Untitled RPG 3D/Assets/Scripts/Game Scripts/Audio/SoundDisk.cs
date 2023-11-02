@@ -9,7 +9,7 @@ public class SoundDisk : MonoBehaviour
 
     private void Awake()
     {
-        this.GetComponentInParent<SoundManager>().GenerateAudioComponentList(sounds);
+        this.GetComponentInParent<AudioManager>().GenerateAudioComponentList(sounds);
     }
 
 }
