@@ -2,14 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundDisk : MonoBehaviour
+//Joshua 2023/11/02
+
+namespace AudioSystem
 {
-
-    [SerializeField] AudioScriptableObject[] sounds;
-
-    private void Awake()
+    public class SoundDisk : MonoBehaviour
     {
-        this.GetComponentInParent<AudioManager>().GenerateAudioComponentList(sounds);
-    }
 
+        [SerializeField] AudioScriptableObject[] sounds;
+
+        private void Awake()
+        {
+            this.GetComponentInParent<AudioManager>().GenerateAudioComponentList(sounds);
+        }
+
+    }
 }
+

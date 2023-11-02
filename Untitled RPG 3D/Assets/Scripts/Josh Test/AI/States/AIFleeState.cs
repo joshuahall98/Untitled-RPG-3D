@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-//Joshua
+//Joshua 2023/11/02
+
 public class AIFleeState : AIState
 {
 
@@ -24,7 +25,7 @@ public class AIFleeState : AIState
         controller.ChangeAnimationState(AIController.AnimState.Flee, 0.1f, 0);
         controller.agent.speed = controller.stats.speed;
         timeToHide = false;
-        scream = AudioManager.AudioManagerInstance.PlaySound("SCREAM");
+        scream = AudioSystem.AudioManager.AudioManagerInstance.PlaySound("SCREAM");
        // this.GetComponentInParent<SoundController>().PlaySound(0);
     }
 
@@ -35,7 +36,7 @@ public class AIFleeState : AIState
 
     public override void ExitState(AIStateManager state)
     {
-        AudioManager.AudioManagerInstance.StopSound(scream);
+        AudioSystem.AudioManager.AudioManagerInstance.StopSound(scream);
        // this.GetComponentInParent<SoundController>().StopSound(0);
     }
 

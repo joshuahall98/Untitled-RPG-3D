@@ -1,12 +1,10 @@
-using UnityEngine.Audio;
 using System;
 using UnityEngine;
-using System.Web.UI;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Linq;
 
-//Joshua
+
+//Joshua 2023/11/02
+//deprecated
 
 public class SoundManager : MonoBehaviour
 {

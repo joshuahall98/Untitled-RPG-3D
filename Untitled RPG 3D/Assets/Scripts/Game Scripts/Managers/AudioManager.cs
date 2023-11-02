@@ -5,131 +5,136 @@ using UnityEngine;
 
 //Joshua 2023/11/02
 
-public class AudioManager : MonoBehaviour
+namespace AudioSystem
 {
-    public static AudioManager AudioManagerInstance;
-
-    private AudioScriptableObject[] sounds;
-    private List<AudioScriptableObject> arrayStorage = new List<AudioScriptableObject>();
-    private List<AudioSource> audioStorage = new List<AudioSource>();
-
-    private void Awake()
+    public class AudioManager : MonoBehaviour
     {
-        AudioManagerInstance = this;
+        public static AudioManager AudioManagerInstance;
 
-        PopulateAudioManager();//attach the audio sources to the manager
+        private AudioScriptableObject[] sounds;
+        private List<AudioScriptableObject> arrayStorage = new List<AudioScriptableObject>();
+        private List<AudioSource> audioStorage = new List<AudioSource>();
 
-    }
-
-    private void Start()
-    {
-        sounds = arrayStorage.ToArray();//store all the list values to an array
-    }
-
-    /// <summary>
-    /// Attach audio sources to the audio manager
-    /// </summary>
-    void PopulateAudioManager()
-    {
-        for (int i = 0; i < 32; i++)
+        private void Awake()
         {
-            this.gameObject.AddComponent<AudioSource>();
+            AudioManagerInstance = this;
+
+            PopulateAudioManager();//attach the audio sources to the manager
+
         }
 
-        foreach (AudioSource s in GetComponents<AudioSource>())
+        private void Start()
         {
-            s.GetComponents<AudioSource>();
-            audioStorage.Add(s);
+            sounds = arrayStorage.ToArray();//store all the list values to an array
         }
-    }
 
-    /// <summary>
-    /// Stores scriptable objects on the audio manager for easier access
-    /// </summary>
-    /// <param name="audioList">Store audio scriptable objects</param>
-    public void GenerateAudioComponentList(AudioScriptableObject[] audioList)
-    {
-        arrayStorage.AddRange(audioList);//add all the array values to a list
-    }
-
-    /// <summary>
-    /// Stops all audio
-    /// </summary>
-    public void StopAllAudio()
-    {
-        foreach(AudioSource s in audioStorage)
+        /// <summary>
+        /// Attach audio sources to the audio manager
+        /// </summary>
+        void PopulateAudioManager()
         {
-            s.Stop();
-        }  
-    }
-
-    /// <summary>
-    /// Play sound by calling scriptable object name
-    /// </summary>
-    /// <param name="name">Scriptable object name</param>
-    /// <returns>Returns int to track audio source being used</returns>
-    public int PlaySound(string name)
-    {
-        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
-
-        int i;
-
-        for (i = 0; i <= audioStorage.Count; i++)
-        {
-            if (audioStorage[i].isPlaying == false)
+            for (int i = 0; i < 32; i++)
             {
-                AudioSource audioSource = audioStorage[i];
+                this.gameObject.AddComponent<AudioSource>();
+            }
 
-                audioSource.clip = s.clip;
-
-                audioSource.outputAudioMixerGroup = s.group;
-                audioSource.volume = s.volume;
-                audioSource.pitch = s.pitch;
-                audioSource.loop = s.loop;
-                audioSource.panStereo = s.pan;
-                audioSource.Play();
-                return i;
+            foreach (AudioSource s in GetComponents<AudioSource>())
+            {
+                s.GetComponents<AudioSource>();
+                audioStorage.Add(s);
             }
         }
-        return i;
-    }
 
-    /// <summary>
-    /// Stop a sound that is playing
-    /// </summary>
-    /// <param name="arrayNumber">Number returned from play sound to stop the audio source</param>
-    public void StopSound(int arrayNumber)
-    {
-        AudioSource audioSource = audioStorage[arrayNumber];
-
-        audioSource.Stop();
-    }
-
-    /// <summary>
-    /// Play oneshot by calling scriptable object name
-    /// </summary>
-    /// <param name="name">Scriptable object name</param>
-    public void PlayOneShotSound(string name)
-    {
-        AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
-
-        for (int i = 0; i < audioStorage.Count; i++)
+        /// <summary>
+        /// Stores scriptable objects on the audio manager for easier access
+        /// </summary>
+        /// <param name="audioList">Store audio scriptable objects</param>
+        public void GenerateAudioComponentList(AudioScriptableObject[] audioList)
         {
-            if (audioStorage[i].isPlaying == false)
+            arrayStorage.AddRange(audioList);//add all the array values to a list
+        }
+
+        /// <summary>
+        /// Stops all audio
+        /// </summary>
+        public void StopAllAudio()
+        {
+            foreach (AudioSource s in audioStorage)
             {
-                AudioSource audioSource = audioStorage[i];
+                s.Stop();
+            }
+        }
 
-                audioSource.clip = s.clip;
+        /// <summary>
+        /// Play sound by calling scriptable object name
+        /// </summary>
+        /// <param name="name">Scriptable object name</param>
+        /// <returns>Returns int to track audio source being used</returns>
+        public int PlaySound(string name)
+        {
+            AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
 
-                audioSource.outputAudioMixerGroup = s.group;
-                audioSource.volume = s.volume;
-                audioSource.pitch = s.pitch;
-                audioSource.loop = s.loop;
-                audioSource.panStereo = s.pan;
-                audioSource.PlayOneShot(s.clip, s.volume);
+            int i;
 
-                return;
+            for (i = 0; i <= audioStorage.Count; i++)
+            {
+                if (audioStorage[i].isPlaying == false)
+                {
+                    AudioSource audioSource = audioStorage[i];
+
+                    audioSource.clip = s.clip;
+
+                    audioSource.outputAudioMixerGroup = s.group;
+                    audioSource.volume = s.volume;
+                    audioSource.pitch = s.pitch;
+                    audioSource.loop = s.loop;
+                    audioSource.panStereo = s.pan;
+                    audioSource.Play();
+                    return i;
+                }
+            }
+            return i;
+        }
+
+        /// <summary>
+        /// Stop a sound that is playing
+        /// </summary>
+        /// <param name="arrayNumber">Number returned from play sound to stop the audio source</param>
+        public void StopSound(int arrayNumber)
+        {
+            AudioSource audioSource = audioStorage[arrayNumber];
+
+            audioSource.Stop();
+        }
+
+        /// <summary>
+        /// Play oneshot by calling scriptable object name
+        /// </summary>
+        /// <param name="name">Scriptable object name</param>
+        public void PlayOneShotSound(string name)
+        {
+            AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
+
+            for (int i = 0; i < audioStorage.Count; i++)
+            {
+                if (audioStorage[i].isPlaying == false)
+                {
+                    AudioSource audioSource = audioStorage[i];
+
+                    audioSource.clip = s.clip;
+
+                    audioSource.outputAudioMixerGroup = s.group;
+                    audioSource.volume = s.volume;
+                    audioSource.pitch = s.pitch;
+                    audioSource.loop = s.loop;
+                    audioSource.panStereo = s.pan;
+                    audioSource.PlayOneShot(s.clip, s.volume);
+
+                    return;
+                }
             }
         }
     }
 }
+
+

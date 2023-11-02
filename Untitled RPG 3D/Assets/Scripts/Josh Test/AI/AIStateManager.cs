@@ -68,7 +68,7 @@ public class AIStateManager : MonoBehaviour
             controller.RepeatAnimationState(AIController.AnimState.Stagger, 0, 0);//this has to be called here for looping animation
         //    SoundManager.SoundManagerInstance.SelectAudioClass("Wurgle");
         //   SoundManager.SoundManagerInstance.PlayOneShotSound("Test");
-            AudioManager.AudioManagerInstance.PlayOneShotSound("Test");
+            AudioSystem.AudioManager.AudioManagerInstance.PlayOneShotSound("Test");
             currentState = StaggerState;
             currentState.EnterState(this);
         }
