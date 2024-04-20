@@ -929,7 +929,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wurgle
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1986098563, guid: 2365fb1b5183af14ca18fa5ba581f093, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 2365fb1b5183af14ca18fa5ba581f093, type: 3}
 --- !u!4 &911666392 stripped

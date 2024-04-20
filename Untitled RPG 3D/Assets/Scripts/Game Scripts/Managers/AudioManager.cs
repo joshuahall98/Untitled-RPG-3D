@@ -26,6 +26,8 @@ namespace AudioSystem
         private void Start()
         {
             sounds = arrayStorage.ToArray();//store all the list values to an array
+
+            float addition = UnityEngine.Random.Range(0.1f, -0.1f);
         }
 
         /// <summary>
@@ -69,7 +71,7 @@ namespace AudioSystem
         /// Play sound by calling scriptable object name
         /// </summary>
         /// <param name="name">Scriptable object name</param>
-        /// <returns>Returns int to track audio source being used</returns>
+        /// <returns>Int to track audio source being used</returns>
         public int PlaySound(string name)
         {
             AudioScriptableObject s = Array.Find(sounds, sound => sound.name == name);
@@ -103,6 +105,9 @@ namespace AudioSystem
         public void StopSound(int arrayNumber)
         {
             AudioSource audioSource = audioStorage[arrayNumber];
+
+            Debug.Log(arrayNumber);
+            Debug.Log(audioSource);
 
             audioSource.Stop();
         }
